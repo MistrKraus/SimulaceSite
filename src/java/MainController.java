@@ -18,6 +18,9 @@ public class MainController implements Initializable {
     public Canvas visualCnv;
     public TextArea logTxt;
     public VBox leftVBox;
+    public ProgressBar progressBar;
+
+    private World world;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -26,5 +29,9 @@ public class MainController implements Initializable {
                 "Enter integer values only."));
         tickSpn.setEditable(true);
         tickSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500));
+
+        world = new World(visualCnv.getGraphicsContext2D());
+
+        world.start();
     }
 }

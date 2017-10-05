@@ -1,45 +1,50 @@
-<?import javafx.scene.layout.BorderPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
-<BorderPane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
     <padding>
-        <Insets left="10"/>
+        <Insets left="10" />
     </padding>
     <left>
-        <VBox fx:id="leftVBox" spacing="5" alignment="CENTER" maxWidth="140" minWidth="140">
+        <VBox fx:id="leftVBox" alignment="CENTER" maxWidth="140" minWidth="140" spacing="5">
             <padding>
-                <Insets topRightBottomLeft="10"/>
+                <Insets topRightBottomLeft="10" />
             </padding>
-            <Button fx:id="loadDataBtn" text="Load data" minWidth="140"/>
-            <Button fx:id="playBtn" text="Start Simulation" minWidth="140"/>
-            <Separator VBox.vgrow="ALWAYS"/>
-            <ComboBox fx:id="router1Cmb" promptText="Router 1" minWidth="140"/>
-            <ComboBox fx:id="router2Cmb" promptText="Router 2" minWidth="140"/>
-            <Spinner fx:id="tickSpn" minWidth="140"/>
-            <Button fx:id="powerCutBtn" text="Power Cut" minWidth="140"/>
-            <Separator VBox.vgrow="ALWAYS"/>
-            <Button fx:id="rndPowerCutBtn" text="Random Power Cut" minWidth="140"/>
+            <Button fx:id="loadDataBtn" minWidth="140" text="Load data" />
+            <Button fx:id="playBtn" minWidth="140" text="Start Simulation" />
+            <Separator VBox.vgrow="ALWAYS" />
+            <ComboBox fx:id="router1Cmb" minWidth="140" promptText="Router 1" />
+            <ComboBox fx:id="router2Cmb" minWidth="140" promptText="Router 2" />
+            <Spinner fx:id="tickSpn" minWidth="140" />
+            <Button fx:id="powerCutBtn" minWidth="140" text="Power Cut" />
+            <Separator VBox.vgrow="ALWAYS" />
+            <Button fx:id="rndPowerCutBtn" minWidth="140" text="Random Power Cut" />
         </VBox>
     </left>
     <center>
-        <Canvas fx:id="visualCnv"/>
+        <Canvas fx:id="visualCnv" />
     </center>
     <right>
         <VBox spacing="5">
             <padding>
-                <Insets topRightBottomLeft="10"/>
+                <Insets topRightBottomLeft="10" />
             </padding>
-            <Label text="Log:"/>
-            <TextArea fx:id="logTxt"/>
+            <Label text="Log:" />
+            <TextArea fx:id="logTxt" />
         </VBox>
     </right>
+    <bottom>
+
+    </bottom>
 </BorderPane>

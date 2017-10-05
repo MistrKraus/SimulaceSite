@@ -12,6 +12,12 @@ public class App extends Application {
         launch(args);
     }
 
+    /**
+     * Inicializace okna aplikace
+     *
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Net simulation");
