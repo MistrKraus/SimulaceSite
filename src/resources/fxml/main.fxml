@@ -21,7 +21,7 @@
             <padding>
                 <Insets topRightBottomLeft="10" />
             </padding>
-            <Button fx:id="loadDataBtn" minWidth="140" text="Load data" />
+            <Button fx:id="loadDataBtn" onAction="#handleBtnLoadData" minWidth="140" text="Load data" />
             <Button fx:id="playBtn" minWidth="140" text="Start Simulation" />
             <Separator VBox.vgrow="ALWAYS" />
             <ComboBox fx:id="router1Cmb" minWidth="140" promptText="Router 1" />

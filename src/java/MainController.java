@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
@@ -32,6 +33,10 @@ public class MainController implements Initializable {
 
         world = new World(visualCnv.getGraphicsContext2D());
 
-        world.start();
+        //world.start();
+    }
+
+    public void handleBtnLoadData(ActionEvent actionEvent) {
+
     }
 }

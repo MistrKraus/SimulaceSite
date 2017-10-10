@@ -20,6 +20,28 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+//        float t1 = System.nanoTime();
+//        try (BufferedReader br = new BufferedReader(new FileReader("input.txt"))) {
+//
+//            String sCurrentLine;
+//
+//            while ((sCurrentLine = br.readLine()) != null) {
+//                System.out.println(sCurrentLine);
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        float t2 = System.nanoTime() - t1;
+//
+//        int x = 5;
+//
+//        for (int i = 0; i < x; i++) {
+//            for (int j = i; j < x; j++) {
+//                System.out.println(i + " " + j);
+//            }
+//        }
+
         primaryStage.setTitle("Net simulation");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
