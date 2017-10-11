@@ -1,4 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 
 /**
  * Spojeni mezi jednotlivymi routery.
@@ -38,8 +40,16 @@ public class Link implements IUpdatable, IDrawable {
     }
 
     @Override
-    public void draw(GraphicsContext g) {
+    public void draw(GraphicsContext g, int routersInRow) {
+        Affine t = g.getTransform();
+        int deltaXY = (int)(g.getCanvas().getHeight() / (routersInRow + 1));
+        g.setStroke(Color.YELLOW);
+        g.translate(deltaXY, 0);
 
+        g.strokeLine((deltaXY * (r1Id % routersInRow)), (deltaXY * ((r1Id + 2) / routersInRow)),
+            (deltaXY * (r2Id % routersInRow)), (deltaXY * ((r2Id + 2) / routersInRow)));
+
+        g.setTransform(t);
     }
 
     @Override

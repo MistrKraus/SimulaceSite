@@ -31,12 +31,25 @@ public class MainController implements Initializable {
         tickSpn.setEditable(true);
         tickSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500));
 
-        world = new World(visualCnv.getGraphicsContext2D());
+        visualCnv.setHeight(200);
+        visualCnv.setWidth(200);
+
+        world = new World(visualCnv.getGraphicsContext2D(), logTxt);
 
         //world.start();
     }
 
     public void handleBtnLoadData(ActionEvent actionEvent) {
+        world.loadData();
 
+        playBtn.setDisable(false);
+        loadDataBtn.setDisable(true);
+    }
+
+    public void handleBtnPlay(ActionEvent actionEvent) {
+        world.start();
+
+        powerCutBtn.setDisable(false);
+        rndPowerCutBtn.setDisable(false);
     }
 }

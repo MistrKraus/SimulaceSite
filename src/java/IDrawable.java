@@ -10,7 +10,7 @@ public interface IDrawable {
      *
      * @param g
      */
-    void draw(GraphicsContext g);
+    void draw(GraphicsContext g, int routersInRow);
 
     /**
      * X-ove souradnice instance

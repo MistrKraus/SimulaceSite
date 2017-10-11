@@ -12,36 +12,41 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
     <padding>
         <Insets left="10" />
     </padding>
     <left>
-        <VBox fx:id="leftVBox" alignment="CENTER" maxWidth="140" minWidth="140" spacing="5">
+        <VBox fx:id="leftVBox" alignment="TOP_CENTER" maxWidth="140" minWidth="140" spacing="5">
             <padding>
                 <Insets topRightBottomLeft="10" />
             </padding>
             <Button fx:id="loadDataBtn" onAction="#handleBtnLoadData" minWidth="140" text="Load data" />
-            <Button fx:id="playBtn" minWidth="140" text="Start Simulation" />
+            <Button fx:id="playBtn" onAction="#handleBtnPlay" disable="true" minWidth="140" text="Start Simulation" />
             <Separator VBox.vgrow="ALWAYS" />
             <ComboBox fx:id="router1Cmb" minWidth="140" promptText="Router 1" />
             <ComboBox fx:id="router2Cmb" minWidth="140" promptText="Router 2" />
             <Spinner fx:id="tickSpn" minWidth="140" />
-            <Button fx:id="powerCutBtn" minWidth="140" text="Power Cut" />
+            <Button fx:id="powerCutBtn" minWidth="140" disable="true" text="Power Cut" />
             <Separator VBox.vgrow="ALWAYS" />
-            <Button fx:id="rndPowerCutBtn" minWidth="140" text="Random Power Cut" />
+            <Button fx:id="rndPowerCutBtn" minWidth="140" disable="true" text="Random Power Cut" />
         </VBox>
     </left>
     <center>
-        <Canvas fx:id="visualCnv" />
+        <Canvas fx:id="visualCnv"/>
     </center>
     <right>
-        <VBox spacing="5">
+        <VBox spacing="5" VBox.vgrow="ALWAYS">
             <padding>
-                <Insets topRightBottomLeft="10" />
+                <Insets topRightBottomLeft="10"/>
             </padding>
-            <Label text="Log:" />
-            <TextArea fx:id="logTxt" />
+            <Label text="Log:"/>
+            <VBox alignment="TOP_RIGHT">
+                <TextArea fx:id="logTxt" maxWidth="200" VBox.vgrow="ALWAYS" editable="false"/>
+            </VBox>
         </VBox>
     </right>
     <bottom>
