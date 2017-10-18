@@ -31,8 +31,8 @@ public class Link implements IUpdatable, IDrawable {
      * @param r2Id id routeru 2
      */
     public Link(float maxThroughtput, float reliability, short r1Id, short r2Id) {
-        this.throughtput = maxThroughtput;
-        this.reliability = reliability;
+        this.throughtput = 1;//maxThroughtput;
+        this.reliability = 10;//reliability;
         this.r1Id = r1Id;
         this.r2Id = r2Id;
 
@@ -44,10 +44,10 @@ public class Link implements IUpdatable, IDrawable {
         Affine t = g.getTransform();
         int deltaXY = (int)(g.getCanvas().getHeight() / (routersInRow + 1));
         g.setStroke(Color.YELLOW);
-        g.translate(deltaXY, 0);
+        g.translate(deltaXY, deltaXY / 2);
 
-        g.strokeLine((deltaXY * (r1Id % routersInRow)), (deltaXY * ((r1Id + 2) / routersInRow)),
-            (deltaXY * (r2Id % routersInRow)), (deltaXY * ((r2Id + 2) / routersInRow)));
+        g.strokeLine((deltaXY * (r1Id % routersInRow)), (deltaXY * (r1Id / routersInRow)),
+            (deltaXY * (r2Id % routersInRow)), (deltaXY * (r2Id / routersInRow)));
 
         g.setTransform(t);
     }
@@ -59,5 +59,41 @@ public class Link implements IUpdatable, IDrawable {
 
     public void sendDataDir1(short data, Router r) {
 
+    }
+
+    public short getData1to2() {
+        return data1to2;
+    }
+
+    public void setData1to2(short data1to2) {
+        this.data1to2 = data1to2;
+    }
+
+    public short getData2to1() {
+        return data2to1;
+    }
+
+    public void setData2to1(short data2to1) {
+        this.data2to1 = data2to1;
+    }
+
+    public short getR1Id() {
+        return r1Id;
+    }
+
+    public short getR2Id() {
+        return r2Id;
+    }
+
+    public float getThroughtput() {
+        return throughtput;
+    }
+
+    public float getReliability() {
+        return reliability;
+    }
+
+    public float getMaxThroughtput() {
+        return maxThroughtput;
     }
 }

@@ -145,7 +145,7 @@ public class World {
             routerId2 = (short)(Integer.parseInt(line[1]) - 1);
 
             Link link = new Link(Float.parseFloat(line[2]), Float.parseFloat(line[3]),
-                    (short)(routerId1), (short)(routerId2));
+                    routerId1, routerId2);
 
             links[routerId1][routerId2] = link;
             links[routerId2][routerId1] = link;
@@ -171,6 +171,10 @@ public class World {
         }
         log.appendText("All routers created succesfully.\n");
 
-        routersInRow = (int)(Math.floor(Math.sqrt(routers.length)));
+        routersInRow = (int)(Math.ceil(Math.sqrt(routers.length)));
+
+        draw();
+
+        new FloydWarshall(links);
     }
 }

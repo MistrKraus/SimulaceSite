@@ -27,9 +27,10 @@ public class Router implements IUpdatable, IDrawable {
         int deltaXY = (int)(g.getCanvas().getHeight() / (routersInRow + 1));
 
         g.setFill(Color.WHITE);
-        g.translate(deltaXY, 0);
+
+        g.translate(deltaXY, deltaXY / 2);
         g.fillOval((deltaXY * (id % routersInRow)) - 5,
-                deltaXY * ((id + 2) / routersInRow) - 5, 10, 10);
+                deltaXY * (id / routersInRow) - 5, 10, 10);
 
 
         //g.fillOval(-5,-5,10, 10);
@@ -40,9 +41,14 @@ public class Router implements IUpdatable, IDrawable {
     @Override
     public void update(World world) {
 
+
     }
 
     public void setData(Link link, Data data) {
 
+    }
+
+    public boolean isUp() {
+        return up;
     }
 }
