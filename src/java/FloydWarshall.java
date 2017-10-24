@@ -49,13 +49,25 @@ public class FloydWarshall {
         float throughtput;
         this.links = new float[routerCount][routerCount];
 
-        for (int i = 0; i < routerCount; i++) {
+        for (int i = 0; i < links.length; i++) {
             x = links[i].getR1Id();
             y = links[i].getR2Id();
             throughtput = links[i].getMaxThroughtput();
 
             this.links[x][y] = throughtput;
             this.links[y][x] = throughtput;
+        }
+
+        for (int i = 0; i < routerCount; i++) {
+            for (int j = i; j < routerCount; j++) {
+                if (i == j)
+                    continue;
+
+                if (this.links[i][j] == 0.0f) {
+                    this.links[i][j] = 100.0f;
+                    this.links[j][i] = 100.0f;
+                }
+            }
         }
 
 //        for (int i = 0; i < length; i++) {
@@ -119,7 +131,7 @@ public class FloydWarshall {
 
         for (int i = 0; i < lenght; i++) {
             for (int j = 0; j < lenght; j++) {
-                //if (shortestDistace[i][j] != 1) /** vypise pouze vzdalenosti tam, kde existuji linky*/
+                if (shortestDistace[i][j] != 0) /** vypise pouze vzdalenosti tam, kde existuji linky*/
                     System.out.print(shortestDistace[i][j] + " - Routery: " + (i+1) + ", " + (j+1) + "  \n"); //vypisovani nejakych picovin
             }
             System.out.println();

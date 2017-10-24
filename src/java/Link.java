@@ -32,12 +32,12 @@ public class Link implements IUpdatable, IDrawable {
      */
     public Link(float maxThroughtput, float reliability, short r1Id, short r2Id) {
         //TODO odstranit jednicky
-        this.throughtput = 1;//maxThroughtput;
-        this.reliability = 1;//reliability;
+        this.throughtput = 1.0f;//maxThroughtput;
+        this.reliability = 1.0f;//reliability;
         this.r1Id = r1Id;
         this.r2Id = r2Id;
 
-        this.maxThroughtput = throughtput * reliability;
+        this.maxThroughtput = throughtput * this.reliability;
     }
 
     @Override

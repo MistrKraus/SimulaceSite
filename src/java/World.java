@@ -197,5 +197,8 @@ public class World {
         draw();
 
         new FloydWarshall(links, routers.length);
+
+        //TODO testovani - smazat
+
     }
 }
