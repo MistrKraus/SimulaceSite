@@ -1,4 +1,5 @@
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 //TODO Dodelat FloydWarshalla
 public class FloydWarshall {
@@ -6,7 +7,7 @@ public class FloydWarshall {
     private float[][] links;
     /**Matice nejkratsich vzdalenosti*/
     private float[][] shortestDistace;
-    /**Matice nejdraktsich mezicest*/
+    /**Matice nejkraktsich mezicest*/
     private int[][] btw;
     /**Pocet routeru v siti*/
     private int routerCount;
@@ -44,15 +45,24 @@ public class FloydWarshall {
      * @param routerCount pocet routeru v siti
      */
     public FloydWarshall(Link[] links, int routerCount) {
-        //int length = routerCount;
+        int length = links.length;
         int x,y;
         float throughtput;
+        float bestThroughtput = 0.0f;
         this.links = new float[routerCount][routerCount];
 
-        for (int i = 0; i < links.length; i++) {
+        // nejlepsi propust + 1
+        for (Link link : links)
+            if (bestThroughtput < link.getMaxThroughtput())
+                bestThroughtput = link.getMaxThroughtput();
+        bestThroughtput++;
+
+        for (int i = 0; i < length; i++) {
             x = links[i].getR1Id();
             y = links[i].getR2Id();
-            throughtput = links[i].getMaxThroughtput();
+
+            // ohodnoceni cesty - cim vetsi propustnost ma, tim mensi hodnota -> lepsi ohodnoceni WTF
+            throughtput = bestThroughtput - links[i].getMaxThroughtput();
 
             this.links[x][y] = throughtput;
             this.links[y][x] = throughtput;
@@ -64,8 +74,8 @@ public class FloydWarshall {
                     continue;
 
                 if (this.links[i][j] == 0.0f) {
-                    this.links[i][j] = 100.0f;
-                    this.links[j][i] = 100.0f;
+                    this.links[i][j] = Float.POSITIVE_INFINITY;
+                    this.links[j][i] = Float.POSITIVE_INFINITY;
                 }
             }
         }
@@ -123,7 +133,7 @@ public class FloydWarshall {
                 for (int j = 0; j < lenght; j++) {
                     if ((shortestDistace[i][k] + shortestDistace[k][j]) < shortestDistace[i][j]) {
                         shortestDistace[i][j] = shortestDistace[i][k] + shortestDistace[k][j];
-                        btw[i][j] = btw[i][k]; /** zjistili jsme, ze pres nahradni bod k je to vyhodnejsi, tudiz nastavime bod k jako mezibod*/
+                        btw[i][j] = k; /** zjistili jsme, ze pres nahradni bod k je to vyhodnejsi, tudiz nastavime bod k jako mezibod*/
                     }
                 }
             }
@@ -131,22 +141,37 @@ public class FloydWarshall {
 
         for (int i = 0; i < lenght; i++) {
             for (int j = 0; j < lenght; j++) {
-                if (shortestDistace[i][j] != 0) /** vypise pouze vzdalenosti tam, kde existuji linky*/
+                //if (shortestDistace[i][j] != 0) /** vypise pouze vzdalenosti tam, kde existuji linky*/
                     System.out.print(shortestDistace[i][j] + " - Routery: " + (i+1) + ", " + (j+1) + "  \n"); //vypisovani nejakych picovin
             }
             System.out.println();
         }
+
+//        System.out.println("Cesta mezi routery 2 a 4:");
+//        List<Integer> path = getPath(1, 3);
+//        for (Integer i : path) {
+//            System.out.print((i + 1) + " ");
+//        }
+//        System.out.println();
     }
 
-    //TODO Upravit vystupni format cesty (zmenit ze stacku)
-    public Stack getPath(int r1, int r2) {
-        if (btw[r1][r2] == Integer.MIN_VALUE)
-            return new Stack();
+    public List<Integer> getPath(int r1, int r2) {
+        List<Integer> path = new ArrayList<>();
 
-        Stack stack = new Stack();
+        path.add(r1);
+        searchPointToPath(r1, r2, path);
 
+        return path;
+    }
 
+    private List<Integer> searchPointToPath(int r1, int r2, List<Integer> path) {
+        if (btw[r1][r2] == -1)
+            path.add(r2);
+        else {
+            path = searchPointToPath(r1, btw[r1][r2], path);
+            path = searchPointToPath(btw[r1][r2], r2, path);
+        }
 
-        return stack;
+        return path;
     }
 }
