@@ -20,7 +20,7 @@ public class World {
     /**Pole vsech routeru*/
     private Router[] routers;
     /**Matice spoju mezi routery*/
-    private Link[][] links;
+    private Link[] links;
     /**TextArea pro logovani udalosti*/
     private TextArea log;
 
@@ -89,13 +89,8 @@ public class World {
         graphics.setFill(Color.rgb(20, 20, 20));
         graphics.fillRect(0, 0, 200, 200);
 
-        for (int i = 0; i < linkCount; i++) {
-            for (int j = i; j < linkCount; j++) {
-                if (links[i][j] != null) {
-                    links[i][j].draw(graphics, routersInRow);
-                }
-            }
-        }
+        for (Link link : links)
+            link.draw(graphics, routersInRow);
 
         for (Router router : routers)
             router.draw(graphics, routersInRow);
@@ -134,31 +129,57 @@ public class World {
         short routerId1;
         short routerId2;
 
-        this.links = new Link[linkCount][linkCount];
-        String[] line;
-
+        String[][] line = new String[linkCount][];
+        /**Zjisteni poctu routeru v siti*/
         for (int i = 0; i < linkCount; i++) {
-            line = loadedData.get(i);
+            line[i] = loadedData.get(i);
 
-            //TODO Jsou routery cislovane od 0 nebo 1? ~ odstranit minusy o 4 radky niz
-            routerId1 = (short)(Integer.parseInt(line[0]) - 1);
-            routerId2 = (short)(Integer.parseInt(line[1]) - 1);
-
-            Link link = new Link(Float.parseFloat(line[2]), Float.parseFloat(line[3]),
-                    routerId1, routerId2);
-
-            links[routerId1][routerId2] = link;
-            links[routerId2][routerId1] = link;
+            //TODO Jsou routery cislovane od 0 nebo 1?
+            routerId1 = (short)(Integer.parseInt(line[i][0]) - 1);
+            routerId2 = (short)(Integer.parseInt(line[i][1]) - 1);
 
             if (maxId < routerId1)
                 maxId = routerId1;
-
             if (maxId < routerId2)
                 maxId = routerId2;
-
-            log.appendText("Link " + routerId1 + " ~ " + routerId2 + " created!\n");
         }
         maxId++;
+
+        links = new Link[linkCount];
+
+        /**Ulozeni linku do pole*/
+        for (int i = 0; i < linkCount; i++) {
+            links[i] = new Link(Float.parseFloat(line[i][2]), Float.parseFloat(line[i][3]),
+                    (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
+
+            log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
+        }
+
+//        this.links = new Link[linkCount][linkCount];
+//        String[] line;
+//
+//        for (int i = 0; i < linkCount; i++) {
+//            line = loadedData.get(i);
+//
+//            //TODO Jsou routery cislovane od 0 nebo 1?
+//            routerId1 = (short)(Integer.parseInt(line[0]) - 1);
+//            routerId2 = (short)(Integer.parseInt(line[1]) - 1);
+//
+//            Link link = new Link(Float.parseFloat(line[2]), Float.parseFloat(line[3]),
+//                    routerId1, routerId2);
+//
+//            links[routerId1][routerId2] = link;
+//            links[routerId2][routerId1] = link;
+//
+//            if (maxId < routerId1)
+//                maxId = routerId1;
+//
+//            if (maxId < routerId2)
+//                maxId = routerId2;
+//
+//            log.appendText("Link " + routerId1 + " ~ " + routerId2 + " created!\n");
+//        }
+//        maxId++;
 
         log.appendText("All links created sucessfully.\n");
 
@@ -175,6 +196,6 @@ public class World {
 
         draw();
 
-        new FloydWarshall(links);
+        new FloydWarshall(links, routers.length);
     }
 }

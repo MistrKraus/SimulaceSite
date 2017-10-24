@@ -31,8 +31,9 @@ public class Link implements IUpdatable, IDrawable {
      * @param r2Id id routeru 2
      */
     public Link(float maxThroughtput, float reliability, short r1Id, short r2Id) {
+        //TODO odstranit jednicky
         this.throughtput = 1;//maxThroughtput;
-        this.reliability = 10;//reliability;
+        this.reliability = 1;//reliability;
         this.r1Id = r1Id;
         this.r2Id = r2Id;
 
@@ -96,4 +97,6 @@ public class Link implements IUpdatable, IDrawable {
     public float getMaxThroughtput() {
         return maxThroughtput;
     }
+
+
 }
