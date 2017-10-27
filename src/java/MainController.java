@@ -1,3 +1,5 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -12,6 +14,7 @@ public class MainController implements Initializable {
     public Button loadDataBtn;
     public Button playBtn;
     public Button powerCutBtn;
+    public Button detailsBtn;
     public ComboBox router1Cmb;
     public ComboBox router2Cmb;
     public Button rndPowerCutBtn;
@@ -22,6 +25,7 @@ public class MainController implements Initializable {
     public ProgressBar progressBar;
 
     private World world;
+    private Details details;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,6 +48,7 @@ public class MainController implements Initializable {
 
         playBtn.setDisable(false);
         loadDataBtn.setDisable(true);
+        detailsBtn.setDisable(false);
     }
 
     public void handleBtnPlay(ActionEvent actionEvent) {
@@ -52,4 +57,14 @@ public class MainController implements Initializable {
         powerCutBtn.setDisable(false);
         rndPowerCutBtn.setDisable(false);
     }
+
+    public void handleDetailsBtn(ActionEvent actionEvent) {
+
+        details = new Details();
+        details.setWorld(world);
+        details.setRouters(world.getRouters());
+        details.setLinks(world.getLinks());
+        details.show();
+    }
+
 }

@@ -187,7 +187,7 @@ public class World {
         //System.out.println(maxId);
 
         for (int i = 0; i < maxId; i++) {
-            routers[i] = new Router(i);
+            routers[i] = new Router(i, "Router" + i);
             log.appendText("Router " + i + " created!\n");
         }
         log.appendText("All routers created succesfully.\n");
@@ -198,7 +198,13 @@ public class World {
 
         new FloydWarshall(links, routers.length);
 
-        //TODO testovani - smazat
+    }
 
+    public Router[] getRouters() {
+        return this.routers;
+    }
+
+    public Link[] getLinks() {
+        return this.links;
     }
 }

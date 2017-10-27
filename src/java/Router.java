@@ -11,14 +11,17 @@ public class Router implements IUpdatable, IDrawable {
     private short data = 0;
     /**Router pracuje*/
     private boolean up = true;
+    /** Nazev routeru*/
+    private String name;
 
     /**ID routeru*/
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
     private static final byte MEMORY = 100;
 
-    public Router(int id) {
+    public Router(int id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     @Override
@@ -50,5 +53,21 @@ public class Router implements IUpdatable, IDrawable {
 
     public boolean isUp() {
         return up;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public short getData() {
+        return data;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public static byte getMEMORY() {
+        return MEMORY;
     }
 }
