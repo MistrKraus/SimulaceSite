@@ -139,7 +139,7 @@ public class Details extends Stage{
         list.setItems(observableList);
         list.setPrefHeight(sceneHeight - 20);
         list.setPrefWidth(100);
-
+//
         return list;
     }
 

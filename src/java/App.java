@@ -45,7 +45,7 @@ public class App extends Application {
         primaryStage.setTitle("Net simulation");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
-
+//
         // dependence injection
 //        loader.setControllerFactory(param -> {
 //            try {
