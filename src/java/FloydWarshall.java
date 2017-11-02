@@ -88,15 +88,13 @@ public class FloydWarshall {
 //            }
 //        }
 
-        findPaths(this.links);
+        findPaths();
     }
 
     /**
-     *
-     *
-     * @param links
+     * Nalezne nejlepsi cesty
      */
-    public void findPaths(float[][] links) {
+    private void findPaths() {
         int lenght = links.length;
         this.shortestDistace = new float[lenght][lenght];
         this.btw = new int[lenght][lenght];
@@ -147,14 +145,15 @@ public class FloydWarshall {
             System.out.println();
         }
 
-//        System.out.println("Cesta mezi routery 2 a 4:");
-//        List<Integer> path = getPath(1, 3);
-//        for (Integer i : path) {
-//            System.out.print((i + 1) + " ");
-//        }
-//        System.out.println();
+        System.out.println("Cesta mezi routery 2 a 4:");
+        List<Integer> path = getPath(1, 3);
+        for (Integer i : path) {
+            System.out.print((i + 1) + " ");
+        }
+        System.out.println();
     }
 
+    /**Vrati list integeru s nejlepsi cestou mezi zadanymi routery*/
     public List<Integer> getPath(int r1, int r2) {
         List<Integer> path = new ArrayList<>();
 
@@ -164,6 +163,7 @@ public class FloydWarshall {
         return path;
     }
 
+    /**Zkompletuje nejlepsi cestu mezi zadanymi routery a vrati ji jako list integeru*/
     private List<Integer> searchPointToPath(int r1, int r2, List<Integer> path) {
         if (btw[r1][r2] == -1)
             path.add(r2);

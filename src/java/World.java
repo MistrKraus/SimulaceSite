@@ -191,13 +191,15 @@ public class World {
             log.appendText("Router " + i + " created!\n");
         }
         log.appendText("All routers created succesfully.\n");
+        log.appendText("Web succesfully created.");
 
         routersInRow = (int)(Math.ceil(Math.sqrt(routers.length)));
 
         draw();
 
-        new FloydWarshall(links, routers.length);
+        //new PathsManager(links, routers.length);
 
+        new FloydWarshall(links, routers.length);
     }
 
     public Router[] getRouters() {
