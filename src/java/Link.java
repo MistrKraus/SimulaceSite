@@ -5,7 +5,7 @@ import javafx.scene.transform.Affine;
 /**
  * Spojeni mezi jednotlivymi routery.
  */
-public class Link implements IUpdatable, IDrawable {
+public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     /**Mnozstvi dat, ktere protekly tuto sekundu jednim smerem*/
     private short data1to2;
     /**Mnozstvi dat, ktere protekly tuto sekundu druhym smerem*/
@@ -21,6 +21,8 @@ public class Link implements IUpdatable, IDrawable {
     private final float reliability;
     /**Maximalni bezeztratova propustnost*/
     private final float maxThroughtput;
+    /**Priblizna maximalni bezestratova propustnost*/
+    private final int ccaMaxThroughtput;
 
     /**
      * Spojeni mezi jednotlivymi routery
@@ -40,6 +42,7 @@ public class Link implements IUpdatable, IDrawable {
         this.r2Id = r2Id;
 
         this.maxThroughtput = throughtput * this.reliability;
+        this.ccaMaxThroughtput = Math.round(this.maxThroughtput);
     }
 
     @Override
@@ -100,5 +103,12 @@ public class Link implements IUpdatable, IDrawable {
         return maxThroughtput;
     }
 
+    public int getCcaMaxThroughtput() {
+        return ccaMaxThroughtput;
+    }
 
+    @Override
+    public int compareTo(Link link) {
+        return Integer.compare(link.getCcaMaxThroughtput(), ccaMaxThroughtput);
+    }
 }

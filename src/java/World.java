@@ -191,15 +191,21 @@ public class World {
             log.appendText("Router " + i + " created!\n");
         }
         log.appendText("All routers created succesfully.\n");
+
+        for (Link link : links) {
+            routers[link.getR1Id()].addLink();
+            routers[link.getR2Id()].addLink();
+        }
+        log.appendText("Amount of links router is connected with has been recorded to routers.");
         log.appendText("Web succesfully created.");
 
         routersInRow = (int)(Math.ceil(Math.sqrt(routers.length)));
 
         draw();
 
-        //new PathsManager(links, routers.length);
+        new PathsManager(links, routers);
 
-        new FloydWarshall(links, routers.length);
+        //new FloydWarshall(links, routers.length);
     }
 
     public Router[] getRouters() {

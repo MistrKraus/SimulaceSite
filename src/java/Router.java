@@ -9,11 +9,12 @@ public class Router implements IUpdatable, IDrawable {
 
     /**Data ulozena v routeru*/
     private short data = 0;
+    /**Pocet linku pripojenych k routeru*/
+    private short linkCount = 0;
     /**Router pracuje*/
     private boolean up = true;
     /** Nazev routeru*/
     private String name;
-
     /**ID routeru*/
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
@@ -51,6 +52,10 @@ public class Router implements IUpdatable, IDrawable {
 
     }
 
+    public void addLink() {
+        linkCount++;
+    }
+
     public boolean isUp() {
         return up;
     }
@@ -65,6 +70,10 @@ public class Router implements IUpdatable, IDrawable {
 
     public int getId() {
         return id;
+    }
+
+    public short getLinkCount() {
+        return linkCount;
     }
 
     public static byte getMEMORY() {

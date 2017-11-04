@@ -42,6 +42,19 @@ public class App extends Application {
 //            }
 //        }
 
+//        int[] temp = new int[] {1,2, 2,3,3,3};
+//
+//        System.out.println(temp.length);
+//
+//        int i = temp.length - 1;
+//        int max = temp[i];
+//        while (temp[i] == max){
+//            i--;
+//        }
+//        i++;
+//
+//        System.out.println(i);
+
         primaryStage.setTitle("Net simulation");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
