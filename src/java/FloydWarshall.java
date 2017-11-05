@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO Dodelat FloydWarshalla
 public class FloydWarshall {
     /**Matice cest ~ sousednoti*/
     private float[][] links;

@@ -17,6 +17,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.GridPane?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
     <padding>
         <Insets left="10" />
@@ -30,18 +32,25 @@
             <Button fx:id="playBtn" onAction="#handleBtnPlay" disable="true" minWidth="140" text="Start Simulation" />
             <Separator VBox.vgrow="ALWAYS" />
             <ComboBox fx:id="router1Cmb" minWidth="140" promptText="Router 1" />
-            <ComboBox fx:id="router2Cmb" minWidth="140" promptText="Router 2" />
-            <Spinner fx:id="tickSpn" minWidth="140" />
+            <HBox maxWidth="150" alignment="CENTER">
+                <Label text="Ticks:" minWidth="30"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Spinner fx:id="tickSpn" />
+            </HBox>
             <Button fx:id="powerCutBtn" minWidth="140" disable="true" text="Power Cut" />
             <Separator VBox.vgrow="ALWAYS" />
             <Button fx:id="rndPowerCutBtn" minWidth="140" disable="true" text="Random Power Cut" />
-
+            <Separator VBox.vgrow="ALWAYS" />
             <Button fx:id="detailsBtn" onAction="#handleDetailsBtn" minWidth="140" disable="true" text="Details"/>
-
         </VBox>
     </left>
     <center>
-        <Canvas fx:id="visualCnv"/>
+        <GridPane alignment="TOP_CENTER">
+            <padding>
+                <Insets topRightBottomLeft="10"/>
+            </padding>
+            <Canvas fx:id="visualCnv"/>
+        </GridPane>
     </center>
     <right>
         <VBox spacing="5" VBox.vgrow="ALWAYS">

@@ -196,8 +196,8 @@ public class World {
             routers[link.getR1Id()].addLink();
             routers[link.getR2Id()].addLink();
         }
-        log.appendText("Amount of links router is connected with has been recorded to routers.");
-        log.appendText("Web succesfully created.");
+        log.appendText("Amount of links router is connected with has been recorded to routers.\n");
+        log.appendText("Web succesfully created.\n");
 
         routersInRow = (int)(Math.ceil(Math.sqrt(routers.length)));
 
