@@ -37,6 +37,11 @@ public class World {
     /**Cesta k vstupnimu souboru s datay*/
     private static final String DATA_INPUT_FILE = "test_input.txt";
 
+    /** Cesta k souboru se simulacnimy daty*/
+    private static final String DATA_SIMULATION_FILE = "test_simulace.txt";
+    private Router[] routers1;
+    private Router[] routers11;
+
     /**
      * Konstruktor
      *
@@ -52,10 +57,27 @@ public class World {
     }
 
     /**
-     * Spusti simulaci
+     * Spusti simulaci (nacteni simulacnich dat)
      */
     public void start() {
         timeline.play();
+
+        List<String[]> simulatedData = new ArrayList<>();
+        System.out.println();
+        try (BufferedReader br = new BufferedReader(new FileReader(DATA_SIMULATION_FILE))) {
+            String sCurrentLine;
+            while ((sCurrentLine = br.readLine()) != null) {
+                sCurrentLine.replace(" ", "");
+                sCurrentLine.replace("-","-");
+                simulatedData.add(sCurrentLine.split("-"));
+                System.out.println(sCurrentLine);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            log.appendText(e.getMessage() + "\n");
+        }
     }
 
     /**
@@ -105,8 +127,10 @@ public class World {
         try (BufferedReader br = new BufferedReader(new FileReader(DATA_INPUT_FILE))) {
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
+                sCurrentLine.replace(" ", "");
+                sCurrentLine.replace("-","-");
                 loadedData.add(sCurrentLine.split("-"));
-                System.out.println(sCurrentLine);
+                //System.out.println(sCurrentLine);
             }
             log.appendText("Data succesfully loaded!\n");
 
@@ -145,13 +169,23 @@ public class World {
         }
         maxId++;
 
+        routers = new Router[maxId];
+        //System.out.println(maxId);
+
+        for (int i = 0; i < maxId; i++) {
+            routers[i] = new Router(i, "Router" + i);
+            log.appendText("Router " + i + " created!\n");
+        }
+        log.appendText("All routers created succesfully.\n");
+
         links = new Link[linkCount];
 
         /**Ulozeni linku do pole*/
         for (int i = 0; i < linkCount; i++) {
             links[i] = new Link(Float.parseFloat(line[i][2]), Float.parseFloat(line[i][3]),
                     (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
-
+            routers[links[i].getR1Id()].neighbours.add(links[i].getR2Id());
+            routers[links[i].getR2Id()].neighbours.add(links[i].getR1Id());
             log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
         }
 
@@ -183,15 +217,6 @@ public class World {
 
         log.appendText("All links created sucessfully.\n");
 
-        routers = new Router[maxId];
-        //System.out.println(maxId);
-
-        for (int i = 0; i < maxId; i++) {
-            routers[i] = new Router(i, "Router" + i);
-            log.appendText("Router " + i + " created!\n");
-        }
-        log.appendText("All routers created succesfully.\n");
-
         for (Link link : links) {
             routers[link.getR1Id()].addLink();
             routers[link.getR2Id()].addLink();
@@ -205,12 +230,18 @@ public class World {
 
         new PathsManager(links, routers);
 
+        /* Výpis sousedů routerů
+        for (int i = 0; i < maxId; i++) {
+            System.out.print("\nRouter " + i + ": ");
+            for (int j = 0; j < routers[i].neighbours.size(); j++) {
+                System.out.print(routers[i].neighbours.get(j) + " ");
+            }
+        }
+        */
         //new FloydWarshall(links, routers.length);
     }
 
-    public Router[] getRouters() {
-        return this.routers;
-    }
+    public Router[] getRouters() { return this.routers; }
 
     public Link[] getLinks() {
         return this.links;

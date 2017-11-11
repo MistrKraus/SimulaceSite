@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class PathsManager implements IUpdatable {
     /**Matice cest ~ sousednoti*/
     private Link[][] links;
-    /**Pole s nejlepsimi cestami pro různé objemi dat:
+    /**Pole s nejlepsimi cestami pro různé objemi(Y) dat:
      * */
     private FloydWarshall[] paths = new FloydWarshall[5];
 
