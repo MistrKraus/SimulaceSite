@@ -103,12 +103,15 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         return maxThroughtput;
     }
 
-    public int getCcaMaxThroughtput() {
-        return ccaMaxThroughtput;
-    }
+    public int getCcaMaxThroughtput() { return ccaMaxThroughtput; }
 
     @Override
     public int compareTo(Link link) {
         return Integer.compare(link.getCcaMaxThroughtput(), ccaMaxThroughtput);
+    }
+
+    @Override
+    public String toString() {
+        return this.getR1Id() + " ~ " + this.getR2Id();
     }
 }

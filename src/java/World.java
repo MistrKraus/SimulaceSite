@@ -34,7 +34,7 @@ public class World {
     private Timeline timeline;
     private final GraphicsContext graphics;
 
-    /**Cesta k vstupnimu souboru s datay*/
+    /**Cesta k vstupnimu souboru s daty*/
     private static final String DATA_INPUT_FILE = "test_input.txt";
 
     /** Cesta k souboru se simulacnimy daty*/
@@ -184,10 +184,13 @@ public class World {
         for (int i = 0; i < linkCount; i++) {
             links[i] = new Link(Float.parseFloat(line[i][2]), Float.parseFloat(line[i][3]),
                     (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
-            routers[links[i].getR1Id()].neighbours.add(links[i].getR2Id());
-            routers[links[i].getR2Id()].neighbours.add(links[i].getR1Id());
+
+            routers[links[i].getR1Id()].neighbours.put(links[i].getR2Id(), links[i]);
+            Link tmp = new Link(links[i].getThroughtput(), links[i].getReliability(), links[i].getR2Id(), links[i].getR1Id());
+            routers[links[i].getR2Id()].neighbours.put(links[i].getR1Id(), tmp);
             log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
         }
+
 
 //        this.links = new Link[linkCount][linkCount];
 //        String[] line;
@@ -230,14 +233,13 @@ public class World {
 
         new PathsManager(links, routers);
 
-        /* Výpis sousedů routerů
+        /* Vypsání sousedů routerů/počet hran vedoucích z routerů
         for (int i = 0; i < maxId; i++) {
-            System.out.print("\nRouter " + i + ": ");
-            for (int j = 0; j < routers[i].neighbours.size(); j++) {
-                System.out.print(routers[i].neighbours.get(j) + " ");
-            }
+            //System.out.println("\nRouter " + i + ": " + routers[i].neighbours.values());
+            //System.out.println(i + ".Router : " + routers[i].getLinkCount());
         }
         */
+
         //new FloydWarshall(links, routers.length);
     }
 

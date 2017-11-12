@@ -2,8 +2,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Routery v sidi ridici komunikaci.
@@ -22,8 +24,11 @@ public class Router implements IUpdatable, IDrawable {
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
     private static final short MEMORY = 100;
-    /** Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
-    List<Short> neighbours = new LinkedList<>();
+    /** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
+    //List<Short> neighbour = new LinkedList<>();
+
+    /** Mapa - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
+    Map<Short, Link> neighbours = new HashMap<>();
 
 
     public Router(int id, String name) {

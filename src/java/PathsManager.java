@@ -39,6 +39,7 @@ public class PathsManager implements IUpdatable {
      * @return vzestupne setridene pole zadanych linku bez nejlepe hodnocenych cest
      */
     private Link[] removeBestLinks(Link[] links, Router[] routers, boolean sortedArray) {
+        //TODO nešlo by seřadit pole ještě před zavoláním této metody ? + zkusit do WHILE cyklu zajebat velikost mapy sousedů
         if (!sortedArray)
             Arrays.sort(links);
 
@@ -53,6 +54,16 @@ public class PathsManager implements IUpdatable {
                 newLinksLenght--;
             i--;
         }
+
+        /* WHILE cyklus s velikosti mapy sousedu
+        while (links[i].getCcaMaxThroughtput() == bestThroughtput) {
+            if ((routers[links[i].getR1Id()]).neighbours.size() > 1 &&
+                    routers[links[i].getR2Id()].neighbours.size() > 1)
+                newLinksLenght--;
+            i--;
+        }
+        */
+
         newLinksLenght++;
 
         Link[] newLinks = new Link[newLinksLenght];
