@@ -1,20 +1,19 @@
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panel pro zjisteni udaju o routerech a spojenich
@@ -30,8 +29,8 @@ public class Details extends Stage{
     private int sceneHeight = 400;
 
     private World world;
-    private Router[] routers;
-    private Link[] links;
+    private Map<Integer, Router> routers = new HashMap<>();
+    private Map<RouterPair, Link> links = new HashMap<>();
 
 
     public Details() {
@@ -106,22 +105,23 @@ public class Details extends Stage{
         routerRBtn.setToggleGroup(group);
         linkRBtn.setToggleGroup(group);
 
-        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
-            {
-
-                RadioButton rBtn = (RadioButton)t1.getToggleGroup().getSelectedToggle(); // Cast object to radio button
-                ObservableList<String> observableList = FXCollections.observableArrayList();
-                list.setItems(observableList);
-                if (rBtn.getText() == "Routers") for (int i = 0; i < routers.length; i++) observableList.add(routers[i].getName());
-                else if (rBtn.getText() == "Links") for (int i = 0; i < links.length; i++) {
-                    observableList.add(links[i].getR1Id() + " ~ " + links[i].getR2Id());
-                }
-                list.setItems(observableList);
-            }
-        });
+        // TODO upravit pro hashmapu
+//                group.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+//        {
+//            @Override
+//            public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
+//            {
+//
+//                RadioButton rBtn = (RadioButton)t1.getToggleGroup().getSelectedToggle(); // Cast object to radio button
+//                ObservableList<String> observableList = FXCollections.observableArrayList();
+//                list.setItems(observableList);
+//                if (rBtn.getText() == "Routers") for (int i = 0; i < routers.length; i++) observableList.add(routers[i].getName());
+//                else if (rBtn.getText() == "Links") for (int i = 0; i < links.length; i++) {
+//                    observableList.add(links[i].getR1Id() + " ~ " + links[i].getR2Id());
+//                }
+//                list.setItems(observableList);
+//            }
+//        });
 
         pane.add(routerRBtn, 0, 0);
         pane.add(linkRBtn, 1, 0);
@@ -143,11 +143,11 @@ public class Details extends Stage{
         return list;
     }
 
-    public void setRouters(Router[] routers) {
+    public void setRouters(Map<Integer, Router> routers) {
         this.routers = routers;
     }
 
-    public void setLinks(Link[] links) {
+    public void setLinks(Map<RouterPair, Link> links) {
         this.links = links;
     }
 

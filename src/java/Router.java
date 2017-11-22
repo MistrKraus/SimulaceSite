@@ -3,8 +3,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,8 +12,6 @@ public class Router implements IUpdatable, IDrawable {
 
     /**Data ulozena v routeru*/
     private short data = 0;
-    /**Pocet linku pripojenych k routeru*/
-    private short linkCount = 0;
     /**Router pracuje*/
     private boolean up = true;
     /** Nazev routeru*/
@@ -24,16 +20,15 @@ public class Router implements IUpdatable, IDrawable {
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
     private static final short MEMORY = 100;
-    /** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
+    //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
     //List<Short> neighbour = new LinkedList<>();
+    /** Mapa - Sousedi daného routeru*/
+    private Map<Integer, Link> neighbours = new HashMap<>();
 
-    /** Mapa - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
-    Map<Short, Link> neighbours = new HashMap<>();
 
-
-    public Router(int id, String name) {
+    public Router(int id) {
         this.id = id;
-        this.name = name;
+        this.name = "Router" + id;
     }
 
     @Override
@@ -63,8 +58,8 @@ public class Router implements IUpdatable, IDrawable {
 
     }
 
-    public void addLink() {
-        linkCount++;
+    public void addNeighbour(int neighbourID, Link link) {
+        neighbours.put(neighbourID, link);
     }
 
     public boolean isUp() {
@@ -81,10 +76,6 @@ public class Router implements IUpdatable, IDrawable {
 
     public int getId() {
         return id;
-    }
-
-    public short getLinkCount() {
-        return linkCount;
     }
 
     public static byte getMEMORY() {

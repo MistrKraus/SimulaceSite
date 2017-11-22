@@ -12,9 +12,9 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     private short data2to1;
 
     /**Id routeru 1*/
-    private final short r1Id;
+    private final int r1Id;
     /**Id routeru 2*/
-    private final short r2Id;
+    private final int r2Id;
     /**Maximalni propustnost*/
     private final float throughtput;
     /**Spolehlivost spojeni - procento z maximalni propustnosti dat, ktere se odesle bezeztraty*/
@@ -32,7 +32,7 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
      * @param r1Id id routeru 1
      * @param r2Id id routeru 2
      */
-    public Link(float maxThroughtput, float reliability, short r1Id, short r2Id) {
+    public Link(float maxThroughtput, float reliability, int r1Id, int r2Id) {
         //TODO odstranit jednicky
         this.throughtput = maxThroughtput;
         //this.reliability = reliability;
@@ -83,11 +83,11 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         this.data2to1 = data2to1;
     }
 
-    public short getR1Id() {
+    public int getR1Id() {
         return r1Id;
     }
 
-    public short getR2Id() {
+    public int getR2Id() {
         return r2Id;
     }
 
@@ -113,5 +113,28 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     @Override
     public String toString() {
         return this.getR1Id() + " ~ " + this.getR2Id();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Link link = (Link) o;
+
+        if (ccaMaxThroughtput != link.ccaMaxThroughtput) return false;
+
+        return ((r1Id == link.r1Id || r1Id == link.r2Id) && (r2Id == link.r2Id || r2Id == link.r1Id));
+    }
+
+    @Override
+    public int hashCode() {
+        //int result = (int) data1to2 + (int) data2to1;
+        int result = r1Id + r2Id;
+        result = 31 * result + (throughtput != +0.0f ? Float.floatToIntBits(throughtput) : 0);
+        result = 31 * result + (reliability != +0.0f ? Float.floatToIntBits(reliability) : 0);
+        result = 31 * result + (maxThroughtput != +0.0f ? Float.floatToIntBits(maxThroughtput) : 0);
+        result = 31 * result + ccaMaxThroughtput;
+        return result;
     }
 }

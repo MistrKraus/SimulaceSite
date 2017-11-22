@@ -9,18 +9,17 @@ import javafx.util.Duration;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Ridici trida
  */
 public class World {
 
-    /**Pole vsech routeru*/
-    private Router[] routers;
-    /**Matice spoju mezi routery*/
-    private Link[] links;
+    /**Mapa vsech routeru*/
+    private Map<Integer, Router> routers = new HashMap<>();
+    /**Mapa spoju mezi routery*/
+    private Map<RouterPair, Link> links = new HashMap<>();
     /**TextArea pro logovani udalosti*/
     private TextArea log;
 
@@ -111,15 +110,23 @@ public class World {
         graphics.setFill(Color.rgb(20, 20, 20));
         graphics.fillRect(0, 0, 200, 200);
 
-        for (Link link : links)
-            link.draw(graphics, routersInRow);
+        Iterator it = links.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            ((Link)pair.getValue()).draw(graphics, routersInRow);
+        }
 
-        for (Router router : routers)
-            router.draw(graphics, routersInRow);
+        it = routers.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            ((Router)pair.getValue()).draw(graphics, routersInRow);
+            it.remove(); // avoids a ConcurrentModificationException
+        }
     }
 
     /**
      * Nacte data o podobe site ze souboru
+     * Vytvoří routery a linky mezi nimi
      */
     public void loadData() {
         List<String[]> loadedData = new ArrayList<>();
@@ -129,10 +136,29 @@ public class World {
             while ((sCurrentLine = br.readLine()) != null) {
                 sCurrentLine.replace(" ", "");
                 sCurrentLine.replace("-","-");
-                loadedData.add(sCurrentLine.split("-"));
+                //loadedData.add(sCurrentLine.split("-"));
                 //System.out.println(sCurrentLine);
+
+                String[] currLine = sCurrentLine.split("-");
+
+                int r1 = Integer.parseInt(currLine[0]);
+                int r2 = Integer.parseInt(currLine[1]);
+                float maxThroughtput = Float.parseFloat(currLine[2]) - 1;
+                float reliability = Float.parseFloat(currLine[3]);
+
+                routers.put(r1, new Router(r1));
+                routers.put(r2, new Router(r1));
+
+                links.put(new RouterPair(r1, r2), new Link(maxThroughtput, reliability, r1, r2));
+
+//                RouterPair ma pretizenou metodu equals - proto je poradi vlozeni indexu routeru irelevantni
+//                if (r1 < r2)
+//                    links.put(new RouterPair(r1, r2), new Link(maxThroughtput, reliability, r1, r2));
+//                else
+//                    links.put(new RouterPair(r2, r1), new Link(maxThroughtput, reliability, r2, r1));
             }
             log.appendText("Data succesfully loaded!\n");
+            log.appendText("Web succesfully created.\n");
 
             createWeb(loadedData);
         } catch (IOException e) {
@@ -148,49 +174,45 @@ public class World {
      * @param loadedData Nactena vstupni data o podobe site
      */
     private void createWeb(List<String[]> loadedData) {
-        linkCount = loadedData.size();
-        int maxId = 0;
-        short routerId1;
-        short routerId2;
+        linkCount = links.size();
+//        int routerId1;
+//        int routerId2;
+//
+//        String[][] line = new String[linkCount][];
+//
+//        /**Zjisteni poctu routeru v siti*/
+//        for (int i = 0; i < linkCount; i++) {
+//            line[i] = loadedData.get(i);
+//
+//            //TODO Jsou routery cislovane od 0 nebo 1?
+//            routerId1 = Integer.parseInt(line[i][0]) - 1;
+//            routerId2 = Integer.parseInt(line[i][1]) - 1;
+//
+//            routers.put(routerId1, new Router(routerId1));
+//            routers.put(routerId2, new Router(routerId2));
+//        }
+//        log.appendText("All routers created succesfully.\n");
 
-        String[][] line = new String[linkCount][];
-        /**Zjisteni poctu routeru v siti*/
-        for (int i = 0; i < linkCount; i++) {
-            line[i] = loadedData.get(i);
+//        links = new Link[linkCount];
+//
+//        /**Ulozeni linku do pole*/
+//        for (int i = 0; i < linkCount; i++) {
+//            links[i] = new Link(Float.parseFloat(line[i][2]), Float.parseFloat(line[i][3]),
+//                    (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
+//
+//            routers.get(links[i].getR1Id()).neighbours.put(links[i].getR2Id(), links[i]);
+//            Link tmp = new Link(links[i].getThroughtput(), links[i].getReliability(), links[i].getR2Id(), links[i].getR1Id());
+//            routers.get(links[i].getR2Id()).neighbours.put(links[i].getR1Id(), tmp);
+//            log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
+//        }
 
-            //TODO Jsou routery cislovane od 0 nebo 1?
-            routerId1 = (short)(Integer.parseInt(line[i][0]) - 1);
-            routerId2 = (short)(Integer.parseInt(line[i][1]) - 1);
+        // ulozeni sousedu do routeru
+        for (Map.Entry<RouterPair, Link> o : links.entrySet()) {
+            Link link = o.getValue();
 
-            if (maxId < routerId1)
-                maxId = routerId1;
-            if (maxId < routerId2)
-                maxId = routerId2;
+            routers.get(link.getR1Id()).addNeighbour(link.getR2Id(), link);
+            routers.get(link.getR2Id()).addNeighbour(link.getR1Id(), link);
         }
-        maxId++;
-
-        routers = new Router[maxId];
-        //System.out.println(maxId);
-
-        for (int i = 0; i < maxId; i++) {
-            routers[i] = new Router(i, "Router" + i);
-            log.appendText("Router " + i + " created!\n");
-        }
-        log.appendText("All routers created succesfully.\n");
-
-        links = new Link[linkCount];
-
-        /**Ulozeni linku do pole*/
-        for (int i = 0; i < linkCount; i++) {
-            links[i] = new Link(Float.parseFloat(line[i][2]), Float.parseFloat(line[i][3]),
-                    (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
-
-            routers[links[i].getR1Id()].neighbours.put(links[i].getR2Id(), links[i]);
-            Link tmp = new Link(links[i].getThroughtput(), links[i].getReliability(), links[i].getR2Id(), links[i].getR1Id());
-            routers[links[i].getR2Id()].neighbours.put(links[i].getR1Id(), tmp);
-            log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
-        }
-
 
 //        this.links = new Link[linkCount][linkCount];
 //        String[] line;
@@ -218,34 +240,24 @@ public class World {
 //        }
 //        maxId++;
 
-        log.appendText("All links created sucessfully.\n");
-
-        for (Link link : links) {
-            routers[link.getR1Id()].addLink();
-            routers[link.getR2Id()].addLink();
-        }
-        log.appendText("Amount of links router is connected with has been recorded to routers.\n");
-        log.appendText("Web succesfully created.\n");
-
-        routersInRow = (int)(Math.ceil(Math.sqrt(routers.length)));
+        routersInRow = (int)(Math.ceil(Math.sqrt(routers.size())));
 
         draw();
 
-        new PathsManager(links, routers);
+        //new PathsManager(links, routers);
 
-        /* Vypsání sousedů routerů/počet hran vedoucích z routerů
-        for (int i = 0; i < maxId; i++) {
-            //System.out.println("\nRouter " + i + ": " + routers[i].neighbours.values());
-            //System.out.println(i + ".Router : " + routers[i].getLinkCount());
-        }
-        */
+//        Vypsání sousedů routerů/počet hran vedoucích z routerů
+//        for (int i = 0; i < maxId; i++) {
+//            System.out.println("\nRouter " + i + ": " + routers.get(i).neighbours.values());
+//            System.out.println(i + ".Router : " + routers.get(i).getLinkCount());
+//        }
 
         //new FloydWarshall(links, routers.length);
     }
 
-    public Router[] getRouters() { return this.routers; }
+    public Map<Integer, Router> getRouters() { return this.routers; }
 
-    public Link[] getLinks() {
+    public Map<RouterPair, Link> getLinks() {
         return this.links;
     }
 }

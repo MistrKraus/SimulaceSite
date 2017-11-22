@@ -48,12 +48,12 @@ public class PathsManager implements IUpdatable {
         int bestThroughtput = links[i].getCcaMaxThroughtput();
         // dokud ma link nejlepe hodnocenou propustnost
         // && oba routery propojene timto linkem, jsou se siti propojeny i jinym linkem
-        while (links[i].getCcaMaxThroughtput() == bestThroughtput) {
-            if ((routers[links[i].getR1Id()]).getLinkCount() > 1 &&
-                routers[links[i].getR2Id()].getLinkCount() > 1)
-                newLinksLenght--;
-            i--;
-        }
+//        while (links[i].getCcaMaxThroughtput() == bestThroughtput) {
+//            if ((routers[links[i].getR1Id()]).getLinkCount() > 1 &&
+//                routers[links[i].getR2Id()].getLinkCount() > 1)
+//                newLinksLenght--;
+//            i--;
+//        }
 
         /* WHILE cyklus s velikosti mapy sousedu
         while (links[i].getCcaMaxThroughtput() == bestThroughtput) {
