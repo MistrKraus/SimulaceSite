@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,14 +43,14 @@ public class MainController implements Initializable {
     }
 
     public void handleBtnLoadData(ActionEvent actionEvent) {
-        world.processData();
+        world.processInput();
 
         playBtn.setDisable(false);
         loadDataBtn.setDisable(true);
         detailsBtn.setDisable(false);
     }
 
-    public void handleBtnPlay(ActionEvent actionEvent) {
+    public void handleBtnPlay(ActionEvent actionEvent) throws IOException {
         world.start();
 
         powerCutBtn.setDisable(false);

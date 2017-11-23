@@ -1,45 +1,47 @@
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Ridici trida
  */
 public class World {
 
-    /**Mapa vsech routeru*/
+    /**Mapa routeru*/
     private Map<Integer, Router> routers = new HashMap<>();
     /**Mapa spoju mezi routery*/
     private Map<RouterPair, Link> links = new HashMap<>();
     /**TextArea pro logovani udalosti*/
     private TextArea log;
-
     /**Celkovy pocet spojeni mezi routery*/
     private int linkCount;
+    /**Pocet routeru v radku pri vykreslovani*/
     private int routersInRow;
     private int deltaXY;
+    /**Buffer s daty pro simulaci*/
+    BufferedReader simulationData;
+    /**Boolean bezi-li simulace*/
+    private boolean isRunning = false;
 
-    private final Duration duration = Duration.millis(100);
-    private final KeyFrame oneFrame = new KeyFrame(duration, event -> update());
-    private Timeline timeline;
+//    private final Duration duration = Duration.millis(100);
+//    private final KeyFrame oneFrame = new KeyFrame(duration, event -> update());
+//    private Timeline timeline;
     private final GraphicsContext graphics;
 
     /**Cesta k vstupnimu souboru s daty*/
     private static final String DATA_INPUT_FILE = "test_input.txt";
-
     /** Cesta k souboru se simulacnimy daty*/
     private static final String DATA_SIMULATION_FILE = "test_simulace.txt";
-    private Router[] routers1;
-    private Router[] routers11;
 
     /**
      * Konstruktor
@@ -51,55 +53,86 @@ public class World {
         graphics = g;
         this.log = log;
 
-        timeline = new Timeline(oneFrame);
-        timeline.setCycleCount(Animation.INDEFINITE);
+//        timeline = new Timeline(oneFrame);
+//        timeline.setCycleCount(Animation.INDEFINITE);
+
+        try {
+            this.simulationData = new BufferedReader(new FileReader(DATA_SIMULATION_FILE));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            log.appendText("Loading data Erorr:\n" + e.getMessage());
+            try {
+                log.appendText("App will be closed automatically in 5 seconds...");
+                Thread.sleep(5000);
+                Platform.exit();
+            } catch (Exception e1) {
+                log.appendText("App will be closed automatically.");
+                e1.printStackTrace();
+                Platform.exit();
+            }
+        }
     }
 
     /**
      * Spusti simulaci (nacteni simulacnich dat)
      */
-    public void start() {
-        timeline.play();
+    public void start() throws IOException {
+        isRunning = true;
 
-        List<String[]> simulatedData = new ArrayList<>();
-        System.out.println();
-        try (BufferedReader br = new BufferedReader(new FileReader(DATA_SIMULATION_FILE))) {
-            String sCurrentLine;
-            while ((sCurrentLine = br.readLine()) != null) {
-                sCurrentLine.replace(" ", "");
-                sCurrentLine.replace("-","-");
-                simulatedData.add(sCurrentLine.split("-"));
-                System.out.println(sCurrentLine);
-            }
+        update();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            log.appendText(e.getMessage() + "\n");
-        }
+//        timeline.play();
+//
+//        List<String[]> simulatedData = new ArrayList<>();
+//        System.out.println();
+//        try (BufferedReader br = new BufferedReader(new FileReader(DATA_SIMULATION_FILE))) {
+//            String sCurrentLine;
+//            while ((sCurrentLine = br.readLine()) != null) {
+//                sCurrentLine = sCurrentLine.replace(" ", "");
+//                sCurrentLine = sCurrentLine.replace("-","-");
+//                simulatedData.add(sCurrentLine.split("-"));
+//                System.out.println(sCurrentLine);
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//
+//            log.appendText(e.getMessage() + "\n");
+//        }
     }
 
     /**
      * Pozastavi simulaci
      */
     public void pause() {
-        timeline.stop();
+        isRunning = false;
+
+        //timeline.stop();
     }
 
     /**
      * Ukonci simulaci
      */
     public void stop() {
-        timeline.stop();
+        isRunning = false;
+
+        // TODO Dokoncit ukonceni simulace
+
+        //timeline.stop();
     }
 
     /**
      * Aktualizuje vsechny objekty
      */
-    public void update() {
+    public void update() throws IOException {
+        String inputLine = simulationData.readLine();
+
+        while (isRunning && inputLine != null) {
 
 
-        draw();
+            draw();
+            inputLine = simulationData.readLine();
+        }
     }
 
     /**
@@ -132,7 +165,7 @@ public class World {
      * Nacte data o podobe site ze souboru
      * Vytvoří routery a linky mezi nimi
      */
-    public void processData() {
+    public void processInput() {
         List<String[]> loadedData = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(DATA_INPUT_FILE))) {
@@ -179,7 +212,7 @@ public class World {
 //                else
 //                    links.put(new RouterPair(r2, r1), new Link(maxThroughtput, reliability, r2, r1));
             }
-            log.appendText("Web succesfully created :\n" +
+            log.appendText("Web succesfully created:\n" +
                     " - " + routers.size() + " nodes\n" +
                     " - " + links.size() + " links\n");
 

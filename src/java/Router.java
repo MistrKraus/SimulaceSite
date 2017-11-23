@@ -12,6 +12,8 @@ public class Router implements IUpdatable, IDrawable {
 
     /**Data ulozena v routeru*/
     private short data = 0;
+    /**ID subnetu ve kterem se router nachazi*/
+    private short subnetID;
     /**Router pracuje*/
     private boolean up = true;
     /**Je router default gateway*/
