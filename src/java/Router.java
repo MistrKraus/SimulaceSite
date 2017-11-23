@@ -14,17 +14,20 @@ public class Router implements IUpdatable, IDrawable {
     private short data = 0;
     /**Router pracuje*/
     private boolean up = true;
-    /** Nazev routeru*/
-    private String name;
+    /**Je router default gateway*/
+    private boolean defGW = false;
+
     /**ID routeru*/
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
     private static final short MEMORY = 100;
-    //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
-    //List<Short> neighbour = new LinkedList<>();
+
     /** Mapa - Sousedi daného routeru*/
     private Map<Integer, Link> neighbours = new HashMap<>();
-
+    /** Nazev routeru*/
+    private final String name;
+    //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
+    //List<Short> neighbour = new LinkedList<>();
 
     public Router(int id) {
         this.id = id;
@@ -58,8 +61,11 @@ public class Router implements IUpdatable, IDrawable {
 
     }
 
-    public void addNeighbour(int neighbourID, Link link) {
-        neighbours.put(neighbourID, link);
+    public void addNeighbour(Link link) {
+        if (link.getR1Id() == this.id)
+            neighbours.put(link.getR2Id(), link);
+        else
+            neighbours.put(link.getR1Id(), link);
     }
 
     public boolean isUp() {
@@ -80,5 +86,15 @@ public class Router implements IUpdatable, IDrawable {
 
     public static byte getMEMORY() {
         return MEMORY;
+    }
+
+    @Override
+    public String toString() {
+        return "Router{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", data=" + data +
+                ", neighbours=" + neighbours +
+                '}';
     }
 }

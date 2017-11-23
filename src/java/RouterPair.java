@@ -3,8 +3,14 @@ public class RouterPair {
     public final int r2;
 
     public RouterPair(int r1, int r2) {
-        this.r1 = r1;
-        this.r2 = r2;
+        if (r1 < r2) {
+            this.r1 = r1;
+            this.r2 = r2;
+            return;
+        }
+
+        this.r1 = r2;
+        this.r2 = r1;
     }
 
     public int getR1() {
@@ -15,6 +21,10 @@ public class RouterPair {
         return r2;
     }
 
+    @Override
+    public String toString() {
+        return "RouterPair{" + r1 + " ~ " + r2 + '}';
+    }
 
     @Override
     public boolean equals(Object obj) {

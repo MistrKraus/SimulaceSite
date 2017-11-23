@@ -110,46 +110,68 @@ public class World {
         graphics.setFill(Color.rgb(20, 20, 20));
         graphics.fillRect(0, 0, 200, 200);
 
-        Iterator it = links.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            ((Link)pair.getValue()).draw(graphics, routersInRow);
+        for (Map.Entry<RouterPair, Link> o : links.entrySet())
+            o.getValue().draw(graphics, routersInRow);
+
+        int i = 0;
+        for (Map.Entry<Integer, Router> o : routers.entrySet()) {
+            o.getValue().draw(graphics, routersInRow);
+            System.out.println(o.getValue().toString());
         }
 
-        it = routers.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            ((Router)pair.getValue()).draw(graphics, routersInRow);
-            it.remove(); // avoids a ConcurrentModificationException
-        }
+//        it = routers.entrySet().iterator();
+//        while (it.hasNext()) {
+//            Map.Entry pair = (Map.Entry)it.next();
+//            ((Router)pair.getValue()).draw(graphics, routersInRow);
+//            it.remove(); // avoids a ConcurrentModificationException
+//            System.out.println(routers.size());
+//        }
     }
 
     /**
      * Nacte data o podobe site ze souboru
      * Vytvoří routery a linky mezi nimi
      */
-    public void loadData() {
+    public void processData() {
         List<String[]> loadedData = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(DATA_INPUT_FILE))) {
             String sCurrentLine;
+            log.appendText("Data succesfully loaded!\n");
+
             while ((sCurrentLine = br.readLine()) != null) {
-                sCurrentLine.replace(" ", "");
-                sCurrentLine.replace("-","-");
+                sCurrentLine = sCurrentLine.replace(" ", "");
+                sCurrentLine = sCurrentLine.replace("-","-");
                 //loadedData.add(sCurrentLine.split("-"));
                 //System.out.println(sCurrentLine);
 
                 String[] currLine = sCurrentLine.split("-");
 
-                int r1 = Integer.parseInt(currLine[0]);
-                int r2 = Integer.parseInt(currLine[1]);
+                // TODO pokud je indexovani od 0 odstranit "-1"
+                int r1 = Integer.parseInt(currLine[0]) - 1;
+                int r2 = Integer.parseInt(currLine[1]) - 1;
                 float maxThroughtput = Float.parseFloat(currLine[2]) - 1;
                 float reliability = Float.parseFloat(currLine[3]);
 
-                routers.put(r1, new Router(r1));
-                routers.put(r2, new Router(r1));
+//                routers.put(r1, new Router(r1));
+//                routers.put(r2, new Router(r1));
+//                System.out.println(r1 + "\n" + r2);
 
-                links.put(new RouterPair(r1, r2), new Link(maxThroughtput, reliability, r1, r2));
+                RouterPair routerPair = new RouterPair(r1, r2);
+
+                if (routers.get(r1) == null)
+                    routers.put(r1, new Router(r1));
+
+                if (routers.get(r2) == null)
+                    routers.put(r2, new Router(r2));
+
+                if (links.get(routerPair) == null) {
+                    links.put(routerPair, new Link(maxThroughtput, reliability, routerPair));
+
+                    routers.get(r1).addNeighbour(links.get(routerPair));
+                    routers.get(r2).addNeighbour(links.get(routerPair));
+                } else
+                    links.get(routerPair).addNextLink(new Link(maxThroughtput, reliability, routerPair));
 
 //                RouterPair ma pretizenou metodu equals - proto je poradi vlozeni indexu routeru irelevantni
 //                if (r1 < r2)
@@ -157,10 +179,11 @@ public class World {
 //                else
 //                    links.put(new RouterPair(r2, r1), new Link(maxThroughtput, reliability, r2, r1));
             }
-            log.appendText("Data succesfully loaded!\n");
-            log.appendText("Web succesfully created.\n");
+            log.appendText("Web succesfully created :\n" +
+                    " - " + routers.size() + " nodes\n" +
+                    " - " + links.size() + " links\n");
 
-            createWeb(loadedData);
+            createWeb();
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -170,10 +193,8 @@ public class World {
 
     /**
      * Na zaklade dat vytvori sit - routery a spojeni mezi nimi
-     *
-     * @param loadedData Nactena vstupni data o podobe site
      */
-    private void createWeb(List<String[]> loadedData) {
+    private void createWeb() {
         linkCount = links.size();
 //        int routerId1;
 //        int routerId2;
@@ -207,12 +228,12 @@ public class World {
 //        }
 
         // ulozeni sousedu do routeru
-        for (Map.Entry<RouterPair, Link> o : links.entrySet()) {
-            Link link = o.getValue();
-
-            routers.get(link.getR1Id()).addNeighbour(link.getR2Id(), link);
-            routers.get(link.getR2Id()).addNeighbour(link.getR1Id(), link);
-        }
+//        for (Map.Entry<RouterPair, Link> o : links.entrySet()) {
+//            Link link = o.getValue();
+//
+//            routers.get(link.getR1Id()).addNeighbour(link.getR2Id(), link);
+//            routers.get(link.getR2Id()).addNeighbour(link.getR1Id(), link);
+//        }
 
 //        this.links = new Link[linkCount][linkCount];
 //        String[] line;

@@ -5,8 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class App extends Application {
 
@@ -56,16 +54,6 @@ public class App extends Application {
 //        i++;
 //
 //        System.out.println(i);
-
-        Map<RouterPair, Link> links = new HashMap<>();
-
-        int r1 = 1;
-        int r2 = 2;
-
-        links.put(new RouterPair(r1, r2), new Link(100, 1, r1, r2));
-        links.put(new RouterPair(r2, r1), new Link(100, 1, r2, r1));
-
-        System.out.println(links.size());
 
         primaryStage.setTitle("Net simulation");
 

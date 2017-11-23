@@ -1,5 +1,3 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -44,7 +42,7 @@ public class MainController implements Initializable {
     }
 
     public void handleBtnLoadData(ActionEvent actionEvent) {
-        world.loadData();
+        world.processData();
 
         playBtn.setDisable(false);
         loadDataBtn.setDisable(true);

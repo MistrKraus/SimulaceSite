@@ -10,11 +10,17 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     private short data1to2;
     /**Mnozstvi dat, ktere protekly tuto sekundu druhym smerem*/
     private short data2to1;
+    /**Nasledujici Link spojujici stejne uzly*/
+    private Link nextLink;
+    /**Predchazejici Link spojujici stejnej uzly*/
+    private Link previousLink;
 
-    /**Id routeru 1*/
-    private final int r1Id;
-    /**Id routeru 2*/
-    private final int r2Id;
+//    /**Id routeru 1*/
+//    private final int r1Id;
+//    /**Id routeru 2*/
+//    private final int r2Id;
+    /**ID routeru, mezi kterymi link je*/
+    private final RouterPair routerIDs;
     /**Maximalni propustnost*/
     private final float throughtput;
     /**Spolehlivost spojeni - procento z maximalni propustnosti dat, ktere se odesle bezeztraty*/
@@ -29,17 +35,21 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
      *
      * @param maxThroughtput maximalni propustnost dat
      * @param reliability procento z max. propustnosti dat, ktere se odesle bezeztraty
-     * @param r1Id id routeru 1
-     * @param r2Id id routeru 2
+//     * @param r1Id id routeru 1
+//     * @param r2Id id routeru 2
+     * @param routerPair id routeru mezi, kterymi je vytvareny link
      */
-    public Link(float maxThroughtput, float reliability, int r1Id, int r2Id) {
+    public Link(float maxThroughtput, float reliability, RouterPair routerPair) {
         //TODO odstranit jednicky
         this.throughtput = maxThroughtput;
         //this.reliability = reliability;
 //        this.throughtput = 1.0f;
         this.reliability = 1.0f;
-        this.r1Id = r1Id;
-        this.r2Id = r2Id;
+//        this.r1Id = r1Id;
+//        this.r2Id = r2Id;
+        this.routerIDs = routerPair;
+        this.nextLink = null;
+        this.previousLink = null;
 
         this.maxThroughtput = throughtput * this.reliability;
         this.ccaMaxThroughtput = Math.round(this.maxThroughtput);
@@ -52,8 +62,8 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         g.setStroke(Color.YELLOW);
         g.translate(deltaXY, deltaXY / 2);
 
-        g.strokeLine((deltaXY * (r1Id % routersInRow)), (deltaXY * (r1Id / routersInRow)),
-            (deltaXY * (r2Id % routersInRow)), (deltaXY * (r2Id / routersInRow)));
+        g.strokeLine((deltaXY * (routerIDs.r1 % routersInRow)), (deltaXY * (routerIDs.r1 / routersInRow)),
+            (deltaXY * (routerIDs.r2 % routersInRow)), (deltaXY * (routerIDs.r2 / routersInRow)));
 
         g.setTransform(t);
     }
@@ -63,8 +73,30 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
 
     }
 
+    /**
+     * Pokud maji dva routery mezi sebou vice linku, ulozi se do spojoveho seznamu
+     *
+     * @param link Link mezi stejnymi routery
+     */
+    public void addNextLink(Link link) {
+        if (this.nextLink == null) {
+            this.nextLink = link;
+            this.nextLink.previousLink = this;
+        } else {
+            this.nextLink.addNextLink(link);
+        }
+    }
+
     public void sendDataDir1(short data, Router r) {
 
+    }
+
+    public Link getNextLink() {
+        return nextLink;
+    }
+
+    public Link getPreviousLink() {
+        return previousLink;
     }
 
     public short getData1to2() {
@@ -84,11 +116,15 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     }
 
     public int getR1Id() {
-        return r1Id;
+        return routerIDs.r1;
     }
 
     public int getR2Id() {
-        return r2Id;
+        return routerIDs.r2;
+    }
+
+    public RouterPair getRouterIDs() {
+        return routerIDs;
     }
 
     public float getThroughtput() {
@@ -124,13 +160,14 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
 
         if (ccaMaxThroughtput != link.ccaMaxThroughtput) return false;
 
-        return ((r1Id == link.r1Id || r1Id == link.r2Id) && (r2Id == link.r2Id || r2Id == link.r1Id));
+        //return ((r1Id == link.r1Id || r1Id == link.r2Id) && (r2Id == link.r2Id || r2Id == link.r1Id));
+        return routerIDs.equals(routerIDs);
     }
 
     @Override
     public int hashCode() {
         //int result = (int) data1to2 + (int) data2to1;
-        int result = r1Id + r2Id;
+        int result = routerIDs.r1 + routerIDs.r2;
         result = 31 * result + (throughtput != +0.0f ? Float.floatToIntBits(throughtput) : 0);
         result = 31 * result + (reliability != +0.0f ? Float.floatToIntBits(reliability) : 0);
         result = 31 * result + (maxThroughtput != +0.0f ? Float.floatToIntBits(maxThroughtput) : 0);
