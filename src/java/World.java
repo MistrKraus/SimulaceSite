@@ -189,20 +189,21 @@ public class World {
 //                routers.put(r1, new Router(r1));
 //                routers.put(r2, new Router(r1));
 //                System.out.println(r1 + "\n" + r2);
-
-                RouterPair routerPair = new RouterPair(r1, r2);
-
-                if (routers.get(r1) == null)
+                if (routers.get(r1) == null) {
                     routers.put(r1, new Router(r1));
+                }
 
-                if (routers.get(r2) == null)
+                if (routers.get(r2) == null) {
                     routers.put(r2, new Router(r2));
+                }
+
+                RouterPair routerPair = new RouterPair(routers.get(r1), routers.get(r2));
 
                 if (links.get(routerPair) == null) {
                     links.put(routerPair, new Link(maxThroughtput, reliability, routerPair));
 
-                    routers.get(r1).addNeighbour(links.get(routerPair));
-                    routers.get(r2).addNeighbour(links.get(routerPair));
+                    routers.get(r1).addLink(links.get(routerPair));
+                    routers.get(r2).addLink(links.get(routerPair));
                 } else
                     links.get(routerPair).addNextLink(new Link(maxThroughtput, reliability, routerPair));
 
@@ -264,8 +265,8 @@ public class World {
 //        for (Map.Entry<RouterPair, Link> o : links.entrySet()) {
 //            Link link = o.getValue();
 //
-//            routers.get(link.getR1Id()).addNeighbour(link.getR2Id(), link);
-//            routers.get(link.getR2Id()).addNeighbour(link.getR1Id(), link);
+//            routers.get(link.getR1Id()).addLink(link.getR2Id(), link);
+//            routers.get(link.getR2Id()).addLink(link.getR1Id(), link);
 //        }
 
 //        this.links = new Link[linkCount][linkCount];

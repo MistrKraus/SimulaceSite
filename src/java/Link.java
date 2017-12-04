@@ -20,7 +20,7 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
 //    /**Id routeru 2*/
 //    private final int r2Id;
     /**ID routeru, mezi kterymi link je*/
-    private final RouterPair routerIDs;
+    private final RouterPair routerPair;
     /**Maximalni propustnost*/
     private final float throughtput;
     /**Spolehlivost spojeni - procento z maximalni propustnosti dat, ktere se odesle bezeztraty*/
@@ -47,7 +47,7 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         this.reliability = 1.0f;
 //        this.r1Id = r1Id;
 //        this.r2Id = r2Id;
-        this.routerIDs = routerPair;
+        this.routerPair = routerPair;
         this.nextLink = null;
         this.previousLink = null;
 
@@ -62,8 +62,8 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         g.setStroke(Color.YELLOW);
         g.translate(deltaXY, deltaXY / 2);
 
-        g.strokeLine((deltaXY * (routerIDs.r1 % routersInRow)), (deltaXY * (routerIDs.r1 / routersInRow)),
-            (deltaXY * (routerIDs.r2 % routersInRow)), (deltaXY * (routerIDs.r2 / routersInRow)));
+        g.strokeLine((deltaXY * (routerPair.r1.getId() % routersInRow)), (deltaXY * (routerPair.r1.getId() / routersInRow)),
+            (deltaXY * (routerPair.r2.getId() % routersInRow)), (deltaXY * (routerPair.r2.getId() / routersInRow)));
 
         g.setTransform(t);
     }
@@ -116,15 +116,22 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     }
 
     public int getR1Id() {
-        return routerIDs.r1;
+        return routerPair.r1.getId();
     }
 
     public int getR2Id() {
-        return routerIDs.r2;
+        return routerPair.r2.getId();
     }
 
-    public RouterPair getRouterIDs() {
-        return routerIDs;
+    public Router getNeighbour(Router router) {
+        if (router.equals(routerPair.r1))
+            return routerPair.r2;
+
+        return routerPair.r1;
+    }
+
+    public RouterPair getRouterPair() {
+        return routerPair;
     }
 
     public float getThroughtput() {
@@ -161,13 +168,13 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         if (ccaMaxThroughtput != link.ccaMaxThroughtput) return false;
 
         //return ((r1Id == link.r1Id || r1Id == link.r2Id) && (r2Id == link.r2Id || r2Id == link.r1Id));
-        return routerIDs.equals(routerIDs);
+        return routerPair.equals(routerPair);
     }
 
     @Override
     public int hashCode() {
         //int result = (int) data1to2 + (int) data2to1;
-        int result = routerIDs.r1 + routerIDs.r2;
+        int result = routerPair.r1.getId() + routerPair.r2.getId();
         result = 31 * result + (throughtput != +0.0f ? Float.floatToIntBits(throughtput) : 0);
         result = 31 * result + (reliability != +0.0f ? Float.floatToIntBits(reliability) : 0);
         result = 31 * result + (maxThroughtput != +0.0f ? Float.floatToIntBits(maxThroughtput) : 0);

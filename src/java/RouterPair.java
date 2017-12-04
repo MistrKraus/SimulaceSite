@@ -1,24 +1,16 @@
 public class RouterPair {
-    public final int r1;
-    public final int r2;
+    public final Router r1;
+    public final Router r2;
 
-    public RouterPair(int r1, int r2) {
-        if (r1 < r2) {
-            this.r1 = r1;
-            this.r2 = r2;
-            return;
-        }
+    public RouterPair(Router r1, Router r2) {
+//        if (r1.getId() < r2.getId()) {
+//            this.r1 = r1;
+//            this.r2 = r2;
+//            return;
+//        }
 
-        this.r1 = r2;
-        this.r2 = r1;
-    }
-
-    public int getR1() {
-        return r1;
-    }
-
-    public int getR2() {
-        return r2;
+        this.r1 = r1;
+        this.r2 = r2;
     }
 
     @Override
@@ -41,6 +33,6 @@ public class RouterPair {
 
     @Override
     public int hashCode() {
-        return 31 * (r1 + r2);
+        return 31 * (r1.getId() + r2.getId());
     }
 }
