@@ -136,12 +136,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
 
     @Override
     public String toString() {
-        return "Router{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", data=" + data +
-                ", links=" + links +
-                '}';
+        return "Router[" + id + "]";
     }
 
     @Override

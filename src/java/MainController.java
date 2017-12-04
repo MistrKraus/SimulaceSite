@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -44,6 +45,13 @@ public class MainController implements Initializable {
 
     public void handleBtnLoadData(ActionEvent actionEvent) {
         world.processInput();
+
+        Dijkstra dijkstra = new Dijkstra();
+
+        dijkstra.computePath(world.getRouters().get(0));
+        List<Router> path = dijkstra.getShortestPathTo(world.getRouters().get(6));
+
+        System.out.println(path);
 
         playBtn.setDisable(false);
         loadDataBtn.setDisable(true);
