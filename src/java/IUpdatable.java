@@ -9,4 +9,11 @@ public interface IUpdatable {
      * @param world ridici trida
      */
     void update(World world);
+
+    /**
+     * Obnoveni objektu
+     *
+     * @param world ridici trida
+     */
+    void restore(World world);
 }

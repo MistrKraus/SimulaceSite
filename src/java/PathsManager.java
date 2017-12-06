@@ -45,10 +45,10 @@ public class PathsManager implements IUpdatable {
 
         int newLinksLenght = links.length;
         int i = newLinksLenght - 1;
-        int bestThroughtput = links[i].getCcaMaxThroughtput();
+        int bestThroughtput = links[i].getCCA_MAX_THROUGHTPUT();
         // dokud ma link nejlepe hodnocenou propustnost
         // && oba routery propojene timto linkem, jsou se siti propojeny i jinym linkem
-//        while (links[i].getCcaMaxThroughtput() == bestThroughtput) {
+//        while (links[i].getCCA_MAX_THROUGHTPUT() == bestThroughtput) {
 //            if ((routers[links[i].getR1Id()]).getLinkCount() > 1 &&
 //                routers[links[i].getR2Id()].getLinkCount() > 1)
 //                newLinksLenght--;
@@ -56,7 +56,7 @@ public class PathsManager implements IUpdatable {
 //        }
 
         /* WHILE cyklus s velikosti mapy sousedu
-        while (links[i].getCcaMaxThroughtput() == bestThroughtput) {
+        while (links[i].getCCA_MAX_THROUGHTPUT() == bestThroughtput) {
             if ((routers[links[i].getR1Id()]).neighbours.size() > 1 &&
                     routers[links[i].getR2Id()].neighbours.size() > 1)
                 newLinksLenght--;
@@ -74,6 +74,11 @@ public class PathsManager implements IUpdatable {
 
     @Override
     public void update(World world) {
+
+    }
+
+    @Override
+    public void restore(World world) {
 
     }
 }

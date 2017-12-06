@@ -61,6 +61,10 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     @Override
     public void update(World world) {
 
+    }
+
+    @Override
+    public void restore(World world) {
 
     }
 

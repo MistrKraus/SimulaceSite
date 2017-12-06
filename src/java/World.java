@@ -1,15 +1,8 @@
-import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,19 +10,19 @@ import java.util.Map;
  */
 public class World {
 
-    /**Mapa routeru*/
-    private Map<Integer, Router> routers = new HashMap<>();
-    /**Mapa spoju mezi routery*/
-    private Map<RouterPair, Link> links = new HashMap<>();
+    /**Objekt s prvky site*/
+    private Web web;
+    /**Spravce vstupnich dat*/
+    private DataManager dataManager;
     /**TextArea pro logovani udalosti*/
     private TextArea log;
-    /**Celkovy pocet spojeni mezi routery*/
-    private int linkCount;
     /**Pocet routeru v radku pri vykreslovani*/
     private int routersInRow;
-    private int deltaXY;
-    /**Buffer s daty pro simulaci*/
-    BufferedReader simulationData;
+//    /**Celkovy pocet spojeni mezi routery*/
+//    private int linkCount;
+//    /**Pocet routeru v radku pri vykreslovani*/
+//    private int routersInRow;
+//    private int deltaXY;
     /**Boolean bezi-li simulace*/
     private boolean isRunning = false;
 
@@ -39,7 +32,7 @@ public class World {
     private final GraphicsContext graphics;
 
     /**Cesta k vstupnimu souboru s daty*/
-    private static final String DATA_INPUT_FILE = "test_input.txt";
+    private static final String DATA_INPUT_FILE = "test_input.txt";//"src/resources/PT-graf_site.txt";
     /** Cesta k souboru se simulacnimy daty*/
     private static final String DATA_SIMULATION_FILE = "test_simulace.txt";
 
@@ -56,27 +49,16 @@ public class World {
 //        timeline = new Timeline(oneFrame);
 //        timeline.setCycleCount(Animation.INDEFINITE);
 
-        try {
-            this.simulationData = new BufferedReader(new FileReader(DATA_SIMULATION_FILE));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            log.appendText("Loading data Erorr:\n" + e.getMessage());
-            try {
-                log.appendText("App will be closed automatically in 5 seconds...");
-                Thread.sleep(5000);
-                Platform.exit();
-            } catch (Exception e1) {
-                log.appendText("App will be closed automatically.");
-                e1.printStackTrace();
-                Platform.exit();
-            }
-        }
+        this.dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE, log);
     }
 
     /**
      * Spusti simulaci (nacteni simulacnich dat)
      */
     public void start() throws IOException {
+        if (web == null)
+            createWeb();
+
         isRunning = true;
 
         update();
@@ -125,32 +107,30 @@ public class World {
      * Aktualizuje vsechny objekty
      */
     public void update() throws IOException {
-        String inputLine = simulationData.readLine();
-
-        while (isRunning && inputLine != null) {
-
-
-            draw();
-            inputLine = simulationData.readLine();
-        }
+//        String inputLine = simulationData.readLine();
+//
+//        while (isRunning && inputLine != null) {
+//
+//
+//            draw();
+//            inputLine = simulationData.readLine();
+//        }
     }
 
     /**
      * Vykresli vsechny objekty
      */
     public void draw() {
-
         graphics.setFill(Color.rgb(20, 20, 20));
-        graphics.fillRect(0, 0, 200, 200);
+        graphics.fillRect(0, 0, graphics.getCanvas().getWidth(), graphics.getCanvas().getHeight());
 
-        for (Map.Entry<RouterPair, Link> o : links.entrySet())
-            o.getValue().draw(graphics, routersInRow);
+        web.draw(graphics, routersInRow);
 
-        int i = 0;
-        for (Map.Entry<Integer, Router> o : routers.entrySet()) {
-            o.getValue().draw(graphics, routersInRow);
-            System.out.println(o.getValue().toString());
-        }
+        //int i = 0;
+//        for (Map.Entry<Integer, Router> o : routers.entrySet()) {
+//            o.getValue().draw(graphics, routersInRow);
+//            System.out.println(o.getValue().toString());
+//        }
 
 //        it = routers.entrySet().iterator();
 //        while (it.hasNext()) {
@@ -162,74 +142,19 @@ public class World {
     }
 
     /**
-     * Nacte data o podobe site ze souboru
-     * Vytvoří routery a linky mezi nimi
-     */
-    public void processInput() {
-        List<String[]> loadedData = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(DATA_INPUT_FILE))) {
-            String sCurrentLine;
-            log.appendText("Data succesfully loaded!\n");
-
-            while ((sCurrentLine = br.readLine()) != null) {
-                sCurrentLine = sCurrentLine.replace(" ", "");
-                sCurrentLine = sCurrentLine.replace("-","-");
-                //loadedData.add(sCurrentLine.split("-"));
-                //System.out.println(sCurrentLine);
-
-                String[] currLine = sCurrentLine.split("-");
-
-                // TODO pokud je indexovani od 0 odstranit "-1"
-                int r1 = Integer.parseInt(currLine[0]) - 1;
-                int r2 = Integer.parseInt(currLine[1]) - 1;
-                float maxThroughtput = Float.parseFloat(currLine[2]) - 1;
-                float reliability = Float.parseFloat(currLine[3]);
-
-//                routers.put(r1, new Router(r1));
-//                routers.put(r2, new Router(r1));
-//                System.out.println(r1 + "\n" + r2);
-                if (routers.get(r1) == null) {
-                    routers.put(r1, new Router(r1));
-                }
-
-                if (routers.get(r2) == null) {
-                    routers.put(r2, new Router(r2));
-                }
-
-                RouterPair routerPair = new RouterPair(routers.get(r1), routers.get(r2));
-
-                if (links.get(routerPair) == null) {
-                    links.put(routerPair, new Link(maxThroughtput, reliability, routerPair));
-
-                    routers.get(r1).addLink(links.get(routerPair));
-                    routers.get(r2).addLink(links.get(routerPair));
-                } else
-                    links.get(routerPair).addNextLink(new Link(maxThroughtput, reliability, routerPair));
-
-//                RouterPair ma pretizenou metodu equals - proto je poradi vlozeni indexu routeru irelevantni
-//                if (r1 < r2)
-//                    links.put(new RouterPair(r1, r2), new Link(maxThroughtput, reliability, r1, r2));
-//                else
-//                    links.put(new RouterPair(r2, r1), new Link(maxThroughtput, reliability, r2, r1));
-            }
-            log.appendText("Web succesfully created:\n" +
-                    " - " + routers.size() + " nodes\n" +
-                    " - " + links.size() + " links\n");
-
-            createWeb();
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            log.appendText(e.getMessage() + "\n");
-        }
-    }
-
-    /**
      * Na zaklade dat vytvori sit - routery a spojeni mezi nimi
      */
-    private void createWeb() {
-        linkCount = links.size();
+    public void createWeb() {
+        int maxIndex = dataManager.processWebInput();
+
+        if (maxIndex == -1) {
+            log.appendText("Creating web was not succesful");
+            return;
+        }
+        routersInRow = (int)(Math.ceil(Math.sqrt(maxIndex)));
+
+        this.web = new Web(dataManager.getRouters(), dataManager.getLinks());
+
 //        int routerId1;
 //        int routerId2;
 //
@@ -256,7 +181,7 @@ public class World {
 //                    (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
 //
 //            routers.get(links[i].getR1Id()).neighbours.put(links[i].getR2Id(), links[i]);
-//            Link tmp = new Link(links[i].getThroughtput(), links[i].getReliability(), links[i].getR2Id(), links[i].getR1Id());
+//            Link tmp = new Link(links[i].getTHROUGHTPUT(), links[i].getRELIABILITY(), links[i].getR2Id(), links[i].getR1Id());
 //            routers.get(links[i].getR2Id()).neighbours.put(links[i].getR1Id(), tmp);
 //            log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
 //        }
@@ -295,8 +220,6 @@ public class World {
 //        }
 //        maxId++;
 
-        routersInRow = (int)(Math.ceil(Math.sqrt(routers.size())));
-
         draw();
 
         //new PathsManager(links, routers);
@@ -310,9 +233,11 @@ public class World {
         //new FloydWarshall(links, routers.length);
     }
 
-    public Map<Integer, Router> getRouters() { return this.routers; }
+    //private List<Data> loadDataTick
+
+    public Map<Integer, Router> getRouters() { return web.getRouters(); }
 
     public Map<RouterPair, Link> getLinks() {
-        return this.links;
+        return web.getLinks();
     }
 }

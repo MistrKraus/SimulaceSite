@@ -30,7 +30,7 @@ public class FloydWarshall {
 //                    continue;
 //                }
 //
-//                this.links[i][j] = links[i][j].getMaxThroughtput();
+//                this.links[i][j] = links[i][j].getMAX_THROUGHTPUT();
 //                this.links[j][i] = this.links[i][j];
 //            }
 //        }
@@ -53,8 +53,8 @@ public class FloydWarshall {
 
         // nejlepsi propust + 1
         for (Link link : links)
-            if (bestThroughtput < link.getMaxThroughtput())
-                bestThroughtput = link.getMaxThroughtput();
+            if (bestThroughtput < link.getMAX_THROUGHTPUT())
+                bestThroughtput = link.getMAX_THROUGHTPUT();
         bestThroughtput++;
 
         for (int i = 0; i < length; i++) {
@@ -62,7 +62,7 @@ public class FloydWarshall {
             y = links[i].getR2Id();
 
             // ohodnoceni cesty - cim vetsi propustnost ma, tim mensi hodnota -> lepsi ohodnoceni WTF
-            throughtput = bestThroughtput - links[i].getMaxThroughtput();
+            throughtput = bestThroughtput - links[i].getMAX_THROUGHTPUT();
 
             this.links[x][y] = throughtput;
             this.links[y][x] = throughtput;
