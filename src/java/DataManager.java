@@ -5,20 +5,41 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataManager {
-    /**Buffer s daty o podobě grafu*/
-    private BufferedReader graphData;
-    /**Buffer s daty pro simulaci*/
-    private BufferedReader simulationData;
-    /**Log*/
-    private final TextArea log;
 
-    /**Mapa routeru*/
+    /**
+     * Cislo soucasneho ticku
+     */
+    private int currentTick;
+    /**
+     * Buffer s daty o podobě grafu
+     */
+    private BufferedReader graphData;
+    /**
+     * Buffer s daty pro simulaci
+     */
+    private BufferedReader simulationData;
+    /**
+     * Log
+     */
+    private final TextArea log;
+    /**
+     * Prebyvajici data z predchoziho ticku
+     */
+    private Data excessData;
+
+    /**
+     * Mapa routeru
+     */
     private Map<Integer, Router> routers = new HashMap<>();
-    /**Mapa spoju mezi routery*/
+    /**
+     * Mapa spoju mezi routery
+     */
     private Map<RouterPair, Link> links = new HashMap<>();
 
     public DataManager(String graphFilePath, String simulationFilePath, TextArea log) {
@@ -58,25 +79,68 @@ public class DataManager {
     }
 
     /**
+     * Nacte data, ktera se maji odeslat tento tick
+     *
+     * @return data k odeslani tento tick
+     * @throws IOException
+     */
+    public List<Data> getTickSimulationData() throws IOException {
+        List<Data> dataToSend = new ArrayList<>();
+        dataToSend.add(excessData);
+
+        String currentLine;
+        while ((currentLine = this.simulationData.readLine()) != null) {
+//            currentLine = currentLine.replace("\t", "");
+//            currentLine = currentLine.replace(" ", "");
+//            currentLine = currentLine.replace("-","-");
+//
+//            String[] currLine = currentLine.split("-");
+            String[] currLine = processCurrentLine(currentLine);
+
+            int tick = Integer.parseInt(currLine[0]);
+            int sourceRouterId = Integer.parseInt(currLine[1]);
+            int targetRouterId = Integer.parseInt(currLine[2]);
+            Data data = new Data(routers.get(sourceRouterId), routers.get(targetRouterId),
+                    Integer.parseInt(currLine[3]));
+
+            if (tick == currentTick)
+                dataToSend.add(data);
+            else {
+                excessData = data;
+                currentTick = tick;
+                break;
+            }
+        }
+
+        //dataToSend.sort(null);
+
+        return dataToSend;
+    }
+
+    /**
      * Nacte data o podobe site ze souboru
      * Vytvoří routery a linky mezi nimi
+     *
+     * @return uspech: nejvetsi index routeru v siti
+     *         neuspech: -1
      */
     public int processWebInput() {
         //List<String[]> loadedData = new ArrayList<>();
         int maxIndex = Integer.MIN_VALUE;
 
         try {
-            String sCurrentLine;
+            String currentLine;
             log.appendText("Data succesfully loaded!\n");
 
-            while ((sCurrentLine = graphData.readLine()) != null) {
-                sCurrentLine = sCurrentLine.replace("\t", "");
-                sCurrentLine = sCurrentLine.replace(" ", "");
-                sCurrentLine = sCurrentLine.replace("-","-");
-                //loadedData.add(sCurrentLine.split("-"));
-                //System.out.println(sCurrentLine);
-
-                String[] currLine = sCurrentLine.split("-");
+            while ((currentLine = graphData.readLine()) != null) {
+//                currentLine = currentLine.replace("\t", "");
+//                currentLine = currentLine.replace(" ", "");
+//                currentLine = currentLine.replace("-","-");
+//                //loadedData.add(sCurrentLine.split("-"));
+//                //System.out.println(sCurrentLine);
+//
+//                String[] currLine = currentLine.split("-");
+                String[] currLine = processCurrentLine(currentLine);
 
                 int r1 = Integer.parseInt(currLine[0]) - 1;
                 int r2 = Integer.parseInt(currLine[1]) - 1;
@@ -120,6 +184,16 @@ public class DataManager {
                     " - " + routers.size() + " nodes\n" +
                     " - " + links.size() + " links\n");
 
+            currentLine = simulationData.readLine();
+
+            String[] currLine = processCurrentLine(currentLine);
+
+            this.currentTick = Integer.parseInt(currLine[0]);
+            int r1 = Integer.parseInt(currLine[1]);
+            int r2 = Integer.parseInt(currLine[2]);
+
+            this.excessData = new Data(routers.get(r1), routers.get(r2), Integer.parseInt(currLine[3]));
+
             return maxIndex;
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,6 +202,20 @@ public class DataManager {
 
             return -1;
         }
+    }
+
+    /**
+     * Rozdeli vstupni retezec
+     *
+     * @param currentLine nacteny retezec
+     * @return pole stringu
+     */
+    private String[] processCurrentLine(String currentLine) {
+        currentLine = currentLine.replace("\t", "");
+        currentLine = currentLine.replace(" ", "");
+        currentLine = currentLine.replace("-","-");
+
+        return currentLine.split("-");
     }
 
     public Map<Integer, Router> getRouters() {

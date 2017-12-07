@@ -49,13 +49,23 @@ public class MainController implements Initializable {
 //        List<Router> path = Dijkstra.getShortestPathTo(world.getRouters().get(8));
 //
 //        System.out.println(path);
+//
+//        world.getRouters().values().forEach(router -> {router.setPrevious(null); router.setMinDistance(Double.POSITIVE_INFINITY);});
+//
+//        Dijkstra.computePath(world.getRouters().get(0));
+//        path = Dijkstra.getShortestPathTo(world.getRouters().get(7));
+//
+//        System.out.println(path);
 
         playBtn.setDisable(false);
         loadDataBtn.setDisable(true);
         detailsBtn.setDisable(false);
     }
 
-    public void handleBtnPlay(ActionEvent actionEvent) throws IOException {
+    public void handleBtnPlay(ActionEvent actionEvent) throws IOException, InterruptedException {
+        if (world.isRunning())
+            world.pause();
+
         world.start();
 
         powerCutBtn.setDisable(false);

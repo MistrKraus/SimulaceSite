@@ -1,6 +1,8 @@
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Web implements IDrawable, IUpdatable {
@@ -17,18 +19,43 @@ public class Web implements IDrawable, IUpdatable {
 
     @Override
     public void draw(GraphicsContext g, int routersInRow) {
-        for (Map.Entry<RouterPair, Link> o : links.entrySet())
-            o.getValue().draw(g, routersInRow);
+        for (Link link : links.values()) {
+            link.draw(g, routersInRow);
+        }
+
+        for (Router router : routers.values()) {
+            router.draw(g, routersInRow);
+        }
     }
 
     @Override
-    public void update(World world) {
+    public void update(World world) throws IOException {
+        List<Data> dataToSend = world.getDataToSend();
 
+        if (dataToSend != null && dataToSend.size() > 0) {
+            for (Data data : dataToSend) {
+                data.sourceRouter.carryData(data);
+                if (data.sourceRouter.getId() == Dijkstra.getSource()) {
+                    data.sourceRouter.update(world);
+                    data.sourceRouter.restore(world);
+                }
+            }
+        }
+
+        for (Router router : routers.values()) {
+            router.update(world);
+        }
     }
 
     @Override
     public void restore(World world) {
+        for (Router router : routers.values()) {
+            router.restore(world);
+        }
 
+        for (Link link : links.values()) {
+            link.restore(world);
+        }
     }
 
     public Map<Integer, Router> getRouters() {

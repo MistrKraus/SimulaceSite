@@ -2,10 +2,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
+import java.util.List;
+
 /**
  * Spojeni mezi jednotlivymi routery.
  */
 public class Link implements IUpdatable, IDrawable, Comparable<Link> {
+
+    /**Id barvy, ktera se vyuzije na vykresleni*/
+    private short colorId = 0;
     /**Mnozstvi dat, ktere mohou protect tuto sekundu jednim smerem*/
     private int data1to2;
     /**Mnozstvi dat, ktere mohou protect tuto sekundu druhym smerem*/
@@ -44,7 +49,7 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         this.THROUGHTPUT = maxThroughtput;
         //this.RELIABILITY = RELIABILITY;
 //        this.THROUGHTPUT = 1.0f;
-        this.RELIABILITY = reliability;
+        this.RELIABILITY = 1.0f;//reliability;
 //        this.r1Id = r1Id;
 //        this.r2Id = r2Id;
         this.ROUTER_PAIR = routerPair;
@@ -53,13 +58,27 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
 
         this.MAX_THROUGHTPUT = this.THROUGHTPUT * this.RELIABILITY;
         this.CCA_MAX_THROUGHTPUT = (int)Math.floor(this.MAX_THROUGHTPUT);
+        this.data1to2 = CCA_MAX_THROUGHTPUT;
+        this.data2to1 = CCA_MAX_THROUGHTPUT;
     }
 
     @Override
     public void draw(GraphicsContext g, int routersInRow) {
         Affine t = g.getTransform();
         int deltaXY = (int)(g.getCanvas().getHeight() / (routersInRow + 1));
-        g.setStroke(Color.YELLOW);
+
+        switch (colorId) {
+            case 0:
+                g.setStroke(Color.rgb(255, 255, 0));
+                break;
+                //return;
+            case 1:
+                g.setStroke(Color.rgb(0, 145, 255));
+                break;
+            case 2:
+                g.setStroke(Color.RED);
+                break;
+        }
         g.translate(deltaXY, deltaXY / 2);
 
         g.strokeLine((deltaXY * (ROUTER_PAIR.r1.getId() % routersInRow)), (deltaXY * (ROUTER_PAIR.r1.getId() / routersInRow)),
@@ -75,6 +94,16 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
 
     @Override
     public void restore(World world) {
+        if (data1to2 == CCA_MAX_THROUGHTPUT && data2to1 == CCA_MAX_THROUGHTPUT) {
+            colorId = 0;
+        } else {
+            if (data1to2 == 0 || data2to1 == 0) {
+                colorId = 2;
+            } else {
+                colorId = 1;
+            }
+        }
+
         this.data1to2 = CCA_MAX_THROUGHTPUT;
         this.data2to1 = CCA_MAX_THROUGHTPUT;
     }
@@ -93,8 +122,42 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         }
     }
 
-    public void sendDataDir1(short data, Router r) {
+    public int sendData(List<Router> path, int idOnPath, Data data) {
+        Router routerFrom = path.get(idOnPath);
+        if (routerFrom.getId() > ROUTER_PAIR.r1.getId()) {
+            int newThroughtput = data1to2 - data.amount;
+            if (newThroughtput >= 0)
+                data1to2 = newThroughtput;
+            else {
+                data1to2 = 0;
 
+                return -1;
+            }
+        } else {
+            int newThroughtput = data2to1 - data.amount;
+            if (newThroughtput >= 0)
+                data2to1 = newThroughtput;
+            else {
+                data2to1 = 0;
+
+                return -1;
+            }
+        }
+
+        idOnPath++;
+
+        return path.get(idOnPath).sendData(path, idOnPath, data);
+    }
+
+    public int getDirCapacity(int targetRouterId) {
+        if (targetRouterId < ROUTER_PAIR.r1.getId())
+            if (nextLink == null) {
+                return data1to2;
+            } else {
+                return nextLink.getDirCapacity(targetRouterId);
+            }
+
+        return data2to1;
     }
 
     public Link getNextLink() {
@@ -185,5 +248,16 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         result = 31 * result + (RELIABILITY != +0.0f ? Float.floatToIntBits(RELIABILITY) : 0);
         result = 31 * result + CCA_MAX_THROUGHTPUT;
         return result;
+    }
+
+    public int getNeighbourId(int id) {
+        //System.out.print(id);
+        if (id == ROUTER_PAIR.r1.getId()) {
+            //System.out.println(" " + ROUTER_PAIR.r2.getId());
+            return ROUTER_PAIR.r2.getId();
+        }
+
+        //System.out.println(" " + ROUTER_PAIR.r1.getId());
+        return ROUTER_PAIR.r1.getId();
     }
 }

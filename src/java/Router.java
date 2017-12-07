@@ -2,35 +2,40 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Routery v sidi ridici komunikaci.
  */
 public class Router implements IUpdatable, IDrawable, Comparable<Router> {
 
-    /**Data ulozena v routeru*/
-    private short data = 0;
-    /**ID subnetu ve kterem se router nachazi*/
-    private short subnetID;
+    /**Id barvy, ktera se vyuzije na vykresleni*/
+    private short colorId = 0;
     /**Minimalni vzdalenost do hrany*/
     private double minDistance = Double.POSITIVE_INFINITY;
     /**Router pracuje*/
     private boolean up = true;
-    /**Je router default gateway*/
-    private boolean defGW = false;
+    /**Zbyvajici pamet*/
+    private int memoryLeft = MEMORY;
+//    /**Je router default gateway*/
+//    private boolean defGW = false;
     /**Predchazejici router*/
     private Router previous;
     /** List - Sousedi daného routeru*/
-    private List<Link> links = new ArrayList<>();
+    private Map<Integer, Link> links = new HashMap<>();
+    /**Data k odeslani*/
+    private List<Data> dataToSend = new ArrayList<>();
+    /**Data ulozena v routeru*/
+    private List<Data> dataToSave = new ArrayList<>();
+    /**Data ke smazani*/
+    private List<Data> dataToRemove = new ArrayList<>();
     /** Nazev routeru*/
     private final String name;
 
     /**ID routeru*/
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
-    private static final short MEMORY = 100;
+    private static final int MEMORY = 100000000;
 
     //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
     //List<Short> neighbour = new LinkedList<>();
@@ -46,12 +51,22 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         Affine t = g.getTransform();
         int deltaXY = (int)(g.getCanvas().getHeight() / (routersInRow + 1));
 
-        g.setFill(Color.WHITE);
+        switch (colorId) {
+            case 0:
+                g.setFill(Color.WHITE);
+                break;
+                //return;
+            case 1:
+                g.setFill(Color.rgb(0, 145, 255));
+                break;
+            case 2:
+                g.setFill(Color.RED);
+                break;
+        }
 
         g.translate(deltaXY, deltaXY / 2);
-        g.fillOval((deltaXY * (id % routersInRow)) - 5,
-                deltaXY * (id / routersInRow) - 5, 10, 10);
-
+        g.fillOval((deltaXY * (id % routersInRow)) - 1,
+                deltaXY * (id / routersInRow) - 1, 2, 2);
 
         //g.fillOval(-5,-5,10, 10);
 
@@ -60,15 +75,119 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
 
     @Override
     public void update(World world) {
+        if (dataToSend.size() == 0)
+            return;
 
+        world.getRouters().values().forEach(r -> {r.setPrevious(null); r.setMinDistance(Double.POSITIVE_INFINITY);});
+        Dijkstra.computePath(this);
+
+        for (Data data : dataToSend) {
+            System.out.println(data.toString());
+            prepareToSendData(data);
+        }
     }
 
     @Override
     public void restore(World world) {
+        dataToSend.removeAll(dataToRemove);
+        dataToRemove.clear();
 
+        dataToSend.addAll(dataToSave);
+
+        memoryLeft = MEMORY;
+
+        for (Data data : dataToSend) {
+            memoryLeft -= data.amount;
+        }
+
+        if (memoryLeft == MEMORY) {
+            colorId = 0;
+            return;
+        }
+
+        if (memoryLeft > 0) {
+            colorId = 1;
+            return;
+        }
+
+        colorId = 2;
     }
 
-    public void setData(Link link, Data data) {
+    public void carryData(Data data) {
+        dataToSend.add(data);
+    }
+
+    private void saveData(Data data) {
+        dataToSave.add(data);
+
+        memoryLeft -= data.amount;
+    }
+
+    /**
+     *
+     *
+     * @param data data k odeslani
+     * @return mnozstvi data, ktera se odesala
+     */
+    private int prepareToSendData(Data data) {
+        int idOnPath = 0;
+        List<Router> path = Dijkstra.getShortestPathTo(data.targetRouter);
+
+        return sendData(path, ++idOnPath, data);
+//        boolean dataSentSuccesfuly = true;
+//        for (Router router : path) {
+//            if (sendDataVia(router, data) == -1) {
+//                dataSentSuccesfuly = false;
+//                break;
+//            }
+//        }
+
+
+
+        //links.get(data.targetRouter.id).prepareToSendData(data);
+
+        //return data.targetRouter.getId();
+    }
+
+    //TODO idOnPath UPRAVOVAT!!!
+
+    /**
+     *
+     *
+     * @param path
+     * @param data
+     * @return
+     */
+    public int sendData(List<Router> path, int idOnPath, Data data) {
+        if (id == data.targetRouter.getId()) {
+            System.out.println("Data dorucena!!!");
+            return id;
+        }
+
+        Link link = links.get(path.get(idOnPath).id);
+
+        int linkCapacity = link.getDirCapacity(id);
+
+        if (linkCapacity < data.amount && path.get(idOnPath + 1).canSaveData(data) < linkCapacity) {
+            saveData(data.splitMe(linkCapacity));
+        }
+
+        dataToRemove.add(data);
+
+        return link.sendData(path, idOnPath, data);
+
+        //return data.targetRouter.getId();
+    }
+
+    public int canSaveData(Data data) {
+        if (id == data.targetRouter.getId() || memoryLeft > data.amount) {
+            return data.amount;
+        }
+
+        return memoryLeft;
+    }
+
+    private void removeData(Data data) {
 
     }
 
@@ -81,11 +200,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     }
 
     public void addLink(Link link) {
-        links.add(link);
-//        if (link.getR1Id() == this.id)
-//            links.put(link.getR2Id(), link);
-//        else
-//            links.put(link.getR1Id(), link);
+        links.put(link.getNeighbourId(id), link);
     }
 
     public boolean isUp() {
@@ -96,15 +211,19 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         return name;
     }
 
-    public short getData() {
-        return data;
+    public List<Data> getData() {
+        return dataToSend;
+    }
+
+    public int getMemoryLeft() {
+        return memoryLeft;
     }
 
     public int getId() {
         return id;
     }
 
-    public static byte getMEMORY() {
+    public static int getMEMORY() {
         return MEMORY;
     }
 
@@ -116,7 +235,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         return previous;
     }
 
-    public List<Link> getLinks() {
+    public Map<Integer, Link> getLinks() {
         return links;
     }
 

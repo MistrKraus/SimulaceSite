@@ -1,8 +1,13 @@
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,9 +31,17 @@ public class World {
     /**Boolean bezi-li simulace*/
     private boolean isRunning = false;
 
-//    private final Duration duration = Duration.millis(100);
-//    private final KeyFrame oneFrame = new KeyFrame(duration, event -> update());
-//    private Timeline timeline;
+    private final Duration duration = Duration.millis(3000);
+    private final KeyFrame oneFrame = new KeyFrame(duration, event -> {
+        try {
+            update();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    });
+    private Timeline timeline;
     private final GraphicsContext graphics;
 
     /**Cesta k vstupnimu souboru s daty*/
@@ -46,8 +59,8 @@ public class World {
         graphics = g;
         this.log = log;
 
-//        timeline = new Timeline(oneFrame);
-//        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline = new Timeline(oneFrame);
+        timeline.setCycleCount(Animation.INDEFINITE);
 
         this.dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE, log);
     }
@@ -55,7 +68,7 @@ public class World {
     /**
      * Spusti simulaci (nacteni simulacnich dat)
      */
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         if (web == null)
             createWeb();
 
@@ -63,8 +76,8 @@ public class World {
 
         update();
 
-//        timeline.play();
-//
+        timeline.play();
+
 //        List<String[]> simulatedData = new ArrayList<>();
 //        System.out.println();
 //        try (BufferedReader br = new BufferedReader(new FileReader(DATA_SIMULATION_FILE))) {
@@ -89,7 +102,7 @@ public class World {
     public void pause() {
         isRunning = false;
 
-        //timeline.stop();
+        timeline.stop();
     }
 
     /**
@@ -100,13 +113,15 @@ public class World {
 
         // TODO Dokoncit ukonceni simulace
 
-        //timeline.stop();
+        timeline.stop();
     }
 
     /**
      * Aktualizuje vsechny objekty
      */
-    public void update() throws IOException {
+    public void update() throws IOException, InterruptedException {
+
+        web.update(this);
 //        String inputLine = simulationData.readLine();
 //
 //        while (isRunning && inputLine != null) {
@@ -239,5 +254,17 @@ public class World {
 
     public Map<RouterPair, Link> getLinks() {
         return web.getLinks();
+    }
+
+    public DataManager getDataManager() {
+        return dataManager;
+    }
+
+    public List<Data> getDataToSend() throws IOException {
+        return dataManager.getTickSimulationData();
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }

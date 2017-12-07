@@ -1,38 +1,66 @@
-public class Data {
-    /**Mnozstvi dat*/
-    private short amount;
+public class Data implements Comparable<Data> {
+
+    /***/
+    public final int id;
+    /**Mnozstvi prenasenych dat*/
+    public int amount;
+    /**Puvodni mnozstvi dat*/
+    private final int originalAmount;
+    /**Router vysilajici data*/
+    public final Router sourceRouter;
     /**Cilovy router*/
-    private final short targetRouterId;
-    /**ID dat*/
-    private final short dataId;
+    public final Router targetRouter;
+
+    private static int count = 0;
 
     /**
-     * Vytvori 'datovy paket' s mnozstvim dat, ktere prenasi a id routeru kam.
+     * Vytvori 'datovy paket' s mnozstvim dat, ktere prenasi a routerem kam.
      *
+     * @param sourceRouter vychozi router
+     * @param targetRouter cilovy router
      * @param dataAmount mnozstvi prenasenych dat
-     * @param routerId id ciloveho routeru
-     * @param theDataId id dat
      */
-    public Data(short dataAmount, short routerId, short theDataId) {
-        amount = dataAmount;
-        targetRouterId = routerId;
-        dataId = theDataId;
+    public Data(Router sourceRouter, Router targetRouter, int dataAmount) {
+        this (sourceRouter, targetRouter, dataAmount, ++count, dataAmount);
     }
 
     /**
-     * Vraci id dat
-     * @return data id
+     * 'Datovy paket' vytvareny po rozdeleni vetsiho datoveho paketu
+     *
+     * @param sourceRouter vychozi router
+     * @param targetRouter cilovy router
+     * @param dataAmount mnozstvi prenasenych dat
+     * @param id id datoveho paketu
+     * @param originalDataAmount mnozstvi dat prenasenych puvodnim datovym paketem
      */
-    public short getDataId() {
-        return dataId;
+    public Data(Router sourceRouter, Router targetRouter, int dataAmount, int id, int originalDataAmount) {
+        this.id = id;
+        this.sourceRouter = sourceRouter;
+        this.targetRouter = targetRouter;
+        this.amount = dataAmount;
+        this.originalAmount = originalDataAmount;
     }
 
     /**
-     * Vraci nam id routeru, do ktereho posilame data
-     * @return id target routeru
+     * Rozdeli se na dva objekty o velikosti zadaneho agumentu a jeho rozdilu s celkovym prenasenym mnozstvim dat
+     *
+     * @param dataAmount mnozstvi dat, ktere link dokaze danym smerem prenest
+     * @return {@code Data} s mnozstvim prenasenych dat o velikosti rozdilu
      */
-    public short getTargetRouterId() {
-        return targetRouterId;
+    public Data splitMe(int dataAmount) {
+        int newDataAmount = this.amount - dataAmount;
+        this.amount = dataAmount;
+
+        return new Data(sourceRouter, targetRouter, newDataAmount, id, originalAmount);
     }
 
+    @Override
+    public String toString() {
+        return "Data[" + id + "] " + sourceRouter.getId() + " ~ " + targetRouter.getId() + " (" + amount + ")";
+    }
+
+    @Override
+    public int compareTo(Data o) {
+        return Integer.compare(sourceRouter.getId(), o.sourceRouter.getId());
+    }
 }

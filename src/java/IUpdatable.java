@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Interface pro "aktualizovatelne" soucasti site
  */
@@ -8,7 +10,7 @@ public interface IUpdatable {
      *
      * @param world ridici trida
      */
-    void update(World world);
+    void update(World world) throws IOException;
 
     /**
      * Obnoveni objektu
