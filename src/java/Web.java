@@ -15,6 +15,8 @@ public class Web implements IDrawable, IUpdatable {
     public Web (Map<Integer, Router> routers, Map<RouterPair, Link> links) {
         this.routers = routers;
         this.links = links;
+
+        //System.out.println(routers.get(7).getLinks().get(7));
     }
 
     @Override
@@ -51,6 +53,7 @@ public class Web implements IDrawable, IUpdatable {
     public void restore(World world) {
         for (Router router : routers.values()) {
             router.restore(world);
+            //System.out.println(router.toString() + " " + router.getMemoryLeft());
         }
 
         for (Link link : links.values()) {

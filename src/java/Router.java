@@ -78,12 +78,21 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         if (dataToSend.size() == 0)
             return;
 
-        world.getRouters().values().forEach(r -> {r.setPrevious(null); r.setMinDistance(Double.POSITIVE_INFINITY);});
-        Dijkstra.computePath(this);
+        if (id != Dijkstra.getSource()) {
+            world.getRouters().values().forEach(r -> {
+                r.setPrevious(null);
+                r.setMinDistance(Double.POSITIVE_INFINITY);
+            });
+            Dijkstra.computePath(this);
+        }
 
+        int x;
         for (Data data : dataToSend) {
             System.out.println(data.toString());
-            prepareToSendData(data);
+            x = prepareToSendData(data);
+            if (x == -1) {
+                System.out.println("Chyba pri odesilani dat.");
+            }
         }
     }
 
@@ -120,7 +129,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     private void saveData(Data data) {
         dataToSave.add(data);
 
-        memoryLeft -= data.amount;
+        this.memoryLeft -= data.amount;
     }
 
     /**
@@ -149,8 +158,6 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         //return data.targetRouter.getId();
     }
 
-    //TODO idOnPath UPRAVOVAT!!!
-
     /**
      *
      *
@@ -161,6 +168,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     public int sendData(List<Router> path, int idOnPath, Data data) {
         if (id == data.targetRouter.getId()) {
             System.out.println("Data dorucena!!!");
+            dataToRemove.add(data);
             return id;
         }
 
@@ -168,9 +176,19 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
 
         int linkCapacity = link.getDirCapacity(id);
 
-        if (linkCapacity < data.amount && path.get(idOnPath + 1).canSaveData(data) < linkCapacity) {
+        if (linkCapacity < data.amount) {
             saveData(data.splitMe(linkCapacity));
         }
+
+        if (idOnPath + 1 < path.size() && path.get(idOnPath + 1).getMemoryLeft() < linkCapacity) {
+            saveData(data.splitMe(path.get(idOnPath + 1).getMemoryLeft()));
+        }
+
+//        if (idOnPath + 1 < path.size()) {
+//            if (linkCapacity < data.amount || path.get(idOnPath + 1).getMemoryLeft() < linkCapacity) {
+//                saveData(data.splitMe(Math.min(linkCapacity, path.get(idOnPath + 1).getMemoryLeft())));
+//            }
+//        }
 
         dataToRemove.add(data);
 
@@ -179,13 +197,13 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         //return data.targetRouter.getId();
     }
 
-    public int canSaveData(Data data) {
-        if (id == data.targetRouter.getId() || memoryLeft > data.amount) {
-            return data.amount;
-        }
-
-        return memoryLeft;
-    }
+//    public int canSaveData(Data data) {
+//        if (id == data.targetRouter.getId() || memoryLeft > data.amount) {
+//            return data.amount;
+//        }
+//
+//        return memoryLeft;
+//    }
 
     private void removeData(Data data) {
 

@@ -225,4 +225,8 @@ public class DataManager {
     public Map<RouterPair, Link> getLinks() {
         return links;
     }
+
+    public int getCurrentTick() {
+        return currentTick;
+    }
 }

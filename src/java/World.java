@@ -31,7 +31,7 @@ public class World {
     /**Boolean bezi-li simulace*/
     private boolean isRunning = false;
 
-    private final Duration duration = Duration.millis(3000);
+    private final Duration duration = Duration.millis(1000);
     private final KeyFrame oneFrame = new KeyFrame(duration, event -> {
         try {
             update();
@@ -121,7 +121,14 @@ public class World {
      */
     public void update() throws IOException, InterruptedException {
 
+//        web.getRouters().values().forEach(router -> router.getLinks().values().forEach(link -> {
+//            System.out.println(router.toString() + ": " + link.toString());
+//        }));
+        System.out.println(dataManager.getCurrentTick());
+
         web.update(this);
+        web.restore(this);
+        draw();
 //        String inputLine = simulationData.readLine();
 //
 //        while (isRunning && inputLine != null) {

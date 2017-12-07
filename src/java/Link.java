@@ -123,7 +123,7 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     }
 
     public int sendData(List<Router> path, int idOnPath, Data data) {
-        Router routerFrom = path.get(idOnPath);
+        Router routerFrom = path.get(idOnPath - 1);
         if (routerFrom.getId() > ROUTER_PAIR.r1.getId()) {
             int newThroughtput = data1to2 - data.amount;
             if (newThroughtput >= 0)
@@ -144,9 +144,9 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
             }
         }
 
-        idOnPath++;
+        //idOnPath++;
 
-        return path.get(idOnPath).sendData(path, idOnPath, data);
+        return path.get(idOnPath).sendData(path, ++idOnPath, data);
     }
 
     public int getDirCapacity(int targetRouterId) {
