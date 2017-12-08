@@ -31,7 +31,7 @@ public class World {
     /**Boolean bezi-li simulace*/
     private boolean isRunning = false;
 
-    private final Duration duration = Duration.millis(1000);
+    private final Duration duration = Duration.millis(100);
     private final KeyFrame oneFrame = new KeyFrame(duration, event -> {
         try {
             update();
@@ -114,6 +114,10 @@ public class World {
         // TODO Dokoncit ukonceni simulace
 
         timeline.stop();
+
+        dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE, log);
+
+        log.appendText("Simulation succesfully ended!\n");
     }
 
     /**

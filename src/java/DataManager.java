@@ -87,6 +87,7 @@ public class DataManager {
     public List<Data> getTickSimulationData() throws IOException {
         List<Data> dataToSend = new ArrayList<>();
         dataToSend.add(excessData);
+        excessData = null;
 
         String currentLine;
         while ((currentLine = this.simulationData.readLine()) != null) {

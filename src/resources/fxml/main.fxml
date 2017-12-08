@@ -58,9 +58,9 @@
                 <Insets topRightBottomLeft="10"/>
             </padding>
             <Label text="Log:"/>
-            <VBox alignment="TOP_RIGHT">
-                <TextArea fx:id="logTxt" maxWidth="200" VBox.vgrow="ALWAYS" editable="false"/>
-            </VBox>
+            <TextArea fx:id="logTxt" maxWidth="200" VBox.vgrow="ALWAYS" editable="false"/>
+            <!--<VBox alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">-->
+            <!--</VBox>-->
         </VBox>
     </right>
     <bottom>

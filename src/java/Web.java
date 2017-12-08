@@ -36,7 +36,7 @@ public class Web implements IDrawable, IUpdatable {
     public void update(World world) throws IOException {
         List<Data> dataToSend = world.getDataToSend();
 
-        if (dataToSend != null && dataToSend.size() > 0) {
+        if (dataToSend != null && dataToSend.size() > 0 && dataToSend.get(0) != null) {
             for (Data data : dataToSend) {
                 data.sourceRouter.carryData(data);
                 if (data.sourceRouter.getId() == Dijkstra.getSource()) {
@@ -47,6 +47,7 @@ public class Web implements IDrawable, IUpdatable {
         } else {
             if (dataInRouters == 0) {
                 world.stop();
+                return;
             }
         }
 

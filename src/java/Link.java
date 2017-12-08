@@ -49,7 +49,7 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
         this.THROUGHTPUT = maxThroughtput;
         //this.RELIABILITY = RELIABILITY;
 //        this.THROUGHTPUT = 1.0f;
-        this.RELIABILITY = 1.0f;//reliability;
+        this.RELIABILITY = reliability;
 //        this.r1Id = r1Id;
 //        this.r2Id = r2Id;
         this.ROUTER_PAIR = routerPair;
@@ -149,8 +149,6 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
                 return -1;
             }
         }
-
-        //idOnPath++;
 
         return path.get(idOnPath).sendData(path, ++idOnPath, data);
     }

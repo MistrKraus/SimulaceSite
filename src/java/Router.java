@@ -99,6 +99,15 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
                 case -2:
                     System.out.println("Cast dat prijata.");
                     break;
+                case -3:
+                    data.sourceRouter.carryData(data);
+                    dataToRemove.add(data);
+                    System.out.println("Data v nespravnem routeru - odeslána do routeru, ktery je odeslal.");
+                    break;
+                case -4:
+                    dataToRemove.add(data);
+                    System.out.println("Cesta k cilovemu routeru neexistuje - data odstranena.");
+                    break;
                 default:
                     if (data.targetRouter.getId() == x) {
                         System.out.println("Data dorucena.");
@@ -116,6 +125,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         dataToRemove.clear();
 
         dataToSend.addAll(dataToSave);
+        dataToSave.clear();
 
         memoryLeft = MEMORY;
 
@@ -158,10 +168,21 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         if (data.amount == 0)
             return data.targetRouter.id;
 
-        int idOnPath = 0;
+        int idOnPath = -3;
         List<Router> path = Dijkstra.getShortestPathTo(data.targetRouter);
+        for (int i = 0; i < path.size(); i++) {
+            if (id == path.get(i).id) {
+                idOnPath = i;
+                break;
+            }
+        }
 
-        return sendData(path, ++idOnPath, data);
+        if (path.get(0).id == data.targetRouter.id) {
+            dataToRemove.add(data);
+            return -4;
+        }
+
+        return idOnPath != -3 ? sendData(path, ++idOnPath, data) : -3;
 //        boolean dataSentSuccesfuly = true;
 //        for (Router router : path) {
 //            if (sendDataVia(router, data) == -1) {
