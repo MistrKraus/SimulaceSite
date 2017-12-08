@@ -124,22 +124,28 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
 
     public int sendData(List<Router> path, int idOnPath, Data data) {
         Router routerFrom = path.get(idOnPath - 1);
-        if (routerFrom.getId() > ROUTER_PAIR.r1.getId()) {
+        if (routerFrom.getId() < ROUTER_PAIR.r1.getId()) {
             int newThroughtput = data1to2 - data.amount;
-            if (newThroughtput >= 0)
+            if (newThroughtput >= 0) {
                 data1to2 = newThroughtput;
-            else {
-                data1to2 = 0;
+            } else {
+                if (nextLink != null) {
+                    return nextLink.sendData(path, idOnPath, data);
+                }
 
+                routerFrom.saveData(data);
                 return -1;
             }
         } else {
             int newThroughtput = data2to1 - data.amount;
-            if (newThroughtput >= 0)
+            if (newThroughtput >= 0) {
                 data2to1 = newThroughtput;
-            else {
-                data2to1 = 0;
+            } else {
+                if (nextLink != null) {
+                    return nextLink.sendData(path, idOnPath, data);
+                }
 
+                routerFrom.saveData(data);
                 return -1;
             }
         }
@@ -150,12 +156,17 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     }
 
     public int getDirCapacity(int targetRouterId) {
-        if (targetRouterId < ROUTER_PAIR.r1.getId())
-            if (nextLink == null) {
-                return data1to2;
+        if (targetRouterId < ROUTER_PAIR.r1.getId()) {
+            if (data1to2 == 0 && nextLink != null) {
+                    return nextLink.getDirCapacity(targetRouterId);
             } else {
-                return nextLink.getDirCapacity(targetRouterId);
+                return data1to2;
             }
+        }
+
+        if (data2to1 == 0 && nextLink != null) {
+            return nextLink.getDirCapacity(targetRouterId);
+        }
 
         return data2to1;
     }

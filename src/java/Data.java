@@ -5,7 +5,7 @@ public class Data implements Comparable<Data> {
     /**Mnozstvi prenasenych dat*/
     public int amount;
     /**Puvodni mnozstvi dat*/
-    private final int originalAmount;
+    public final int originalAmount;
     /**Router vysilajici data*/
     public final Router sourceRouter;
     /**Cilovy router*/
@@ -48,6 +48,15 @@ public class Data implements Comparable<Data> {
      * @return {@code Data} s mnozstvim prenasenych dat o velikosti rozdilu
      */
     public Data splitMe(int dataAmount) {
+//        //TODO !!!!!!!! podminka
+        if (dataAmount < 0) {
+            dataAmount = 0;
+        }
+
+        if (dataAmount > amount) {
+            dataAmount = amount;
+        }
+
         int newDataAmount = this.amount - dataAmount;
         this.amount = dataAmount;
 

@@ -27,6 +27,8 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     private List<Data> dataToSend = new ArrayList<>();
     /**Data ulozena v routeru*/
     private List<Data> dataToSave = new ArrayList<>();
+    /**Prijate nekompletni pakety dat*/
+    private List<Data> recievedData = new ArrayList<>();
     /**Data ke smazani*/
     private List<Data> dataToRemove = new ArrayList<>();
     /** Nazev routeru*/
@@ -89,9 +91,20 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         int x;
         for (Data data : dataToSend) {
             System.out.println(data.toString());
-            x = prepareToSendData(data);
-            if (x == -1) {
-                System.out.println("Chyba pri odesilani dat.");
+            x = prepareAndSendData(data);
+            switch (x) {
+                case -1:
+                    System.out.println("Chyba pri odesilani dat.");
+                    break;
+                case -2:
+                    System.out.println("Cast dat prijata.");
+                    break;
+                default:
+                    if (data.targetRouter.getId() == x) {
+                        System.out.println("Data dorucena.");
+                    } else {
+                        System.out.println("Data docasne ulozena v Routeru" + x);
+                    }
             }
         }
     }
@@ -99,6 +112,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     @Override
     public void restore(World world) {
         dataToSend.removeAll(dataToRemove);
+        recievedData.removeAll(dataToRemove);
         dataToRemove.clear();
 
         dataToSend.addAll(dataToSave);
@@ -106,6 +120,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         memoryLeft = MEMORY;
 
         for (Data data : dataToSend) {
+            world.getWeb().addDataInRouter();
             memoryLeft -= data.amount;
         }
 
@@ -126,19 +141,23 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         dataToSend.add(data);
     }
 
-    private void saveData(Data data) {
+    public void saveData(Data data) {
         dataToSave.add(data);
 
         this.memoryLeft -= data.amount;
     }
 
     /**
-     *
+     * Pripravi a odesle data
      *
      * @param data data k odeslani
-     * @return mnozstvi data, ktera se odesala
+     * @return id routeru, kde data na konci ticku zustala
+     *          -1 pro neuspech
      */
-    private int prepareToSendData(Data data) {
+    private int prepareAndSendData(Data data) {
+        if (data.amount == 0)
+            return data.targetRouter.id;
+
         int idOnPath = 0;
         List<Router> path = Dijkstra.getShortestPathTo(data.targetRouter);
 
@@ -153,23 +172,23 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
 
 
 
-        //links.get(data.targetRouter.id).prepareToSendData(data);
+        //links.get(data.targetRouter.id).prepareAndSendData(data);
 
         //return data.targetRouter.getId();
     }
 
     /**
+     * Odesle data
      *
-     *
-     * @param path
-     * @param data
-     * @return
+     * @param path list routeru, pres ktere se data maji poslat
+     * @param data data k odeslani
+     * @return id routeru, kde data na konci ticku zustala
+     *          -1 pro neuspech
+     *          -2 data prijata, ceka se na celkova data
      */
     public int sendData(List<Router> path, int idOnPath, Data data) {
-        if (id == data.targetRouter.getId()) {
-            System.out.println("Data dorucena!!!");
-            dataToRemove.add(data);
-            return id;
+        if (id == data.targetRouter.id) {
+            return recieveData(data);
         }
 
         Link link = links.get(path.get(idOnPath).id);
@@ -184,12 +203,6 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
             saveData(data.splitMe(path.get(idOnPath + 1).getMemoryLeft()));
         }
 
-//        if (idOnPath + 1 < path.size()) {
-//            if (linkCapacity < data.amount || path.get(idOnPath + 1).getMemoryLeft() < linkCapacity) {
-//                saveData(data.splitMe(Math.min(linkCapacity, path.get(idOnPath + 1).getMemoryLeft())));
-//            }
-//        }
-
         dataToRemove.add(data);
 
         return link.sendData(path, idOnPath, data);
@@ -197,16 +210,34 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         //return data.targetRouter.getId();
     }
 
-//    public int canSaveData(Data data) {
-//        if (id == data.targetRouter.getId() || memoryLeft > data.amount) {
-//            return data.amount;
-//        }
-//
-//        return memoryLeft;
-//    }
+    /**
+     * Prijme dato, zjisti zda je cele, pokud
+     *
+     * @param data prijate dato
+     * @return id routeru: cele dato prijato
+     *          -2: prijata cast data
+     */
+    private int recieveData(Data data) {
+        if (data.amount == data.originalAmount) {
+            dataToRemove.add(data);
+            return id;
+        }
 
-    private void removeData(Data data) {
+        this.recievedData.add(data);
 
+        int amount = 0;
+        for (Data data1 : recievedData) {
+            if (data1.id == data.id) {
+                amount += data1.amount;
+            }
+        }
+
+        if (amount == data.originalAmount) {
+            dataToRemove.add(data);
+            return id;
+        }
+
+        return -2;
     }
 
     public void setMinDistance(double minDistance) {

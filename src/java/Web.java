@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class Web implements IDrawable, IUpdatable {
 
+    /**Mnozstvi dat v routerech*/
+    private int dataInRouters = 0;
     /**Mapa routeru*/
     private Map<Integer, Router> routers = new HashMap<>();
     /**Mapa spoju mezi routery*/
@@ -42,11 +44,18 @@ public class Web implements IDrawable, IUpdatable {
                     data.sourceRouter.restore(world);
                 }
             }
+        } else {
+            if (dataInRouters == 0) {
+                world.stop();
+            }
         }
 
         for (Router router : routers.values()) {
             router.update(world);
         }
+
+        //TODO uprava (in/de)krementace!!!
+        dataInRouters = 0;
     }
 
     @Override
@@ -59,6 +68,10 @@ public class Web implements IDrawable, IUpdatable {
         for (Link link : links.values()) {
             link.restore(world);
         }
+    }
+
+    public void addDataInRouter() {
+        dataInRouters++;
     }
 
     public Map<Integer, Router> getRouters() {

@@ -120,23 +120,11 @@ public class World {
      * Aktualizuje vsechny objekty
      */
     public void update() throws IOException, InterruptedException {
-
-//        web.getRouters().values().forEach(router -> router.getLinks().values().forEach(link -> {
-//            System.out.println(router.toString() + ": " + link.toString());
-//        }));
         System.out.println(dataManager.getCurrentTick());
 
         web.update(this);
         web.restore(this);
         draw();
-//        String inputLine = simulationData.readLine();
-//
-//        while (isRunning && inputLine != null) {
-//
-//
-//            draw();
-//            inputLine = simulationData.readLine();
-//        }
     }
 
     /**
@@ -253,6 +241,14 @@ public class World {
 //        }
 
         //new FloydWarshall(links, routers.length);
+    }
+
+    public Web getWeb() {
+        return web;
+    }
+
+    public TextArea getLog() {
+        return log;
     }
 
     //private List<Data> loadDataTick
