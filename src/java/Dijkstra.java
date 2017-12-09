@@ -9,7 +9,13 @@ public class Dijkstra {
      *
      * @param source index routeru, ze ktereho vypocte cesty do ostatnich routeru (index -1 nelze)
      */
-    public static void computePath(Router source) {
+    public static void computePath(Router source, World world) {
+
+        world.getRouters().values().forEach(r -> {
+            r.setPrevious(null);
+            r.setMinDistance(Double.POSITIVE_INFINITY);
+        });
+
         source.setMinDistance(0);
         PriorityQueue<Router> routerQueue = new PriorityQueue<>();
         routerQueue.add(source);
@@ -20,8 +26,7 @@ public class Dijkstra {
 
             for (Link link : paths) {
                 Router rFind = link.getNeighbour(rActual);
-                double throughtput = link.getMAX_THROUGHTPUT();
-                double distanceThroughActual = rActual.getMinDistance() + throughtput;
+                double distanceThroughActual = rActual.getMinDistance() + 1;
 
                 if (distanceThroughActual < rFind.getMinDistance()) {
                     routerQueue.remove(rFind);
