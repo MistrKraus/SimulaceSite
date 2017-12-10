@@ -58,7 +58,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
             case 0:
                 g.setFill(Color.WHITE);
                 break;
-                //return;
+            //return;
             case 1:
                 g.setFill(Color.rgb(0, 145, 255));
                 break;
@@ -81,12 +81,9 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         if (dataToSend.size() == 0)
             return;
 
+
         if (id != Dijkstra.getSource()) {
-            world.getRouters().values().forEach(r -> {
-                r.setPrevious(null);
-                r.setMinDistance(Double.POSITIVE_INFINITY);
-            });
-            Dijkstra.computePath(this);
+            Dijkstra.computePath(this, world);
         }
 
         int x;
