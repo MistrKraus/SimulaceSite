@@ -1,5 +1,4 @@
 import javafx.application.Platform;
-import javafx.scene.control.TextArea;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -24,10 +23,10 @@ public class DataManager {
      * Buffer s daty pro simulaci
      */
     private BufferedReader simulationData;
-    /**
-     * Log
-     */
-    private final TextArea log;
+//    /**
+//     * Log
+//     */
+//    private final TextArea log;
     /**
      * Prebyvajici data z predchoziho ticku
      */
@@ -42,20 +41,21 @@ public class DataManager {
      */
     private Map<RouterPair, Link> links = new HashMap<>();
 
-    public DataManager(String graphFilePath, String simulationFilePath, TextArea log) {
-        this.log = log;
-
+    public DataManager(String graphFilePath, String simulationFilePath) {
         try {
             this.graphData = new BufferedReader(new FileReader(graphFilePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            log.appendText("Loading data Erorr:\n" + e.getMessage());
+            System.out.println("Loading data Erorr:\n" + e.getMessage());
+//            log.appendText("Loading data Erorr:\n" + e.getMessage());
             try {
-                log.appendText("App will be closed automatically in 5 seconds...");
-                Thread.sleep(5000);
+                System.out.println("App will be closed automatically in 3 seconds...");
+//                log.appendText("App will be closed automatically in 3 seconds...");
+                Thread.sleep(3000);
                 Platform.exit();
             } catch (Exception e1) {
-                log.appendText("App will be closed automatically.");
+                System.out.println("App will be closed automatically.");
+//                log.appendText("App will be closed automatically.");
                 e1.printStackTrace();
                 Platform.exit();
             }
@@ -65,13 +65,16 @@ public class DataManager {
             this.simulationData = new BufferedReader(new FileReader(simulationFilePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            log.appendText("Loading data Erorr:\n" + e.getMessage());
+            System.out.println("Loading data Erorr:\n" + e.getMessage());
+//            log.appendText("Loading data Erorr:\n" + e.getMessage());
             try {
-                log.appendText("App will be closed automatically in 5 seconds...");
+                System.out.println("App will be closed automatically in 5 seconds...");
+//                log.appendText("App will be closed automatically in 5 seconds...");
                 Thread.sleep(5000);
                 Platform.exit();
             } catch (Exception e1) {
-                log.appendText("App will be closed automatically.");
+                System.out.println("App will be closed automatically.");
+//                log.appendText("App will be closed automatically.");
                 e1.printStackTrace();
                 Platform.exit();
             }
@@ -131,7 +134,7 @@ public class DataManager {
 
         try {
             String currentLine;
-            log.appendText("Data succesfully loaded!\n");
+//            log.appendText("Data succesfully loaded!\n");
 
             while ((currentLine = graphData.readLine()) != null) {
 //                currentLine = currentLine.replace("\t", "");
@@ -181,9 +184,9 @@ public class DataManager {
 //                else
 //                    links.put(new RouterPair(r2, r1), new Link(maxThroughtput, reliability, r2, r1));
             }
-            log.appendText("Web succesfully created:\n" +
-                    " - " + routers.size() + " nodes\n" +
-                    " - " + links.size() + " links\n");
+//            log.appendText("Web succesfully created:\n" +
+//                    " - " + routers.size() + " nodes\n" +
+//                    " - " + links.size() + " links\n");
 
             currentLine = simulationData.readLine();
 
@@ -199,7 +202,8 @@ public class DataManager {
         } catch (IOException e) {
             e.printStackTrace();
 
-            log.appendText(e.getMessage() + "\n");
+            System.out.println(e.getMessage() + "\n");
+//            log.appendText(e.getMessage() + "\n");
 
             return -1;
         }

@@ -17,5 +17,5 @@ public interface IUpdatable {
      *
      * @param world ridici trida
      */
-    void restore(World world);
+    void restore(World world) throws IOException;
 }

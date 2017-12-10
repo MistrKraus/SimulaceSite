@@ -15,14 +15,18 @@ import java.util.Map;
  */
 public class World {
 
+    /**Cislo ticku*/
+    private int tickNum = 0;
+    /**Pocet routeru v radku pri vykreslovani*/
+    private int routersInRow;
     /**Objekt s prvky site*/
     private Web web;
     /**Spravce vstupnich dat*/
     private DataManager dataManager;
-    /**TextArea pro logovani udalosti*/
-    private TextArea log;
-    /**Pocet routeru v radku pri vykreslovani*/
-    private int routersInRow;
+//    /**TextArea pro logovani udalosti*/
+//    private TextArea logTA;
+    /**Objekt pro loggovani udalosti*/
+    private Log log;
 //    /**Celkovy pocet spojeni mezi routery*/
 //    private int linkCount;
 //    /**Pocet routeru v radku pri vykreslovani*/
@@ -53,16 +57,15 @@ public class World {
      * Konstruktor
      *
      * @param g graficky kontext, do ktereho se simulace vykresluje
-     * @param log TextArea pro logovani udalosti
      */
-    public World(GraphicsContext g, TextArea log) {
+    public World(GraphicsContext g) {
         graphics = g;
-        this.log = log;
 
         timeline = new Timeline(oneFrame);
         timeline.setCycleCount(Animation.INDEFINITE);
 
-        this.dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE, log);
+        this.dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE);
+
     }
 
     /**
@@ -92,7 +95,7 @@ public class World {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //
-//            log.appendText(e.getMessage() + "\n");
+//            logTA.appendText(e.getMessage() + "\n");
 //        }
     }
 
@@ -108,26 +111,34 @@ public class World {
     /**
      * Ukonci simulaci
      */
-    public void stop() {
+    public void stop() throws IOException {
         isRunning = false;
 
         // TODO Dokoncit ukonceni simulace
 
         timeline.stop();
 
-        dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE, log);
+        dataManager = new DataManager(DATA_INPUT_FILE, DATA_SIMULATION_FILE);
 
-        log.appendText("Simulation succesfully ended!\n");
+        log.saveLog();
+        //logTA.appendText("Simulation succesfully ended!\n");
     }
 
     /**
      * Aktualizuje vsechny objekty
      */
     public void update() throws IOException, InterruptedException {
+        this.log.setTickNum(++tickNum);
         System.out.println(dataManager.getCurrentTick());
 
         web.update(this);
-        web.restore(this);
+        //log.update(this);
+
+        if (isRunning) {
+            log.restore(this);
+            web.restore(this);
+        }
+
         draw();
     }
 
@@ -155,6 +166,23 @@ public class World {
 //        }
     }
 
+
+    public void logData(TextArea log, boolean tickNum, boolean sentData, boolean dataPath,
+                   boolean dataDest, boolean memUsage, boolean traffic) throws IOException {
+        if (web == null) {
+            createWeb();
+        }
+
+        this.log = new Log(log, web.getMAX_MEMORY_USAGE(), web.getMAX_TRAFFIC(), tickNum,
+                sentData, dataPath, dataDest, memUsage, traffic);
+        this.log.addText("Web succesfully created:\n" +
+                " - " + web.getRouters().size() + " nodes\n" +
+                " - " + web.getLinks().size() + " links\n");
+
+//        this.log.update(this);
+//        this.log.restore(this);
+    }
+
     /**
      * Na zaklade dat vytvori sit - routery a spojeni mezi nimi
      */
@@ -162,7 +190,7 @@ public class World {
         int maxIndex = dataManager.processWebInput();
 
         if (maxIndex == -1) {
-            log.appendText("Creating web was not succesful");
+            System.out.println("Creating web was not succesful");
             return;
         }
         routersInRow = (int)(Math.ceil(Math.sqrt(maxIndex)));
@@ -185,7 +213,7 @@ public class World {
 //            routers.put(routerId1, new Router(routerId1));
 //            routers.put(routerId2, new Router(routerId2));
 //        }
-//        log.appendText("All routers created succesfully.\n");
+//        logTA.appendText("All routers created succesfully.\n");
 
 //        links = new Link[linkCount];
 //
@@ -197,7 +225,7 @@ public class World {
 //            routers.get(links[i].getR1Id()).neighbours.put(links[i].getR2Id(), links[i]);
 //            Link tmp = new Link(links[i].getTHROUGHTPUT(), links[i].getRELIABILITY(), links[i].getR2Id(), links[i].getR1Id());
 //            routers.get(links[i].getR2Id()).neighbours.put(links[i].getR1Id(), tmp);
-//            log.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
+//            logTA.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
 //        }
 
         // ulozeni sousedu do routeru
@@ -230,7 +258,7 @@ public class World {
 //            if (maxId < routerId2)
 //                maxId = routerId2;
 //
-//            log.appendText("Link " + routerId1 + " ~ " + routerId2 + " created!\n");
+//            logTA.appendText("Link " + routerId1 + " ~ " + routerId2 + " created!\n");
 //        }
 //        maxId++;
 
@@ -251,9 +279,13 @@ public class World {
         return web;
     }
 
-    public TextArea getLog() {
+    public Log getLog() {
         return log;
     }
+
+//    public TextArea getLogTA() {
+//        return logTA;
+//    }
 
     //private List<Data> loadDataTick
 

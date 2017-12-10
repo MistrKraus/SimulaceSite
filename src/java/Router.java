@@ -13,10 +13,10 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     private short colorId = 0;
     /**Minimalni vzdalenost do hrany*/
     private double minDistance = Double.POSITIVE_INFINITY;
-    /**Router pracuje*/
-    private boolean up = true;
+//    /**Router pracuje*/
+//    private boolean up = true;
     /**Zbyvajici pamet*/
-    private int memoryLeft = MEMORY;
+    private int memoryLeft;
 //    /**Je router default gateway*/
 //    private boolean defGW = false;
     /**Predchazejici router*/
@@ -37,7 +37,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     /**ID routeru*/
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
-    private static final int MEMORY = 100000000;
+    private static final int MEMORY = 1000;//00000;
 
     //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
     //List<Short> neighbour = new LinkedList<>();
@@ -45,6 +45,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     public Router(int id) {
         this.id = id;
         this.name = "Router" + id;
+        this.memoryLeft = MEMORY;
         this.previous = null;
     }
 
@@ -90,29 +91,37 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
 
         int x;
         for (Data data : dataToSend) {
-            System.out.println(data.toString());
-            x = prepareAndSendData(data);
+            world.getLog().addSentData(data);
+//            System.out.println(data.toString());
+            x = prepareAndSendData(data, world.getLog());
             switch (x) {
                 case -1:
-                    System.out.println("Chyba pri odesilani dat.");
+                    world.getLog().addAdditionalDataInfo(data.id, "Chyba pri odesilani dat.");
+//                    System.out.println("Chyba pri odesilani dat.");
                     break;
                 case -2:
-                    System.out.println("Cast dat prijata.");
+                    world.getLog().addAdditionalDataInfo(data.id, "Cast dat prijata.");
+//                    System.out.println("Cast dat prijata.");
                     break;
                 case -3:
-                    data.sourceRouter.carryData(data);
+                    world.getLog().addAdditionalDataInfo(data.id, "Data v nespravnem routeru - odeslána do routeru, ktery je odeslal.");
+                            data.sourceRouter.carryData(data);
                     dataToRemove.add(data);
-                    System.out.println("Data v nespravnem routeru - odeslána do routeru, ktery je odeslal.");
+//                    System.out.println("Data v nespravnem routeru - odeslána do routeru, ktery je odeslal.");
                     break;
                 case -4:
+                    world.getLog().addAdditionalDataInfo(data.id, "Cesta k cilovemu routeru neexistuje - data odstranena.");
                     dataToRemove.add(data);
-                    System.out.println("Cesta k cilovemu routeru neexistuje - data odstranena.");
+//                    System.out.println("Cesta k cilovemu routeru neexistuje - data odstranena.");
                     break;
                 default:
+                    world.getLog().addDataDest(data.id, x);
                     if (data.targetRouter.getId() == x) {
-                        System.out.println("Data dorucena.");
+                        world.getLog().addAdditionalDataInfo(data.id,"Data dorucena.");
+//                        System.out.println("Data dorucena.");
                     } else {
-                        System.out.println("Data docasne ulozena v Routeru" + x);
+                        world.getLog().addAdditionalDataInfo(data.id,"Data docasne ulozena v Routeru" + x);
+//                        System.out.println("Data docasne ulozena v Routeru" + x);
                     }
             }
         }
@@ -124,13 +133,15 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         recievedData.removeAll(dataToRemove);
         dataToRemove.clear();
 
+//        System.out.println("----- " + dataToSave.size());
+
         dataToSend.addAll(dataToSave);
         dataToSave.clear();
 
         memoryLeft = MEMORY;
 
         for (Data data : dataToSend) {
-            world.getWeb().addDataInRouter();
+//            world.getWeb().addDataInRouter();
             memoryLeft -= data.amount;
         }
 
@@ -164,12 +175,13 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
      * @return id routeru, kde data na konci ticku zustala
      *          -1 pro neuspech
      */
-    private int prepareAndSendData(Data data) {
+    private int prepareAndSendData(Data data, Log log) {
         if (data.amount == 0)
             return data.targetRouter.id;
 
         int idOnPath = -3;
         List<Router> path = Dijkstra.getShortestPathTo(data.targetRouter);
+        log.addDataPath(data.sourceRouter.id, path);
         for (int i = 0; i < path.size(); i++) {
             if (id == path.get(i).id) {
                 idOnPath = i;
@@ -273,9 +285,9 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
         links.put(link.getNeighbourId(id), link);
     }
 
-    public boolean isUp() {
-        return up;
-    }
+//    public boolean isUp() {
+//        return up;
+//    }
 
     public String getName() {
         return name;

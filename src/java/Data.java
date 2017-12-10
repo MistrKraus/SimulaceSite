@@ -1,6 +1,6 @@
 public class Data implements Comparable<Data> {
 
-    /***/
+    /**Id dat*/
     public final int id;
     /**Mnozstvi prenasenych dat*/
     public int amount;
@@ -48,7 +48,6 @@ public class Data implements Comparable<Data> {
      * @return {@code Data} s mnozstvim prenasenych dat o velikosti rozdilu
      */
     public Data splitMe(int dataAmount) {
-//        //TODO !!!!!!!! podminka
         if (dataAmount < 0) {
             dataAmount = 0;
         }
@@ -65,7 +64,7 @@ public class Data implements Comparable<Data> {
 
     @Override
     public String toString() {
-        return "Data[" + id + "] " + sourceRouter.getId() + " ~ " + targetRouter.getId() + " (" + amount + ")";
+        return "Data[" + id + "] " + sourceRouter.getId() + " ~ " + targetRouter.getId() + " (" + amount + "b)";
     }
 
     @Override
