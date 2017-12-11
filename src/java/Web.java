@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Web implements IDrawable, IUpdatable {
+public class Web implements IWebComp {
 
     /**Zda jsou v routerech ulozena nejaka data*/
     private boolean dataInRouters = false;
@@ -103,8 +103,6 @@ public class Web implements IDrawable, IUpdatable {
             link.restore(world);
         }
         world.getLog().setTraffic(temp);
-
-        world.getLog().showSummaryReport();
     }
 
 //    public void addDataInRouter() {

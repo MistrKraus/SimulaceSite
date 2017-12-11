@@ -1,3 +1,4 @@
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 
 import java.io.BufferedWriter;
@@ -10,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Log implements IUpdatable {
+public class Log implements IWebComp {
 
-    private final boolean saveTickNum;
+    //private final boolean saveTickNum;
     private final boolean saveSentData;
     private final boolean saveDataPath;
     private final boolean saveDataDest;
@@ -33,9 +34,9 @@ public class Log implements IUpdatable {
     private final TextArea log;
     private BufferedWriter bufferedWriter;
 
-    public Log(TextArea log, long maxMemUsage, long maxTraffic, boolean tickNum,
+    public Log(TextArea log, long maxMemUsage, long maxTraffic, //boolean tickNum,
                boolean sentData, boolean dataPath, boolean dataDest, boolean memUsage, boolean traffic) throws IOException {
-        this.saveTickNum = tickNum;
+//        this.saveTickNum = tickNum;
         this.saveSentData = sentData;
         this.saveDataPath = dataPath;
         this.saveDataDest = dataDest;
@@ -60,9 +61,7 @@ public class Log implements IUpdatable {
     }
 
     public void setTickNum(int tickNum) {
-        if (saveTickNum) {
-            this.tickNum = tickNum;
-        }
+        this.tickNum = tickNum;
     }
 
     public void addSentData(Data data) {
@@ -99,16 +98,13 @@ public class Log implements IUpdatable {
 
     @Override
     public void update(World world) throws IOException {
-        tickNum = -1;
-        sentData.clear();
-        dataPath.clear();
-        dataDest.clear();
-        memUsage = -1;
-        traffic = -1;
-    }
+//        tickNum = -1;
+//        sentData.clear();
+//        dataPath.clear();
+//        dataDest.clear();
+//        memUsageLbl = -1;
+//        trafficLbl = -1;
 
-    @Override
-    public void restore(World world) {
         String report = getReport();
 
         log.appendText(report);
@@ -124,12 +120,21 @@ public class Log implements IUpdatable {
         additionalDataInfo.clear();
     }
 
+    @Override
+    public void restore(World world) {
+        world.getLog().showSummaryReport();
+    }
+
+    @Override
+    public void draw(GraphicsContext g, int routersInRow) {
+
+    }
+
     private String getReport() {
         StringBuilder tickReport = new StringBuilder();
 
-        if (saveTickNum) {
-            tickReport.append("Tick " + tickNum + "\n");
-        }
+//        if (saveTickNum)
+        tickReport.append("Tick " + tickNum + "\n");
 
         if (saveSentData || saveDataPath || saveDataDest) {
             tickReport.append(" Sent data\n");
@@ -179,7 +184,7 @@ public class Log implements IUpdatable {
             }
         }
 
-        tickReport.append("\n");
+        //tickReport.append("\n");
 
         return tickReport.toString();
     }
@@ -187,16 +192,26 @@ public class Log implements IUpdatable {
     public void showSummaryReport() {
         if (saveMemUsage) {
             log.appendText(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
-            System.out.println(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
+            try {
+                bufferedWriter.write(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+//            System.out.println(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
         }
 
         if (saveTraffic) {
             log.appendText(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
-            System.out.println(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
+            try {
+                bufferedWriter.write(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+//            System.out.println(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
         }
 
         log.appendText("\n");
-        System.out.println();
+//        System.out.println();
     }
 
     public void saveLog() throws IOException {
@@ -211,10 +226,6 @@ public class Log implements IUpdatable {
     }
 
     public double getTraffic() {
-//        System.out.println("----------");
-//        System.out.println(traffic);
-//        System.out.println(MAX_TRAFFIC);
-//        System.out.println("----------");
         return ((double)traffic / MAX_TRAFFIC) * 100;
     }
 

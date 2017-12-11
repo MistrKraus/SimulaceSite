@@ -24,14 +24,17 @@ public class MainController implements Initializable {
     public TextArea logTxt;
     public VBox leftVBox;
     public ProgressBar progressBar;
-    public CheckBox tickNumChBox;
+//    public CheckBox tickNumChBox;
     public CheckBox sDataChBox;
     public CheckBox dataPathChBox;
     public CheckBox dataDestChBox;
     public CheckBox memUsageChBox;
     public CheckBox trafficChBox;
     public CheckBox allChBox;
+
     public Label tickNumberLbl;
+    public Label memUsageLbl;
+    public Label trafficLbl;
 
     private World world;
     private Details details;
@@ -52,7 +55,7 @@ public class MainController implements Initializable {
         visualCnv.setHeight(600);
         visualCnv.setWidth(600);
 
-        world = new World(visualCnv.getGraphicsContext2D());
+        world = new World(visualCnv.getGraphicsContext2D(), tickNumberLbl, memUsageLbl, trafficLbl);
 
         //world.start();
     }
@@ -61,7 +64,7 @@ public class MainController implements Initializable {
 
 
         world.createWeb();
-        world.logData(logTxt, tickNumChBox.isSelected(), sDataChBox.isSelected(), dataPathChBox.isSelected(),
+        world.logData(logTxt, /*tickNumChBox.isSelected(), */sDataChBox.isSelected(), dataPathChBox.isSelected(),
                 dataDestChBox.isSelected(), memUsageChBox.isSelected(), trafficChBox.isSelected());
 
         if (world.getLog() == null) {
@@ -87,12 +90,14 @@ public class MainController implements Initializable {
     }
 
     public void handlePauseStartBtn(MouseEvent actionEvent) throws IOException, InterruptedException {
-        if (world.isRunning())
+        if (world.isRunning()) {
             world.pause();
+            return;
+        }
 
         if (world.getWeb() == null) {
             world.createWeb();
-            world.logData(logTxt, tickNumChBox.isSelected(), sDataChBox.isSelected(), dataPathChBox.isSelected(),
+            world.logData(logTxt, /*tickNumChBox.isSelected(),*/ sDataChBox.isSelected(), dataPathChBox.isSelected(),
                     dataDestChBox.isSelected(), memUsageChBox.isSelected(), trafficChBox.isSelected());
 
             if (world.getLog() == null) {
@@ -109,15 +114,15 @@ public class MainController implements Initializable {
     public void handleDetailsBtn(ActionEvent actionEvent) {
         details = new Details();
         details.setWorld(world);
-        details.setRouters(world.getRouters());
-        details.setLinks(world.getLinks());
+        details.setRouters(world.getWeb().getRouters());
+        details.setLinks(world.getWeb().getLinks());
         details.show();
     }
 
     public void setAll(MouseEvent mouseEvent) {
         boolean selected = allChBox.isSelected();
 
-        tickNumChBox.setSelected(selected);
+//        tickNumChBox.setSelected(selected);
         sDataChBox.setSelected(selected);
         dataPathChBox.setSelected(selected);
         dataDestChBox.setSelected(selected);
@@ -126,7 +131,26 @@ public class MainController implements Initializable {
         allChBox.setSelected(selected);
     }
 
-    public void setLogConf(MouseEvent mouseEvent) {
+    public void handleNextTickBtn(MouseEvent mouseEvent) throws IOException, InterruptedException {
+        if (world.getWeb() == null) {
+            world.createWeb();
+            world.logData(logTxt, /*tickNumChBox.isSelected(),*/ sDataChBox.isSelected(), dataPathChBox.isSelected(),
+                    dataDestChBox.isSelected(), memUsageChBox.isSelected(), trafficChBox.isSelected());
 
+            if (world.getLog() == null) {
+                System.out.println("App will be closed automatically.");
+                Platform.exit();
+            }
+
+            powerCutBtn.setDisable(false);
+            rndPowerCutBtn.setDisable(false);
+        }
+
+        if (!world.isRunning()) {
+            world.setRunning();
+            world.update();
+            world.draw();
+            world.pause();
+        }
     }
 }

@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Routery v sidi ridici komunikaci.
  */
-public class Router implements IUpdatable, IDrawable, Comparable<Router> {
+public class Router implements IWebComp, Comparable<Router> {
 
     /**Id barvy, ktera se vyuzije na vykresleni*/
     private short colorId = 0;
@@ -37,7 +37,7 @@ public class Router implements IUpdatable, IDrawable, Comparable<Router> {
     /**ID routeru*/
     private final int id;
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
-    private static final int MEMORY = 1000;//00000;
+    private static final int MEMORY = 100000000;
 
     //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
     //List<Short> neighbour = new LinkedList<>();

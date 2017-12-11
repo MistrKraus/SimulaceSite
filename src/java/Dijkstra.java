@@ -11,7 +11,7 @@ public class Dijkstra {
      */
     public static void computePath(Router source, World world) {
 
-        world.getRouters().values().forEach(r -> {
+        world.getWeb().getRouters().values().forEach(r -> {
             r.setPrevious(null);
             r.setMinDistance(Double.POSITIVE_INFINITY);
         });

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Spojeni mezi jednotlivymi routery.
  */
-public class Link implements IUpdatable, IDrawable, Comparable<Link> {
+public class Link implements IWebComp, Comparable<Link> {
 
     /**Id barvy, ktera se vyuzije na vykresleni*/
     private short colorId = 0;
@@ -20,10 +20,6 @@ public class Link implements IUpdatable, IDrawable, Comparable<Link> {
     /**Predchazejici Link spojujici stejnej uzly*/
     private Link previousLink;
 
-//    /**Id routeru 1*/
-//    private final int r1Id;
-//    /**Id routeru 2*/
-//    private final int r2Id;
     /**ID routeru, mezi kterymi link je*/
     private final RouterPair ROUTER_PAIR;
     /**Maximalni propustnost*/

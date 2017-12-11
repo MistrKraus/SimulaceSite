@@ -42,7 +42,7 @@
             <TabPane maxWidth="270" minWidth="270" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
                 <padding><Insets topRightBottomLeft="10"/></padding>
                 <Tab text="Log">
-                    <TextArea fx:id="logTxt" prefWidth="270" VBox.vgrow="ALWAYS" editable="false">
+                    <TextArea fx:id="logTxt" minWidth="260" VBox.vgrow="ALWAYS" editable="false">
                         <padding><Insets topRightBottomLeft="10"/></padding>
                     </TextArea>
                 </Tab>
@@ -52,7 +52,6 @@
                         <Label text="What should be recorded:"/>
                         <VBox spacing="5" VBox.vgrow="ALWAYS">
                             <padding><Insets left="5"/></padding>
-                            <CheckBox fx:id="tickNumChBox" text="Tick number"/>
                             <CheckBox fx:id="sDataChBox" text="Sent data"/>
                             <CheckBox fx:id="dataPathChBox" text="Sent data paths"/>
                             <CheckBox fx:id="dataDestChBox" text="Data final destination"/>
@@ -60,7 +59,7 @@
                             <CheckBox fx:id="trafficChBox" text="Link traffic"/>
                             <CheckBox fx:id="allChBox" onMouseClicked="#setAll" text="All"><padding><Insets top="5"/></padding></CheckBox>
                             <Region VBox.vgrow="ALWAYS"/>
-                            <Button onMouseClicked="#setLogConf" text="Save" prefWidth="180" minHeight="25" maxHeight="25"/>
+                            <!--<Button onMouseClicked="#setLogConf" text="Save" prefWidth="260" minHeight="25" maxHeight="25"/>-->
                         </VBox>
                     </VBox>
                 </Tab>
@@ -74,13 +73,15 @@
             <padding>
                 <Insets left="10" right="10" bottom="10"/>
             </padding>
-            <GridPane>
-                <Label text="Routers Memory Usage" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
-                <Label text="Links Traffic" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
+            <GridPane minWidth="170">
+                <Label fx:id="memUsageLbl" text="Routers Memory Usage " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label fx:id="trafficLbl" text="Links Traffic " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             </GridPane>
-            <Button onMouseClicked="#handlePauseStartBtn" text="||" style="fx-text-weight:bold"/>
-            <Button onMouseClicked="#handlePauseStartBtn" text="▬" style="fx-text-weight:bold"/>
-            <Label fx:id="tickNumberLbl" text="Tick "/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button onMouseClicked="#handlePauseStartBtn" text="►" style="fx-text-weight:bold"/>
+            <Button onMouseClicked="#handleNextTickBtn" text="►|" style="fx-text-weight:bold"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="tickNumberLbl" minWidth="90" text="Tick "/>
         </HBox>
     </bottom>
 </BorderPane>

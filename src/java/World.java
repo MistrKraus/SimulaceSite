@@ -2,13 +2,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Ridici trida
@@ -23,15 +23,15 @@ public class World {
     private Web web;
     /**Spravce vstupnich dat*/
     private DataManager dataManager;
-//    /**TextArea pro logovani udalosti*/
-//    private TextArea logTA;
     /**Objekt pro loggovani udalosti*/
     private Log log;
-//    /**Celkovy pocet spojeni mezi routery*/
-//    private int linkCount;
-//    /**Pocet routeru v radku pri vykreslovani*/
-//    private int routersInRow;
-//    private int deltaXY;
+    /**Label pro zorbrazeni aktualniho ticku*/
+    private Label tickNumberLbl;
+    /**Label pro zobrazeni vyuziti pameti routeru aktualnim ticku*/
+    private Label memUsageLbl;
+    /**Label pro zobrazeni vyuziti maximalniho prutoku linku*/
+    private Label trafficLbl;
+
     /**Boolean bezi-li simulace*/
     private boolean isRunning = false;
 
@@ -58,8 +58,11 @@ public class World {
      *
      * @param g graficky kontext, do ktereho se simulace vykresluje
      */
-    public World(GraphicsContext g) {
+    public World(GraphicsContext g, Label tickNumberLbl, Label memUsageLbl, Label trafficLbl) {
         graphics = g;
+        this.tickNumberLbl = tickNumberLbl;
+        this.memUsageLbl = memUsageLbl;
+        this.trafficLbl = trafficLbl;
 
         timeline = new Timeline(oneFrame);
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -130,14 +133,20 @@ public class World {
     public void update() throws IOException, InterruptedException {
         this.log.setTickNum(++tickNum);
         System.out.println(dataManager.getCurrentTick());
+        tickNumberLbl.setText("Tick " + tickNum);
 
         web.update(this);
         //log.update(this);
 
         if (isRunning) {
-            log.restore(this);
+            log.update(this);
+
             web.restore(this);
+            log.restore(this);
         }
+
+        memUsageLbl.setText(String.format("Routers Memory Usage %.2f%%", log.getMemUsage()));
+        trafficLbl.setText(String.format("Links Traffic %.2f%%", log.getTraffic()));
 
         draw();
     }
@@ -167,13 +176,13 @@ public class World {
     }
 
 
-    public void logData(TextArea log, boolean tickNum, boolean sentData, boolean dataPath,
+    public void logData(TextArea log, /*boolean tickNum,*/ boolean sentData, boolean dataPath,
                    boolean dataDest, boolean memUsage, boolean traffic) throws IOException {
         if (web == null) {
             createWeb();
         }
 
-        this.log = new Log(log, web.getMAX_MEMORY_USAGE(), web.getMAX_TRAFFIC(), tickNum,
+        this.log = new Log(log, web.getMAX_MEMORY_USAGE(), web.getMAX_TRAFFIC(), //tickNum,
                 sentData, dataPath, dataDest, memUsage, traffic);
         this.log.addText("Web succesfully created:\n" +
                 " - " + web.getRouters().size() + " nodes\n" +
@@ -289,11 +298,11 @@ public class World {
 
     //private List<Data> loadDataTick
 
-    public Map<Integer, Router> getRouters() { return web.getRouters(); }
-
-    public Map<RouterPair, Link> getLinks() {
-        return web.getLinks();
-    }
+//    public Map<Integer, Router> getRouters() { return web.getRouters(); }
+//
+//    public Map<RouterPair, Link> getLinks() {
+//        return web.getLinks();
+//    }
 
     public DataManager getDataManager() {
         return dataManager;
@@ -301,6 +310,10 @@ public class World {
 
     public List<Data> getDataToSend() throws IOException {
         return dataManager.getTickSimulationData();
+    }
+
+    public void setRunning() {
+        isRunning = true;
     }
 
     public boolean isRunning() {
