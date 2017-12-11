@@ -85,7 +85,8 @@ public class Link implements IWebComp, Comparable<Link> {
 
     @Override
     public void update(World world) {
-
+        this.data1to2 = CCA_MAX_THROUGHTPUT;
+        this.data2to1 = CCA_MAX_THROUGHTPUT;
     }
 
     @Override
@@ -99,9 +100,6 @@ public class Link implements IWebComp, Comparable<Link> {
                 colorId = 1;
             }
         }
-
-        this.data1to2 = CCA_MAX_THROUGHTPUT;
-        this.data2to1 = CCA_MAX_THROUGHTPUT;
     }
 
     /**
@@ -229,7 +227,7 @@ public class Link implements IWebComp, Comparable<Link> {
 
     @Override
     public String toString() {
-        return this.getR1Id() + " ~ " + this.getR2Id();
+        return "Link [" + this.getR1Id() + " ~ " + this.getR2Id() + "]";
     }
 
     @Override

@@ -39,9 +39,6 @@ public class Router implements IWebComp, Comparable<Router> {
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
     private static final int MEMORY = 100000000;
 
-    //** List - Sousedi daného routeru (kdyžtak přepsat na objekt Router, pokud nebude stačit Short)*/
-    //List<Short> neighbour = new LinkedList<>();
-
     public Router(int id) {
         this.id = id;
         this.name = "Router" + id;
@@ -192,19 +189,6 @@ public class Router implements IWebComp, Comparable<Router> {
         }
 
         return idOnPath != -3 ? sendData(path, ++idOnPath, data) : -3;
-//        boolean dataSentSuccesfuly = true;
-//        for (Router router : path) {
-//            if (sendDataVia(router, data) == -1) {
-//                dataSentSuccesfuly = false;
-//                break;
-//            }
-//        }
-
-
-
-        //links.get(data.targetRouter.id).prepareAndSendData(data);
-
-        //return data.targetRouter.getId();
     }
 
     /**

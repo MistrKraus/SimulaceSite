@@ -16,7 +16,7 @@
             <Button fx:id="loadDataBtn" onAction="#handleBtnLoadData" minWidth="140" text="Load data" />
             <Button fx:id="playBtn" onMouseClicked="#handlePauseStartBtn" disable="true" minWidth="140" text="Start Simulation" />
             <Separator VBox.vgrow="ALWAYS" />
-            <ComboBox fx:id="router1Cmb" minWidth="140" promptText="Router 1" />
+            <!--<ComboBox fx:id="router1Cmb" minWidth="140" promptText="Router 1" />
             <HBox maxWidth="150" alignment="CENTER">
                 <Label text="Ticks:" minWidth="30"/>
                 <Region HBox.hgrow="ALWAYS" />
@@ -25,7 +25,7 @@
             <Button fx:id="powerCutBtn" minWidth="140" disable="true" text="Power Cut" />
             <Separator VBox.vgrow="ALWAYS" />
             <Button fx:id="rndPowerCutBtn" minWidth="140" disable="true" text="Random Power Cut" />
-            <Separator VBox.vgrow="ALWAYS" />
+            <Separator VBox.vgrow="ALWAYS" />-->
             <Button fx:id="detailsBtn" onAction="#handleDetailsBtn" minWidth="140" disable="true" text="Details"/>
         </VBox>
     </left>
@@ -78,8 +78,8 @@
                 <Label fx:id="trafficLbl" text="Links Traffic " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             </GridPane>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button onMouseClicked="#handlePauseStartBtn" text="►" style="fx-text-weight:bold"/>
-            <Button onMouseClicked="#handleNextTickBtn" text="►|" style="fx-text-weight:bold"/>
+            <Button fx:id="pausePlayBtn" onMouseClicked="#handlePauseStartBtn" text="►" disable="true" style="fx-text-weight:bold"/>
+            <Button fx:id="nextTickBtn" onMouseClicked="#handleNextTickBtn" text="►|" disable="true" style="fx-text-weight:bold"/>
             <Region HBox.hgrow="ALWAYS" />
             <Label fx:id="tickNumberLbl" minWidth="90" text="Tick "/>
         </HBox>

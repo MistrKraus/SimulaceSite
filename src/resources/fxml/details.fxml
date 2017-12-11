@@ -1,0 +1,33 @@
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.TextArea?>
+<TabPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DetailController" tabClosingPolicy="UNAVAILABLE">
+    <Tab text="Routers">
+        <GridPane>
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <Label text="All" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label text="Carrying Data" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Detail" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <Button text="↻" onAction="#refresh" prefWidth="20" prefHeight="20" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+            <ListView fx:id="allRoutersLW" prefWidth="150" onMouseClicked="#routerDetailAll" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <ListView fx:id="carryingRoutersLW" prefWidth="150" onMouseClicked="#routerDetailData" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <TextArea fx:id="detailRouterTA" maxHeight="400" prefWidth="250" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        </GridPane>
+    </Tab>
+    <Tab text="Links">
+        <GridPane>
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <Label text="All" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label text="Detail" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <ListView fx:id="allLinksLW" onMouseClicked="#linkDetail" prefWidth="150" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextArea fx:id="detailLinkTA" maxHeight="400" prefWidth="250" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        </GridPane>
+    </Tab>
+</TabPane>

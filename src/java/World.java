@@ -145,8 +145,8 @@ public class World {
             log.restore(this);
         }
 
-        memUsageLbl.setText(String.format("Routers Memory Usage %.2f%%", log.getMemUsage()));
-        trafficLbl.setText(String.format("Links Traffic %.2f%%", log.getTraffic()));
+        memUsageLbl.setText(String.format("Routers Memory Usage\t%.2f%%", log.getMemUsage()));
+        trafficLbl.setText(String.format("Links Traffic\t\t\t%.2f%%", log.getTraffic()));
 
         draw();
     }

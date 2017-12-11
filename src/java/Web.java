@@ -54,6 +54,10 @@ public class Web implements IWebComp {
 
     @Override
     public void update(World world) throws IOException {
+        for (Link link : links.values()) {
+            link.update(world);
+        }
+
         List<Data> dataToSend = world.getDataToSend();
 
         //System.out.println(" ++ " + dataInRouters);

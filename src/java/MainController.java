@@ -1,29 +1,34 @@
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
     public Button loadDataBtn;
     public Button playBtn;
-    public Button powerCutBtn;
+//    public Button powerCutBtn;
     public Button detailsBtn;
-    public ComboBox router1Cmb;
-    public ComboBox router2Cmb;
-    public Button rndPowerCutBtn;
-    public Spinner<Integer> tickSpn;
+//    public ComboBox router1Cmb;
+//    public ComboBox router2Cmb;
+//    public Button rndPowerCutBtn;
+//    public Spinner<Integer> tickSpn;
     public Canvas visualCnv;
     public TextArea logTxt;
-    public VBox leftVBox;
-    public ProgressBar progressBar;
+//    public VBox leftVBox;
+//    public ProgressBar progressBar;
 //    public CheckBox tickNumChBox;
     public CheckBox sDataChBox;
     public CheckBox dataPathChBox;
@@ -36,16 +41,19 @@ public class MainController implements Initializable {
     public Label memUsageLbl;
     public Label trafficLbl;
 
+    public Button pausePlayBtn;
+    public Button nextTickBtn;
+
     private World world;
     private Details details;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tickSpn.tooltipProperty().set(new Tooltip("Interval (1 - 500 sec) where link between selected routers is down.\n" +
-                "0 - Generates random interval between 1 - 500 sec\n" +
-                "Enter integer values only."));
-        tickSpn.setEditable(true);
-        tickSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500));
+//        tickSpn.tooltipProperty().set(new Tooltip("Interval (1 - 500 sec) where link between selected routers is down.\n" +
+//                "0 - Generates random interval between 1 - 500 sec\n" +
+//                "Enter integer values only."));
+//        tickSpn.setEditable(true);
+//        tickSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500));
 
         allChBox.setSelected(true);
         setAll(null);
@@ -61,8 +69,6 @@ public class MainController implements Initializable {
     }
 
     public void handleBtnLoadData(ActionEvent actionEvent) throws IOException {
-
-
         world.createWeb();
         world.logData(logTxt, /*tickNumChBox.isSelected(), */sDataChBox.isSelected(), dataPathChBox.isSelected(),
                 dataDestChBox.isSelected(), memUsageChBox.isSelected(), trafficChBox.isSelected());
@@ -84,16 +90,20 @@ public class MainController implements Initializable {
 //
 //        System.out.println(path);
 
-        playBtn.setDisable(false);
         loadDataBtn.setDisable(true);
+        playBtn.setDisable(false);
         detailsBtn.setDisable(false);
+        pausePlayBtn.setDisable(false);
+        nextTickBtn.setDisable(false);
     }
 
     public void handlePauseStartBtn(MouseEvent actionEvent) throws IOException, InterruptedException {
         if (world.isRunning()) {
+            pausePlayBtn.setText("►");
             world.pause();
             return;
         }
+        pausePlayBtn.setText("| |");
 
         if (world.getWeb() == null) {
             world.createWeb();
@@ -107,16 +117,31 @@ public class MainController implements Initializable {
         }
         world.start();
 
-        powerCutBtn.setDisable(false);
-        rndPowerCutBtn.setDisable(false);
+//        powerCutBtn.setDisable(false);
+//        rndPowerCutBtn.setDisable(false);
     }
 
-    public void handleDetailsBtn(ActionEvent actionEvent) {
-        details = new Details();
-        details.setWorld(world);
-        details.setRouters(world.getWeb().getRouters());
-        details.setLinks(world.getWeb().getLinks());
-        details.show();
+    public void handleDetailsBtn(ActionEvent actionEvent) throws IOException {
+        Stage stage = new Stage();
+
+        stage.setTitle("Details");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/details.fxml"));
+
+        // dependence injection
+        loader.setControllerFactory(param -> {
+            try {
+                return param.getConstructor(Map.class, Map.class).newInstance(world.getDataManager().getRouters(),
+                        world.getDataManager().getLinks());
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
+        Parent parent = loader.load();
+        Scene scene = new Scene(parent, stage.getWidth(), stage.getHeight());
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void setAll(MouseEvent mouseEvent) {
@@ -142,8 +167,8 @@ public class MainController implements Initializable {
                 Platform.exit();
             }
 
-            powerCutBtn.setDisable(false);
-            rndPowerCutBtn.setDisable(false);
+//            powerCutBtn.setDisable(false);
+//            rndPowerCutBtn.setDisable(false);
         }
 
         if (!world.isRunning()) {
