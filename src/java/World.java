@@ -54,7 +54,7 @@ public class World {
     private static final String DATA_SIMULATION_FILE = "test_simulace.txt";
 
     /**
-     * Konstruktor
+     * Ridici trida
      *
      * @param g graficky kontext, do ktereho se simulace vykresluje
      */
@@ -175,7 +175,17 @@ public class World {
 //        }
     }
 
-
+    /**
+     * Vytvori log, nastavi, jaka data se budou ukladat
+     *
+     * @param log TextArea kam se po kazdem kroku vypise info o siti
+     * @param sentData Logovat odeslana data
+     * @param dataPath Logovat cesty odeslanych dat
+     * @param dataDest Logovat id routeru, kam se data ulozila
+     * @param memUsage Logovat vyuziti pameti routeru
+     * @param traffic Logovat vytizenost site
+     * @throws IOException
+     */
     public void logData(TextArea log, /*boolean tickNum,*/ boolean sentData, boolean dataPath,
                    boolean dataDest, boolean memUsage, boolean traffic) throws IOException {
         if (web == null) {
@@ -187,9 +197,6 @@ public class World {
         this.log.addText("Web succesfully created:\n" +
                 " - " + web.getRouters().size() + " nodes\n" +
                 " - " + web.getLinks().size() + " links\n");
-
-//        this.log.update(this);
-//        this.log.restore(this);
     }
 
     /**
@@ -206,116 +213,58 @@ public class World {
 
         this.web = new Web(dataManager.getRouters(), dataManager.getLinks());
 
-//        int routerId1;
-//        int routerId2;
-//
-//        String[][] line = new String[linkCount][];
-//
-//        /**Zjisteni poctu routeru v siti*/
-//        for (int i = 0; i < linkCount; i++) {
-//            line[i] = loadedData.get(i);
-//
-//            //TODO Jsou routery cislovane od 0 nebo 1?
-//            routerId1 = Integer.parseInt(line[i][0]) - 1;
-//            routerId2 = Integer.parseInt(line[i][1]) - 1;
-//
-//            routers.put(routerId1, new Router(routerId1));
-//            routers.put(routerId2, new Router(routerId2));
-//        }
-//        logTA.appendText("All routers created succesfully.\n");
-
-//        links = new Link[linkCount];
-//
-//        /**Ulozeni linku do pole*/
-//        for (int i = 0; i < linkCount; i++) {
-//            links[i] = new Link(Float.parseFloat(line[i][2]), Float.parseFloat(line[i][3]),
-//                    (short)(Integer.parseInt(line[i][0]) - 1), (short)(Integer.parseInt(line[i][1]) - 1));
-//
-//            routers.get(links[i].getR1Id()).neighbours.put(links[i].getR2Id(), links[i]);
-//            Link tmp = new Link(links[i].getTHROUGHTPUT(), links[i].getRELIABILITY(), links[i].getR2Id(), links[i].getR1Id());
-//            routers.get(links[i].getR2Id()).neighbours.put(links[i].getR1Id(), tmp);
-//            logTA.appendText("Link " + links[i].getR1Id() + " ~ " + links[i].getR2Id() + " created!\n");
-//        }
-
-        // ulozeni sousedu do routeru
-//        for (Map.Entry<RouterPair, Link> o : links.entrySet()) {
-//            Link link = o.getValue();
-//
-//            routers.get(link.getR1Id()).addLink(link.getR2Id(), link);
-//            routers.get(link.getR2Id()).addLink(link.getR1Id(), link);
-//        }
-
-//        this.links = new Link[linkCount][linkCount];
-//        String[] line;
-//
-//        for (int i = 0; i < linkCount; i++) {
-//            line = loadedData.get(i);
-//
-//            //TODO Jsou routery cislovane od 0 nebo 1?
-//            routerId1 = (short)(Integer.parseInt(line[0]) - 1);
-//            routerId2 = (short)(Integer.parseInt(line[1]) - 1);
-//
-//            Link link = new Link(Float.parseFloat(line[2]), Float.parseFloat(line[3]),
-//                    routerId1, routerId2);
-//
-//            links[routerId1][routerId2] = link;
-//            links[routerId2][routerId1] = link;
-//
-//            if (maxId < routerId1)
-//                maxId = routerId1;
-//
-//            if (maxId < routerId2)
-//                maxId = routerId2;
-//
-//            logTA.appendText("Link " + routerId1 + " ~ " + routerId2 + " created!\n");
-//        }
-//        maxId++;
-
         draw();
-
-        //new PathsManager(links, routers);
-
-//        Vypsání sousedů routerů/počet hran vedoucích z routerů
-//        for (int i = 0; i < maxId; i++) {
-//            System.out.println("\nRouter " + i + ": " + routers.get(i).neighbours.values());
-//            System.out.println(i + ".Router : " + routers.get(i).getLinkCount());
-//        }
-
-        //new FloydWarshall(links, routers.length);
     }
 
+    /**
+     * Vrati instanci {@code Web}
+     *
+     * @return instance {@code Web}
+     */
     public Web getWeb() {
         return web;
     }
 
+    /**
+     * Vrati {@code Log}
+     *
+     * @return {@code Log}
+     */
     public Log getLog() {
         return log;
     }
 
-//    public TextArea getLogTA() {
-//        return logTA;
-//    }
-
-    //private List<Data> loadDataTick
-
-//    public Map<Integer, Router> getRouters() { return web.getRouters(); }
-//
-//    public Map<RouterPair, Link> getLinks() {
-//        return web.getLinks();
-//    }
-
+    /**
+     * Vrati instanci {@code DataManager}
+     *
+     * @return instance {@code DataManager}
+     */
     public DataManager getDataManager() {
         return dataManager;
     }
 
+    /**
+     * Vrati list dat k odeslani v tomto ticku
+     *
+     * @return list dat k odeslani
+     * @throws IOException chyba pri cteni souboru
+     */
     public List<Data> getDataToSend() throws IOException {
         return dataManager.getTickSimulationData();
     }
 
+    /**
+     * Nastavi informaci o behu simulace na pravdivou
+     */
     public void setRunning() {
         isRunning = true;
     }
 
+    /**
+     * Vrati zda simulace bezi
+     *
+     * @return zda simulace bezi
+     */
     public boolean isRunning() {
         return isRunning;
     }

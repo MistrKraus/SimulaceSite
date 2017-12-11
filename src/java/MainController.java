@@ -17,43 +17,48 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    /**Button pro nacteni dat*/
     public Button loadDataBtn;
+    /**Button pro spusteni simulace*/
     public Button playBtn;
-//    public Button powerCutBtn;
+    /**Button otvirajici okno s detailnimi informacemi o siti*/
     public Button detailsBtn;
-//    public ComboBox router1Cmb;
-//    public ComboBox router2Cmb;
-//    public Button rndPowerCutBtn;
-//    public Spinner<Integer> tickSpn;
-    public Canvas visualCnv;
-    public TextArea logTxt;
-//    public VBox leftVBox;
-//    public ProgressBar progressBar;
-//    public CheckBox tickNumChBox;
-    public CheckBox sDataChBox;
-    public CheckBox dataPathChBox;
-    public CheckBox dataDestChBox;
-    public CheckBox memUsageChBox;
-    public CheckBox trafficChBox;
-    public CheckBox allChBox;
-
-    public Label tickNumberLbl;
-    public Label memUsageLbl;
-    public Label trafficLbl;
-
+    /**Button pozastavujici a spoustejici simulaci*/
     public Button pausePlayBtn;
+    /**Button pro provedeni jednoho kroku simelace*/
     public Button nextTickBtn;
 
+    /**Canvas pro graficky vystup*/
+    public Canvas visualCnv;
+
+    /**TextArea pro vypis logu*/
+    public TextArea logTxt;
+
+    /**CheckBox zda se maji zapisovat odeslana data*/
+    public CheckBox sDataChBox;
+    /**CheckBox zda se maji zapisovat cesty odeslanych dat*/
+    public CheckBox dataPathChBox;
+    /**CheckBox zda se ma zapisovat id routeru, kam se data ulozila*/
+    public CheckBox dataDestChBox;
+    /**CheckBox zda se ma zapisovat vyuziti pameti routeru*/
+    public CheckBox memUsageChBox;
+    /**CheckBox zda se ma zapisovat vytizenost site*/
+    public CheckBox trafficChBox;
+    /**CheckBox pro zaskrnuti / odskrtnuti ostatnich CheckBoxu*/
+    public CheckBox allChBox;
+
+    /**Label zobrazujici cislo ticku*/
+    public Label tickNumberLbl;
+    /**Label zobrazujici vyuziti pameti routeru*/
+    public Label memUsageLbl;
+    /**Label zobrazujici vytizenost site*/
+    public Label trafficLbl;
+
+    /**Ridici trida*/
     private World world;
-    private Details details;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        tickSpn.tooltipProperty().set(new Tooltip("Interval (1 - 500 sec) where link between selected routers is down.\n" +
-//                "0 - Generates random interval between 1 - 500 sec\n" +
-//                "Enter integer values only."));
-//        tickSpn.setEditable(true);
-//        tickSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 500));
 
         allChBox.setSelected(true);
         setAll(null);
@@ -68,6 +73,12 @@ public class MainController implements Initializable {
         //world.start();
     }
 
+    /**
+     * Nacte graf site
+     *
+     * @param actionEvent
+     * @throws IOException chyba pri nacitani souboru
+     */
     public void handleBtnLoadData(ActionEvent actionEvent) throws IOException {
         world.createWeb();
         world.logData(logTxt, /*tickNumChBox.isSelected(), */sDataChBox.isSelected(), dataPathChBox.isSelected(),
@@ -78,18 +89,6 @@ public class MainController implements Initializable {
             Platform.exit();
         }
 
-//        Dijkstra.computePath(world.getRouters().get(3));
-//        List<Router> path = Dijkstra.getShortestPathTo(world.getRouters().get(8));
-//
-//        System.out.println(path);
-//
-//        world.getRouters().values().forEach(router -> {router.setPrevious(null); router.setMinDistance(Double.POSITIVE_INFINITY);});
-//
-//        Dijkstra.computePath(world.getRouters().get(0));
-//        path = Dijkstra.getShortestPathTo(world.getRouters().get(7));
-//
-//        System.out.println(path);
-
         loadDataBtn.setDisable(true);
         playBtn.setDisable(false);
         detailsBtn.setDisable(false);
@@ -97,6 +96,13 @@ public class MainController implements Initializable {
         nextTickBtn.setDisable(false);
     }
 
+    /**
+     * Spusti / Pozastavi simulaci site
+     *
+     * @param actionEvent
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void handlePauseStartBtn(MouseEvent actionEvent) throws IOException, InterruptedException {
         if (world.isRunning()) {
             pausePlayBtn.setText("►");
@@ -116,11 +122,14 @@ public class MainController implements Initializable {
             }
         }
         world.start();
-
-//        powerCutBtn.setDisable(false);
-//        rndPowerCutBtn.setDisable(false);
     }
 
+    /**
+     * Otevre okno s deaily o siti
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleDetailsBtn(ActionEvent actionEvent) throws IOException {
         Stage stage = new Stage();
 
@@ -144,6 +153,11 @@ public class MainController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Zaskrne / Odskrtne vsechny CheckBoxy
+     *
+     * @param mouseEvent
+     */
     public void setAll(MouseEvent mouseEvent) {
         boolean selected = allChBox.isSelected();
 
@@ -156,6 +170,13 @@ public class MainController implements Initializable {
         allChBox.setSelected(selected);
     }
 
+    /**
+     * Provede jeden tick simulace site
+     *
+     * @param mouseEvent
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void handleNextTickBtn(MouseEvent mouseEvent) throws IOException, InterruptedException {
         if (world.getWeb() == null) {
             world.createWeb();

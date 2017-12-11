@@ -55,7 +55,7 @@ public class Dijkstra {
             path.add(router);
 
         Collections.reverse(path);
-        System.out.println(path);
+        //System.out.println(path);
         return path;
     }
 

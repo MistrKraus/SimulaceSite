@@ -13,12 +13,8 @@ public class Router implements IWebComp, Comparable<Router> {
     private short colorId = 0;
     /**Minimalni vzdalenost do hrany*/
     private double minDistance = Double.POSITIVE_INFINITY;
-//    /**Router pracuje*/
-//    private boolean up = true;
     /**Zbyvajici pamet*/
     private int memoryLeft;
-//    /**Je router default gateway*/
-//    private boolean defGW = false;
     /**Predchazejici router*/
     private Router previous;
     /** List - Sousedi daného routeru*/
@@ -39,6 +35,11 @@ public class Router implements IWebComp, Comparable<Router> {
     /**Pamet routeru - maximalni mnozstvi dat, ktere dokaze uchovavat*/
     private static final int MEMORY = 100000000;
 
+    /**
+     * Odesila, prechovava a prijima data v siti
+     *
+     * @param id id routeru
+     */
     public Router(int id) {
         this.id = id;
         this.name = "Router" + id;
@@ -99,7 +100,7 @@ public class Router implements IWebComp, Comparable<Router> {
                     break;
                 case -3:
                     world.getLog().addAdditionalDataInfo(data.id, "Data v nespravnem routeru - odeslána do routeru, ktery je odeslal.");
-                            data.sourceRouter.carryData(data);
+                    data.sourceRouter.carryData(data);
                     dataToRemove.add(data);
 //                    System.out.println("Data v nespravnem routeru - odeslána do routeru, ktery je odeslal.");
                     break;
@@ -152,10 +153,20 @@ public class Router implements IWebComp, Comparable<Router> {
         colorId = 2;
     }
 
+    /**
+     * Ulozi data k odeslani
+     *
+     * @param data data, o ktera se router postara
+     */
     public void carryData(Data data) {
         dataToSend.add(data);
     }
 
+    /**
+     * Ulozi data do pameti routeru
+     *
+     * @param data data k ulozeni do pameti
+     */
     public void saveData(Data data) {
         dataToSave.add(data);
 
@@ -164,6 +175,7 @@ public class Router implements IWebComp, Comparable<Router> {
 
     /**
      * Pripravi a odesle data
+     * Ziska cestu, kudy budou data odesilana
      *
      * @param data data k odeslani
      * @return id routeru, kde data na konci ticku zustala
@@ -192,7 +204,8 @@ public class Router implements IWebComp, Comparable<Router> {
     }
 
     /**
-     * Odesle data
+     * Odesle data do nasledujiciho routeru v ceste
+     * Pokud nema link dostatecnou propustnost nebo router pamet pro pripade ulozeni - jsou data rozdelena a odeslano jejich maximalni mnozstvi
      *
      * @param path list routeru, pres ktere se data maji poslat
      * @param data data k odeslani
@@ -205,21 +218,27 @@ public class Router implements IWebComp, Comparable<Router> {
             return recieveData(data);
         }
 
+//        boolean splited = false;
         Link link = links.get(path.get(idOnPath).id);
 
         int linkCapacity = link.getDirCapacity(id);
 
         if (linkCapacity < data.amount) {
             saveData(data.splitMe(linkCapacity));
+//            splited = true;
         }
 
         if (idOnPath + 1 < path.size() && path.get(idOnPath + 1).getMemoryLeft() < linkCapacity) {
+//            splited = true;
             saveData(data.splitMe(path.get(idOnPath + 1).getMemoryLeft()));
         }
 
         dataToRemove.add(data);
 
         return link.sendData(path, idOnPath, data);
+
+//        Integer destinationId = link.sendData(path, idOnPath, data);
+//        return destinationId != null ? destinationId.intValue() : id;
 
         //return data.targetRouter.getId();
     }
@@ -254,50 +273,101 @@ public class Router implements IWebComp, Comparable<Router> {
         return -2;
     }
 
+    /**
+     * Nastavi minimalni vzdalenost - Dijkstra
+     *
+     * @param minDistance minimalni vzdalenost
+     */
     public void setMinDistance(double minDistance) {
         this.minDistance = minDistance;
     }
 
+    /**
+     * Natavi predchozi router - Dijkstra
+     *
+     * @param previous predchozi router
+     */
     public void setPrevious(Router previous) {
         this.previous = previous;
     }
 
+    /**
+     * Ulozi link vedouci k routeru
+     *
+     * @param link link vedouci k routeru
+     */
     public void addLink(Link link) {
         links.put(link.getNeighbourId(id), link);
     }
 
-//    public boolean isUp() {
-//        return up;
-//    }
-
+    /**
+     * Vrati nazev routeru
+     *
+     * @return nazev routeru
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Vrazi List dat k odeslani
+     *
+     * @return List dat k odeslani
+     */
     public List<Data> getData() {
         return dataToSend;
     }
 
+    /**
+     * Vrati mnozstvi volne pameti routeru
+     *
+     * @return mnozstvi vole pameti routeru
+     */
     public int getMemoryLeft() {
         return memoryLeft;
     }
 
+    /**
+     * Vrati id routeru
+     *
+     * @return id routeru
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Vrati pamet routeru
+     *
+     * @return pamet routeru
+     */
     public static int getMEMORY() {
         return MEMORY;
     }
 
+    /**
+     * Vrati minimalni vzdalenost - Dijkstra
+     *
+     * @return minimalni vzdalenost
+     */
     public double getMinDistance() {
         return minDistance;
     }
 
+    /**
+     * Vrati predchozi router - Dijkstra
+     *
+     * @return prechozi router
+     */
     public Router getPrevious() {
         return previous;
     }
 
+    /**
+     * Vrati mapu linku vedoucich k routeru
+     *
+     * @return Mapa linku vechoucich k routeru
+     */
     public Map<Integer, Link> getLinks() {
         return links;
     }

@@ -11,17 +11,31 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class DetailController implements Initializable {
+    /**ListView se vsemi routery*/
     public ListView allRoutersLW;
+    /**ListView s routery s ulozenymi daty*/
     public ListView carryingRoutersLW;
+    /**ListView se vsemi linky*/
     public ListView allLinksLW;
 
+    /**TextArea, kde se vypisuji detaily o zvolenem routeru*/
     public TextArea detailRouterTA;
+    /**TextArea, kde se vypisuji detaily o zvolenem linku*/
     public TextArea detailLinkTA;
 
+    /**List se vsemi routery*/
     private ObservableList<Router> routers = FXCollections.observableArrayList();
+    /**List s routety s ulozenymi daty*/
     private ObservableList<Router> routersWithData = FXCollections.observableArrayList();
+    /**List se vsemi linky*/
     private ObservableList<Link> links = FXCollections.observableArrayList();
 
+    /**
+     * Trida ridici okno s detaily o siti
+     *
+     * @param routers Mapa vsech routeru v siti
+     * @param links Mapa vsech linku v siti
+     */
     public DetailController(Map<Integer,Router> routers, Map<RouterPair,Link> links) {
         this.routers.addAll(routers.values());
         this.links.addAll(links.values());
@@ -36,6 +50,7 @@ public class DetailController implements Initializable {
         allLinksLW.setItems(links);
     }
 
+    /**Obnovi list s routery s ulozenymi daty*/
     @FXML
     private void refresh() {
         routersWithData.clear();
@@ -48,14 +63,25 @@ public class DetailController implements Initializable {
         detailLinkTA.clear();
     }
 
+    /**
+     * Necha vypsat detaily o routeru
+     */
     public void routerDetailAll(MouseEvent mouseEvent) {
         showRouterDetail((Router) allRoutersLW.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Necha vypsat detaily o routeru s daty
+     */
     public void routerDetailData(MouseEvent mouseEvent) {
         showRouterDetail((Router) carryingRoutersLW.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Vypise detaily o routeru
+     *
+     * @param router Router, o kterem se vypisi detaiily
+     */
     private void showRouterDetail(Router router) {
         detailRouterTA.clear();
         detailRouterTA.appendText(router.toString() + "\n Data to send:\n");
@@ -69,6 +95,9 @@ public class DetailController implements Initializable {
         }
     }
 
+    /**
+     * Vypise detaily o linku
+     */
     public void linkDetail(MouseEvent mouseEvent) {
         Link link = (Link) allLinksLW.getSelectionModel().getSelectedItem();
 

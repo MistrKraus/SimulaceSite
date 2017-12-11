@@ -10,7 +10,7 @@ public class Data implements Comparable<Data> {
     public final Router sourceRouter;
     /**Cilovy router*/
     public final Router targetRouter;
-
+    /**Pocet datovych vytvorenych datovych packetu*/
     private static int count = 0;
 
     /**
@@ -44,7 +44,7 @@ public class Data implements Comparable<Data> {
     /**
      * Rozdeli se na dva objekty o velikosti zadaneho agumentu a jeho rozdilu s celkovym prenasenym mnozstvim dat
      *
-     * @param dataAmount mnozstvi dat, ktere link dokaze danym smerem prenest
+     * @param dataAmount mnozstvi dat, ktere bude mit puvodni datovy packet
      * @return {@code Data} s mnozstvim prenasenych dat o velikosti rozdilu
      */
     public Data splitMe(int dataAmount) {

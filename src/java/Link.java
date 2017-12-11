@@ -36,8 +36,6 @@ public class Link implements IWebComp, Comparable<Link> {
      *
      * @param maxThroughtput maximalni propustnost dat
      * @param reliability procento z max. propustnosti dat, ktere se odesle bezeztraty
-//     * @param r1Id id routeru 1
-//     * @param r2Id id routeru 2
      * @param routerPair id routeru mezi, kterymi je vytvareny link
      */
     public Link(float maxThroughtput, float reliability, RouterPair routerPair) {
@@ -116,6 +114,14 @@ public class Link implements IWebComp, Comparable<Link> {
         }
     }
 
+    /**
+     * Odesle data do nasledujiciho routeru v ceste
+     *
+     * @param path List s routery, kudy se maji data odeslat
+     * @param idOnPath id routeru kam se maji data odeslat
+     * @param data data k odeslani
+     * @return -1 ulozeni do predchoziho; id routeru, kam byla data ulozena
+     */
     public int sendData(List<Router> path, int idOnPath, Data data) {
         Router routerFrom = path.get(idOnPath - 1);
         if (routerFrom.getId() < ROUTER_PAIR.r1.getId()) {
@@ -147,6 +153,12 @@ public class Link implements IWebComp, Comparable<Link> {
         return path.get(idOnPath).sendData(path, ++idOnPath, data);
     }
 
+    /**
+     * Kapacita linky smerem k predanemu routeru
+     *
+     * @param targetRouterId id routeru, kterym smerem hledame kapacitu
+     * @return kapacita linku smemrem k routeru
+     */
     public int getDirCapacity(int targetRouterId) {
         if (targetRouterId < ROUTER_PAIR.r1.getId()) {
             if (data1to2 == 0 && nextLink != null) {
@@ -163,38 +175,48 @@ public class Link implements IWebComp, Comparable<Link> {
         return data2to1;
     }
 
-    public Link getNextLink() {
-        return nextLink;
-    }
-
-    public Link getPreviousLink() {
-        return previousLink;
-    }
-
+    /**
+     * Vrati dostupnou kapacitu linku smerem od routeru s nizsim id k routeru s vyssim
+     *
+     * @return dostupna kapacita linku smerem od routeru s nizsim id k routeru s vyssim
+     */
     public int getData1to2() {
         return data1to2;
     }
 
-    public void setData1to2(int data1to2) {
-        this.data1to2 = data1to2;
-    }
-
+    /**
+     * Vrati dostupnou kapacitu linku smerem od routeru s vyssim id k routeru s nizsim
+     *
+     * @return dostupna kapacita linku smerem od routeru s vyssim id k routeru s nizsim
+     */
     public int getData2to1() {
         return data2to1;
     }
 
-    public void setData2to1(int data2to1) {
-        this.data2to1 = data2to1;
-    }
-
+    /**
+     * Vrati id routeru s nizsim id
+     *
+     * @return id routeru s nizsim id
+     */
     public int getR1Id() {
         return ROUTER_PAIR.r1.getId();
     }
 
+    /**
+     * Vrati id routeru s vyssim id
+     *
+     * @return id routeru s vyssim id
+     */
     public int getR2Id() {
         return ROUTER_PAIR.r2.getId();
     }
 
+    /**
+     * Vrati router, ktery je sousedem predaneho routeru pres tento link
+     *
+     * @param router router jehoz souseda chceme znat
+     * @return sousedni rourer predaneho routeru
+     */
     public Router getNeighbour(Router router) {
         if (router.equals(ROUTER_PAIR.r1))
             return ROUTER_PAIR.r2;
@@ -202,22 +224,29 @@ public class Link implements IWebComp, Comparable<Link> {
         return ROUTER_PAIR.r1;
     }
 
-    public RouterPair getROUTER_PAIR() {
-        return ROUTER_PAIR;
-    }
-
-    public float getTHROUGHTPUT() {
-        return THROUGHTPUT;
-    }
-
+    /**
+     * Vrati spolehlivost spojeni - procento z maximalni propustnosti dat, ktere se odesle bezeztraty
+     *
+     * @return spolehlivost spojeni
+     */
     public float getRELIABILITY() {
         return RELIABILITY;
     }
 
+    /**
+     * Vrati maximalni bezeztratovou propustnost
+     *
+     * @return maximalni bezeztratova propustnost
+     */
     public float getMAX_THROUGHTPUT() {
         return MAX_THROUGHTPUT;
     }
 
+    /**
+     * Vrati dolu zaokrouhlenou maximalni bezeztratovou propustnost
+     *
+     * @return dolu zaokrouhlena maximalni bezeratova propustnost
+     */
     public int getCCA_MAX_THROUGHTPUT() { return CCA_MAX_THROUGHTPUT; }
 
     @Override
@@ -253,6 +282,12 @@ public class Link implements IWebComp, Comparable<Link> {
         return result;
     }
 
+    /**
+     * Vrati id sousedniho routeru
+     *
+     * @param id id routeru jehoz soused je pozadovan
+     * @return id sousedniho routeru
+     */
     public int getNeighbourId(int id) {
         //System.out.print(id);
         if (id == ROUTER_PAIR.r1.getId()) {

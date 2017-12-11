@@ -9,8 +9,7 @@ public class Web implements IWebComp {
 
     /**Zda jsou v routerech ulozena nejaka data*/
     private boolean dataInRouters = false;
-//    /**Mnozstvi packetu v routerech*/
-//    private int dataInRouters = 0;
+
     /**Mapa routeru*/
     private Map<Integer, Router> routers = new HashMap<>();
     /**Mapa spoju mezi routery*/
@@ -21,6 +20,12 @@ public class Web implements IWebComp {
     /**Maximalni vytizeni linku*/
     private final long MAX_TRAFFIC;
 
+    /**
+     * Objekt reprezentujici sit
+     *
+     * @param routers mapa routeru v siti
+     * @param links mapa linku v siti
+     */
     public Web (Map<Integer, Router> routers, Map<RouterPair, Link> links) {
         this.routers = routers;
         this.links = links;
@@ -109,22 +114,38 @@ public class Web implements IWebComp {
         world.getLog().setTraffic(temp);
     }
 
-//    public void addDataInRouter() {
-//        dataInRouters++;
-//    }
-
+    /**
+     * Vrati mapu routeru v siti
+     *
+     * @return mapa routeru v siti
+     */
     public Map<Integer, Router> getRouters() {
         return routers;
     }
 
+    /**
+     * Vrati mapu linku v siti
+     *
+     * @return mapa linku v siti
+     */
     public Map<RouterPair, Link> getLinks() {
         return links;
     }
 
+    /**
+     * Vrati maximalni mnozstvi pameti, ktere je mozne ulozit do routeru v siti
+     *
+     * @return maximalni mnozstvi pameti ulozitelne do routeru v siti
+     */
     public long getMAX_MEMORY_USAGE() {
         return MAX_MEMORY_USAGE;
     }
 
+    /**
+     * Vrati maximalni propustnost linku v siti
+     *
+     * @return maximalni propustnost linku v siti
+     */
     public long getMAX_TRAFFIC() {
         return MAX_TRAFFIC;
     }

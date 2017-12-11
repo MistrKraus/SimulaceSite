@@ -4,8 +4,6 @@ import javafx.scene.control.TextArea;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,27 +11,55 @@ import java.util.Map;
 
 public class Log implements IWebComp {
 
-    //private final boolean saveTickNum;
+    /**Zda se maji loggovat odeslana data*/
     private final boolean saveSentData;
+    /**Zda se maji loggovat cesty odeslanych dat*/
     private final boolean saveDataPath;
+    /**Zda se maji loggovat routery, kam se data ulozila*/
     private final boolean saveDataDest;
+    /**Zda se ma loggovat vyuziti pameti v routerech*/
     private final boolean saveMemUsage;
+    /**Zda se ma loggovat vyuziti kapacity linku*/
     private final boolean saveTraffic;
 
+    /**Cislo ticku*/
     private int tickNum;
+    /**List odeslanych dat tento tick*/
     private List<Data> sentData = new ArrayList<>();
+    /**Mapa cest odeslanych dat*/
     private Map<Integer, List<Integer>> dataPath = new HashMap<>();
+    /**Mapa id routeru, kde se data ulozila na konci ticku*/
     private Map<Integer, Integer> dataDest = new HashMap<>();
+    /**Dodatecne informace k odeslanym datum*/
     private Map<Integer, String> additionalDataInfo = new HashMap<>();
+    /**Vyuziti mapeti routeru*/
     private long memUsage;
+    /**Vytizenost linku*/
     private long traffic;
 
+    /**Maximalni vyutiti pameti routeru*/
     private final long MAX_MEM_USAGE;
+    /**Maximalni vytizenost linku*/
     private final long MAX_TRAFFIC;
 
+    /**TextArea kam se vypisuji logovane informace*/
     private final TextArea log;
+    /**BufferedWriter zapisujici logovane informace do souboru*/
     private BufferedWriter bufferedWriter;
 
+    /**
+     * Trida vypisujici stav site
+     *
+     * @param log TextArea pro vypis
+     * @param maxMemUsage Pamet vsech routeru
+     * @param maxTraffic Bezeztratova propustnosti vsech linku
+     * @param sentData Logovat odeslana data
+     * @param dataPath Logovat cesty odeslanych dat
+     * @param dataDest Logovat id routeru, kam se data ulozila
+     * @param memUsage Logovat vyuziti pameti routeru
+     * @param traffic Logovat vytizenost site
+     * @throws IOException Zapisovani do souboru selhalo
+     */
     public Log(TextArea log, long maxMemUsage, long maxTraffic, //boolean tickNum,
                boolean sentData, boolean dataPath, boolean dataDest, boolean memUsage, boolean traffic) throws IOException {
 //        this.saveTickNum = tickNum;
@@ -98,13 +124,6 @@ public class Log implements IWebComp {
 
     @Override
     public void update(World world) throws IOException {
-//        tickNum = -1;
-//        sentData.clear();
-//        dataPath.clear();
-//        dataDest.clear();
-//        memUsageLbl = -1;
-//        trafficLbl = -1;
-
         String report = getReport();
 
         log.appendText(report);
@@ -121,7 +140,7 @@ public class Log implements IWebComp {
     }
 
     @Override
-    public void restore(World world) {
+    public void restore(World world) throws IOException {
         world.getLog().showSummaryReport();
     }
 
@@ -130,6 +149,11 @@ public class Log implements IWebComp {
 
     }
 
+    /**
+     * Vrati info o stavu site
+     *
+     * @return informace o stavu site
+     */
     private String getReport() {
         StringBuilder tickReport = new StringBuilder();
 
@@ -189,31 +213,31 @@ public class Log implements IWebComp {
         return tickReport.toString();
     }
 
-    public void showSummaryReport() {
+    /**
+     * Vypise a ulozi procentualni vytizenost linku a vyuziti pameti routeru
+     */
+    public void showSummaryReport() throws IOException {
         if (saveMemUsage) {
-            log.appendText(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
-            try {
-                bufferedWriter.write(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            log.appendText(String.format(" Routers Memory Usage %.2f%%\n", getMemUsage()));
+            bufferedWriter.write(String.format(" Routers Memory Usage %.2f%%\n", getMemUsage()));
 //            System.out.println(" Routers Memory Usage " + Double.toString(round(getMemUsage(), 2)) + "%\n");
         }
 
         if (saveTraffic) {
-            log.appendText(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
-            try {
-                bufferedWriter.write(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            log.appendText(String.format(" Link Traffic %.2f%%\n", getTraffic()));
+            bufferedWriter.write(String.format(" Link Traffic %.2f%%\n", getTraffic()));
 //            System.out.println(" Link Traffic " + Double.toString(round(getTraffic(), 2)) + "%\n");
         }
 
         log.appendText("\n");
-//        System.out.println();
+        bufferedWriter.write("\n");
     }
 
+    /**
+     * Uzavre a ulozi soubor s logem
+     *
+     * @throws IOException chyba pri zapisovani do souboru
+     */
     public void saveLog() throws IOException {
         bufferedWriter.write("Simulation ended");
         bufferedWriter.close();
@@ -221,21 +245,31 @@ public class Log implements IWebComp {
         log.appendText("Simulation ended");
     }
 
+    /**
+     * Vrati procentualni vyuziti pameti routeru
+     *
+     * @return procentualni vyuziti pameti routeru
+     */
     public double getMemUsage() {
         return ((double)(MAX_MEM_USAGE - memUsage) / MAX_MEM_USAGE) * 100;
     }
 
+    /**
+     * Vrati procentualni vyuziti propustnosti site
+     *
+     * @return procentualni vyuziti propustnosti site
+     */
     public double getTraffic() {
         return ((double)traffic / MAX_TRAFFIC) * 100;
     }
 
-    private static double round(double value, int places) {
-        if (places < 0) {
-            return -1;
-        }
-
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
+//    private static double round(double value, int places) {
+//        if (places < 0) {
+//            return -1;
+//        }
+//
+//        BigDecimal bd = new BigDecimal(value);
+//        bd = bd.setScale(places, RoundingMode.HALF_UP);
+//        return bd.doubleValue();
+//    }
 }

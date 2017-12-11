@@ -1,14 +1,16 @@
 public class RouterPair {
+    /**Router 1*/
     public final Router r1;
+    /**Router 2*/
     public final Router r2;
 
+    /**
+     * Prepravka s dvema routeru (mezi kterymi je link)
+     *
+     * @param r1 router 1
+     * @param r2 router 2
+     */
     public RouterPair(Router r1, Router r2) {
-//        if (r1.getId() < r2.getId()) {
-//            this.r1 = r1;
-//            this.r2 = r2;
-//            return;
-//        }
-
         this.r1 = r1;
         this.r2 = r2;
     }

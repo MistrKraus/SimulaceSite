@@ -11,36 +11,26 @@ import java.util.Map;
 
 public class DataManager {
 
-    /**
-     * Cislo soucasneho ticku
-     */
+    /**Cislo soucasneho ticku*/
     private int currentTick;
-    /**
-     * Buffer s daty o podobě grafu
-     */
+    /**Buffer s daty o podobě grafu*/
     private BufferedReader graphData;
-    /**
-     * Buffer s daty pro simulaci
-     */
+    /**Buffer s daty pro simulaci*/
     private BufferedReader simulationData;
-//    /**
-//     * Log
-//     */
-//    private final TextArea log;
-    /**
-     * Prebyvajici data z predchoziho ticku
-     */
+    /**Prebyvajici data z predchoziho ticku*/
     private Data excessData;
 
-    /**
-     * Mapa routeru
-     */
+    /**Mapa routeru*/
     private Map<Integer, Router> routers = new HashMap<>();
-    /**
-     * Mapa spoju mezi routery
-     */
+    /**Mapa spoju mezi routery*/
     private Map<RouterPair, Link> links = new HashMap<>();
 
+    /**
+     * Trida starajici se o nacitani dat
+     *
+     * @param graphFilePath cesta k souboru s grafem
+     * @param simulationFilePath cesta k souboru se smiulačními daty
+     */
     public DataManager(String graphFilePath, String simulationFilePath) {
         try {
             this.graphData = new BufferedReader(new FileReader(graphFilePath));
@@ -223,14 +213,29 @@ public class DataManager {
         return currentLine.split("-");
     }
 
+    /**
+     * Vrati Mapu routeru
+     *
+     * @return Mapa routeru
+     */
     public Map<Integer, Router> getRouters() {
         return routers;
     }
 
+    /**
+     * Vrati Mapu linku
+     *
+     * @return Mapa linku
+     */
     public Map<RouterPair, Link> getLinks() {
         return links;
     }
 
+    /**
+     * Vrati cislo aktualniho ticku
+     *
+     * @return cislo aktualniho ticku
+     */
     public int getCurrentTick() {
         return currentTick;
     }
