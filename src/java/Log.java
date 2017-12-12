@@ -25,13 +25,13 @@ public class Log implements IWebComp {
     /**Cislo ticku*/
     private int tickNum;
     /**List odeslanych dat tento tick*/
-    private List<Data> sentData = new ArrayList<>();
+    private final List<Data> sentData = new ArrayList<>();
     /**Mapa cest odeslanych dat*/
-    private Map<Integer, List<Integer>> dataPath = new HashMap<>();
+    private final Map<Integer, List<Integer>> dataPath = new HashMap<>();
     /**Mapa id routeru, kde se data ulozila na konci ticku*/
-    private Map<Integer, Integer> dataDest = new HashMap<>();
+    private final Map<Integer, Integer> dataDest = new HashMap<>();
     /**Dodatecne informace k odeslanym datum*/
-    private Map<Integer, String> additionalDataInfo = new HashMap<>();
+    private final Map<Integer, String> additionalDataInfo = new HashMap<>();
     /**Vyuziti mapeti routeru*/
     private long memUsage;
     /**Vytizenost linku*/
@@ -45,7 +45,7 @@ public class Log implements IWebComp {
     /**TextArea kam se vypisuji logovane informace*/
     private final TextArea log;
     /**BufferedWriter zapisujici logovane informace do souboru*/
-    private BufferedWriter bufferedWriter;
+    private final BufferedWriter bufferedWriter;
 
     /**
      * Trida vypisujici stav site
@@ -97,8 +97,9 @@ public class Log implements IWebComp {
     }
 
     public void addDataPath(int sourceRouterId, List<Router> path) {
-        if (!saveDataPath)
+        if (!saveDataPath) {
             return;
+        }
 
         List<Integer> idPath = new ArrayList<>();
         for (Router router : path) {
@@ -146,7 +147,9 @@ public class Log implements IWebComp {
 
     @Override
     public void draw(GraphicsContext g, int routersInRow) {
-
+        /**
+         * Pouze pro implementaci rozhrani
+         */
     }
 
     /**
@@ -157,7 +160,6 @@ public class Log implements IWebComp {
     private String getReport() {
         StringBuilder tickReport = new StringBuilder();
 
-//        if (saveTickNum)
         tickReport.append("Tick " + tickNum + "\n");
 
         if (saveSentData || saveDataPath || saveDataDest) {
@@ -172,10 +174,12 @@ public class Log implements IWebComp {
                         List<Integer> path = dataPath.get(data.sourceRouter.getId());
                         if (path != null) {
                             for (int i = 0; i < path.size() - 1; i++) {
-                                tickReport.append(path.get(i) + " ~ ");
+                                tickReport.append(path.get(i));
+                                tickReport.append(" ~ ");
                             }
 
-                            tickReport.append(path.get(path.size() - 1) + "\n");
+                            tickReport.append(path.get(path.size() - 1));
+                            tickReport.append("\n");
                         }
                     }
 
@@ -187,21 +191,31 @@ public class Log implements IWebComp {
                     if (saveDataPath) {
                         tickReport.append("\tData[" + data.id + "] Via routers ");
                         for (int i = 0; i < dataPath.size() - 1; i++) {
-                            tickReport.append(dataPath.get(data.id).get(i) + " ~ ");
+                            tickReport.append(dataPath.get(data.id).get(i));
+                            tickReport.append(" ~ ");
                         }
 
-                        tickReport.append(dataPath.get(data.id).get(dataPath.size()) + "\n");
+                        tickReport.append(dataPath.get(data.id).get(dataPath.size()));
+                        tickReport.append("\n");
 
-                        if (saveDataDest) {
-                            if (dataDest.get(data.id) != null) {
-                                tickReport.append("\t\tData saved into router " + dataDest.get(data.id) + "\n");
-                                tickReport.append("\t\t" + additionalDataInfo.get(data.id) + "\n");
-                            }
+                        if (saveDataDest && dataDest.get(data.id) != null) {
+                            tickReport.append("\t\tData saved into router " + dataDest.get(data.id) + "\n");
+                            tickReport.append(dataDest.get(data.id));
+                            tickReport.append("\n");
+                            tickReport.append("\t\t");
+                            tickReport.append(additionalDataInfo.get(data.id));
+                            tickReport.append("\n");
                         }
                     } else {
                         if (dataDest.get(data.id) != null) {
-                            tickReport.append("\tData[" + data.id + "] saved into router " + dataDest.get(data.id) + "\n");
-                            tickReport.append("\t\t" + additionalDataInfo.get(data.id) + "\n");
+                            tickReport.append("\tData[");
+                            tickReport.append(data.id);
+                            tickReport.append("] saved into router ");
+                            tickReport.append(dataDest.get(data.id));
+                            tickReport.append("\n");
+                            tickReport.append("\t\t");
+                            tickReport.append(additionalDataInfo.get(data.id));
+                            tickReport.append("\n");
                         }
                     }
                 }

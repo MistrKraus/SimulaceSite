@@ -51,8 +51,9 @@ public class Dijkstra {
 
     public static List<Router> getShortestPathTo(Router target) {
         List<Router> path = new ArrayList<>();
-        for (Router router = target; router != null; router = router.getPrevious())
+        for (Router router = target; router != null; router = router.getPrevious()) {
             path.add(router);
+        }
 
         Collections.reverse(path);
         //System.out.println(path);

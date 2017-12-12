@@ -48,16 +48,17 @@ public class Data implements Comparable<Data> {
      * @return {@code Data} s mnozstvim prenasenych dat o velikosti rozdilu
      */
     public Data splitMe(int dataAmount) {
-        if (dataAmount < 0) {
-            dataAmount = 0;
+        int amount = dataAmount;
+        if (amount < 0) {
+            amount = 0;
         }
 
-        if (dataAmount > amount) {
-            dataAmount = amount;
+        if (amount > amount) {
+            amount = amount;
         }
 
-        int newDataAmount = this.amount - dataAmount;
-        this.amount = dataAmount;
+        int newDataAmount = this.amount - amount;
+        this.amount = amount;
 
         return new Data(sourceRouter, targetRouter, newDataAmount, id, originalAmount);
     }

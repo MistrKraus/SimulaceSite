@@ -11,9 +11,9 @@ public class Web implements IWebComp {
     private boolean dataInRouters = false;
 
     /**Mapa routeru*/
-    private Map<Integer, Router> routers = new HashMap<>();
+    private final Map<Integer, Router> routers;
     /**Mapa spoju mezi routery*/
-    private Map<RouterPair, Link> links = new HashMap<>();
+    private final Map<RouterPair, Link> links;
 
     /**Maximalni mnozstvi dat v routerech*/
     private final long MAX_MEMORY_USAGE;
@@ -27,8 +27,8 @@ public class Web implements IWebComp {
      * @param links mapa linku v siti
      */
     public Web (Map<Integer, Router> routers, Map<RouterPair, Link> links) {
-        this.routers = routers;
-        this.links = links;
+        this.routers = new HashMap<>(routers);
+        this.links = new HashMap<>(links);
 
         long temp = 0;
         for (Router router : routers.values()) {

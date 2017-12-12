@@ -22,11 +22,13 @@ public class RouterPair {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return false;
+        }
 
-        if (RouterPair.class.isAssignableFrom(obj.getClass()))
+        if (RouterPair.class.isAssignableFrom(obj.getClass())) {
             return false;
+        }
 
         RouterPair routerPair = (RouterPair) obj;
 

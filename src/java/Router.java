@@ -18,15 +18,15 @@ public class Router implements IWebComp, Comparable<Router> {
     /**Predchazejici router*/
     private Router previous;
     /** List - Sousedi daného routeru*/
-    private Map<Integer, Link> links = new HashMap<>();
+    private final Map<Integer, Link> links = new HashMap<>();
     /**Data k odeslani*/
-    private List<Data> dataToSend = new ArrayList<>();
+    private final List<Data> dataToSend = new ArrayList<>();
     /**Data ulozena v routeru*/
-    private List<Data> dataToSave = new ArrayList<>();
+    private final List<Data> dataToSave = new ArrayList<>();
     /**Prijate nekompletni pakety dat*/
-    private List<Data> recievedData = new ArrayList<>();
+    private final List<Data> recievedData = new ArrayList<>();
     /**Data ke smazani*/
-    private List<Data> dataToRemove = new ArrayList<>();
+    private final List<Data> dataToRemove = new ArrayList<>();
     /** Nazev routeru*/
     private final String name;
 
@@ -63,6 +63,8 @@ public class Router implements IWebComp, Comparable<Router> {
             case 2:
                 g.setFill(Color.RED);
                 break;
+            default:
+                break;
         }
 
         g.translate(deltaXY, deltaXY / 2);
@@ -76,8 +78,9 @@ public class Router implements IWebComp, Comparable<Router> {
 
     @Override
     public void update(World world) {
-        if (dataToSend.size() == 0)
+        if (dataToSend.size() == 0) {
             return;
+        }
 
 
         if (id != Dijkstra.getSource()) {
@@ -182,8 +185,9 @@ public class Router implements IWebComp, Comparable<Router> {
      *          -1 pro neuspech
      */
     private int prepareAndSendData(Data data, Log log) {
-        if (data.amount == 0)
+        if (data.amount == 0) {
             return data.targetRouter.id;
+        }
 
         int idOnPath = -3;
         List<Router> path = Dijkstra.getShortestPathTo(data.targetRouter);
@@ -374,12 +378,18 @@ public class Router implements IWebComp, Comparable<Router> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Router router = (Router) o;
 
-        if (id != router.id) return false;
+        if (id != router.id) {
+            return false;
+        }
         return links != null ? links.equals(router.links) : router.links == null;
     }
 

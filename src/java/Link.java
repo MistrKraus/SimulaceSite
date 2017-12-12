@@ -17,8 +17,6 @@ public class Link implements IWebComp, Comparable<Link> {
     private int data2to1;
     /**Nasledujici Link spojujici stejne uzly*/
     private Link nextLink;
-    /**Predchazejici Link spojujici stejnej uzly*/
-    private Link previousLink;
 
     /**ID routeru, mezi kterymi link je*/
     private final RouterPair ROUTER_PAIR;
@@ -48,7 +46,6 @@ public class Link implements IWebComp, Comparable<Link> {
 //        this.r2Id = r2Id;
         this.ROUTER_PAIR = routerPair;
         this.nextLink = null;
-        this.previousLink = null;
 
         this.MAX_THROUGHTPUT = this.THROUGHTPUT * this.RELIABILITY;
         this.CCA_MAX_THROUGHTPUT = (int)Math.floor(this.MAX_THROUGHTPUT);
@@ -71,6 +68,8 @@ public class Link implements IWebComp, Comparable<Link> {
                 break;
             case 2:
                 g.setStroke(Color.RED);
+                break;
+            default:
                 break;
         }
         g.translate(deltaXY, deltaXY / 2);
@@ -108,7 +107,6 @@ public class Link implements IWebComp, Comparable<Link> {
     public void addNextLink(Link link) {
         if (this.nextLink == null) {
             this.nextLink = link;
-            this.nextLink.previousLink = this;
         } else {
             this.nextLink.addNextLink(link);
         }
@@ -123,14 +121,15 @@ public class Link implements IWebComp, Comparable<Link> {
      * @return -1 ulozeni do predchoziho; id routeru, kam byla data ulozena
      */
     public int sendData(List<Router> path, int idOnPath, Data data) {
-        Router routerFrom = path.get(idOnPath - 1);
+        int idOPath = idOnPath;
+        Router routerFrom = path.get(idOPath - 1);
         if (routerFrom.getId() < ROUTER_PAIR.r1.getId()) {
             int newThroughtput = data1to2 - data.amount;
             if (newThroughtput >= 0) {
                 data1to2 = newThroughtput;
             } else {
                 if (nextLink != null) {
-                    return nextLink.sendData(path, idOnPath, data);
+                    return nextLink.sendData(path, idOPath, data);
                 }
 
                 routerFrom.saveData(data);
@@ -142,7 +141,7 @@ public class Link implements IWebComp, Comparable<Link> {
                 data2to1 = newThroughtput;
             } else {
                 if (nextLink != null) {
-                    return nextLink.sendData(path, idOnPath, data);
+                    return nextLink.sendData(path, idOPath, data);
                 }
 
                 routerFrom.saveData(data);
@@ -150,7 +149,7 @@ public class Link implements IWebComp, Comparable<Link> {
             }
         }
 
-        return path.get(idOnPath).sendData(path, ++idOnPath, data);
+        return path.get(idOPath).sendData(path, ++idOPath, data);
     }
 
     /**
@@ -218,8 +217,9 @@ public class Link implements IWebComp, Comparable<Link> {
      * @return sousedni rourer predaneho routeru
      */
     public Router getNeighbour(Router router) {
-        if (router.equals(ROUTER_PAIR.r1))
+        if (router.equals(ROUTER_PAIR.r1)) {
             return ROUTER_PAIR.r2;
+        }
 
         return ROUTER_PAIR.r1;
     }
@@ -261,12 +261,18 @@ public class Link implements IWebComp, Comparable<Link> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Link link = (Link) o;
 
-        if (CCA_MAX_THROUGHTPUT != link.CCA_MAX_THROUGHTPUT) return false;
+        if (CCA_MAX_THROUGHTPUT != link.CCA_MAX_THROUGHTPUT) {
+            return false;
+        }
 
         //return ((r1Id == link.r1Id || r1Id == link.r2Id) && (r2Id == link.r2Id || r2Id == link.r1Id));
         return ROUTER_PAIR.equals(ROUTER_PAIR);

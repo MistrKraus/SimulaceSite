@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PT_SP_simulaceSite:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PT_SP_simulaceSite_jar</output-path>
+    <root id="archive" name="PT_SP_simulaceSite.jar">
+      <element id="module-output" name="PT_SP_simulaceSite" />
+      <element id="directory" name="folder" />
+    </root>
+  </artifact>
+</component>

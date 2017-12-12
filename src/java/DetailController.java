@@ -24,11 +24,11 @@ public class DetailController implements Initializable {
     public TextArea detailLinkTA;
 
     /**List se vsemi routery*/
-    private ObservableList<Router> routers = FXCollections.observableArrayList();
+    private final ObservableList<Router> routers = FXCollections.observableArrayList();
     /**List s routety s ulozenymi daty*/
-    private ObservableList<Router> routersWithData = FXCollections.observableArrayList();
+    private final ObservableList<Router> routersWithData = FXCollections.observableArrayList();
     /**List se vsemi linky*/
-    private ObservableList<Link> links = FXCollections.observableArrayList();
+    private final ObservableList<Link> links = FXCollections.observableArrayList();
 
     /**
      * Trida ridici okno s detaily o siti
@@ -52,7 +52,7 @@ public class DetailController implements Initializable {
 
     /**Obnovi list s routery s ulozenymi daty*/
     @FXML
-    private void refresh() {
+    public void refresh() {
         routersWithData.clear();
         for (Router router : routers) {
             if (router.getData().size() > 0) {

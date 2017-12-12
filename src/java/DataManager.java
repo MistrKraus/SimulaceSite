@@ -1,9 +1,4 @@
-import javafx.application.Platform;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,16 +9,16 @@ public class DataManager {
     /**Cislo soucasneho ticku*/
     private int currentTick;
     /**Buffer s daty o podobě grafu*/
-    private BufferedReader graphData;
+    private final BufferedReader graphData;
     /**Buffer s daty pro simulaci*/
-    private BufferedReader simulationData;
+    private final BufferedReader simulationData;
     /**Prebyvajici data z predchoziho ticku*/
     private Data excessData;
 
     /**Mapa routeru*/
-    private Map<Integer, Router> routers = new HashMap<>();
+    private final Map<Integer, Router> routers = new HashMap<>();
     /**Mapa spoju mezi routery*/
-    private Map<RouterPair, Link> links = new HashMap<>();
+    private final Map<RouterPair, Link> links = new HashMap<>();
 
     /**
      * Trida starajici se o nacitani dat
@@ -32,43 +27,11 @@ public class DataManager {
      * @param simulationFilePath cesta k souboru se smiulačními daty
      */
     public DataManager(String graphFilePath, String simulationFilePath) {
-        try {
-            this.graphData = new BufferedReader(new FileReader(graphFilePath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Loading data Erorr:\n" + e.getMessage());
-//            log.appendText("Loading data Erorr:\n" + e.getMessage());
-            try {
-                System.out.println("App will be closed automatically in 3 seconds...");
-//                log.appendText("App will be closed automatically in 3 seconds...");
-                Thread.sleep(3000);
-                Platform.exit();
-            } catch (Exception e1) {
-                System.out.println("App will be closed automatically.");
-//                log.appendText("App will be closed automatically.");
-                e1.printStackTrace();
-                Platform.exit();
-            }
-        }
+        InputStream stream = DataManager.class.getResourceAsStream(graphFilePath);
+        this.graphData = new BufferedReader(new InputStreamReader(stream));
 
-        try {
-            this.simulationData = new BufferedReader(new FileReader(simulationFilePath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Loading data Erorr:\n" + e.getMessage());
-//            log.appendText("Loading data Erorr:\n" + e.getMessage());
-            try {
-                System.out.println("App will be closed automatically in 5 seconds...");
-//                log.appendText("App will be closed automatically in 5 seconds...");
-                Thread.sleep(5000);
-                Platform.exit();
-            } catch (Exception e1) {
-                System.out.println("App will be closed automatically.");
-//                log.appendText("App will be closed automatically.");
-                e1.printStackTrace();
-                Platform.exit();
-            }
-        }
+        InputStream streamSimulation = DataManager.class.getResourceAsStream(simulationFilePath);
+        this.simulationData = new BufferedReader(new InputStreamReader(streamSimulation));
     }
 
     /**
@@ -97,8 +60,9 @@ public class DataManager {
             Data data = new Data(routers.get(sourceRouterId), routers.get(targetRouterId),
                     Integer.parseInt(currLine[3]));
 
-            if (tick == currentTick)
+            if (tick == currentTick) {
                 dataToSend.add(data);
+            }
             else {
                 excessData = data;
                 currentTick = tick;
@@ -152,11 +116,13 @@ public class DataManager {
                     routers.put(r2, new Router(r2));
                 }
 
-                if (r1 > maxIndex)
+                if (r1 > maxIndex) {
                     maxIndex = r1;
+                }
 
-                if (r2 > maxIndex)
+                if (r2 > maxIndex) {
                     maxIndex = r2;
+                }
 
                 RouterPair routerPair = new RouterPair(routers.get(r1), routers.get(r2));
 
@@ -165,14 +131,17 @@ public class DataManager {
 
                     routers.get(r1).addLink(links.get(routerPair));
                     routers.get(r2).addLink(links.get(routerPair));
-                } else
+                } else {
                     links.get(routerPair).addNextLink(new Link(maxThroughtput, reliability, routerPair));
+                }
 
 //                RouterPair ma pretizenou metodu equals - proto je poradi vlozeni indexu routeru irelevantni
-//                if (r1 < r2)
-//                    links.put(new RouterPair(r1, r2), new Link(maxThroughtput, reliability, r1, r2));
-//                else
+//                if (r1 < r2) {
+//                    links.put(new RouterPair(r1, r2), new Link(maxThroughtput, reliability, r1, r2))
+//                }
+//                else {
 //                    links.put(new RouterPair(r2, r1), new Link(maxThroughtput, reliability, r2, r1));
+//                  }
             }
 //            log.appendText("Web succesfully created:\n" +
 //                    " - " + routers.size() + " nodes\n" +
@@ -206,11 +175,12 @@ public class DataManager {
      * @return pole stringu
      */
     private String[] processCurrentLine(String currentLine) {
-        currentLine = currentLine.replace("\t", "");
-        currentLine = currentLine.replace(" ", "");
-        currentLine = currentLine.replace("-","-");
+        String tmp = currentLine;
+        tmp = tmp.replace("\t", "");
+        tmp = tmp.replace(" ", "");
+        tmp = tmp.replace("-","-");
 
-        return currentLine.split("-");
+        return tmp.split("-");
     }
 
     /**

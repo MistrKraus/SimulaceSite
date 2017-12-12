@@ -26,11 +26,11 @@ public class World {
     /**Objekt pro loggovani udalosti*/
     private Log log;
     /**Label pro zorbrazeni aktualniho ticku*/
-    private Label tickNumberLbl;
+    private final Label tickNumberLbl;
     /**Label pro zobrazeni vyuziti pameti routeru aktualnim ticku*/
-    private Label memUsageLbl;
+    private final Label memUsageLbl;
     /**Label pro zobrazeni vyuziti maximalniho prutoku linku*/
-    private Label trafficLbl;
+    private final Label trafficLbl;
 
     /**Boolean bezi-li simulace*/
     private boolean isRunning = false;
@@ -45,7 +45,7 @@ public class World {
             e.printStackTrace();
         }
     });
-    private Timeline timeline;
+    private final Timeline timeline;
     private final GraphicsContext graphics;
 
     /**Cesta k vstupnimu souboru s daty*/
@@ -75,8 +75,9 @@ public class World {
      * Spusti simulaci (nacteni simulacnich dat)
      */
     public void start() throws IOException, InterruptedException {
-        if (web == null)
+        if (web == null) {
             createWeb();
+        }
 
         isRunning = true;
 
