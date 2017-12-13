@@ -1,0 +1,995 @@
+Data succesfully loaded!
+Web succesfully created:
+ - 9 nodes
+ - 12 links
+
+Tick 1
+ Sent data
+	Data[1] 3 ~ 8 (12b)
+		Via routers 3 ~ 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 0,89%
+
+Tick 2
+ Sent data
+	Data[2] 3 ~ 7 (108b)
+		Via routers 3 ~ 6 ~ 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[3] 0 ~ 7 (82b)
+		Via routers 0 ~ 1 ~ 8 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[2] 3 ~ 7 (0b)
+		Via routers 3 ~ 6 ~ 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[4] 4 ~ 3 (98b)
+		Via routers 4 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 24,96%
+
+Tick 3
+ Sent data
+	Data[2] 3 ~ 7 (81b)
+		Via routers 6 ~ 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[5] 5 ~ 7 (39b)
+		Via routers 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[2] 3 ~ 7 (0b)
+		Via routers 6 ~ 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[6] 6 ~ 1 (33b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 13,11%
+
+Tick 4
+ Sent data
+	Data[6] 6 ~ 1 (94b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[9] 6 ~ 1 (20b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+	Data[7] 1 ~ 5 (90b)
+		Via routers 1 ~ 2 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[10] 3 ~ 4 (22b)
+		Via routers 5 ~ 7
+		Data saved into router 4
+		 Data dorucena.
+	Data[5] 5 ~ 7 (97b)
+		Via routers 5 ~ 7 ~ 8
+		Data saved into router 7
+		 Data dorucena.
+	Data[2] 3 ~ 7 (6b)
+		Via routers 5 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[8] 5 ~ 8 (17b)
+		Via routers 5 ~ 7 ~ 8
+		Data saved into router null
+		 Cast dat prijata.
+	Data[9] 6 ~ 1 (0b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+	Data[11] 8 ~ 5 (108b)
+		Via routers 8 ~ 7 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 29,00%
+
+Tick 5
+ Sent data
+	Data[12] 4 ~ 5 (107b)
+		Via routers 4 ~ 3 ~ 6 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[8] 5 ~ 8 (72b)
+		Via routers 5 ~ 7 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[9] 6 ~ 1 (7b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+	Data[13] 6 ~ 1 (0b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+	Data[11] 8 ~ 5 (76b)
+		Via routers 8 ~ 7 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 23,37%
+
+Tick 6
+ Sent data
+	Data[15] 8 ~ 5 (57b)
+		Via routers 8 ~ 7 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[9] 6 ~ 1 (114b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[13] 6 ~ 1 (0b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[14] 6 ~ 2 (108b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 20,67%
+
+Tick 7
+ Sent data
+	Data[16] 3 ~ 4 (14b)
+		Via routers 3 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[17] 4 ~ 3 (2b)
+		Via routers 4 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[18] 5 ~ 3 (108b)
+		Via routers 5 ~ 6 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[9] 6 ~ 1 (6b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[13] 6 ~ 1 (0b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[14] 6 ~ 2 (64b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 13,78%
+
+Tick 8
+ Sent data
+	Data[9] 6 ~ 1 (41b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router 1
+		 Data dorucena.
+	Data[13] 6 ~ 1 (73b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[20] 6 ~ 4 (0b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[22] 0 ~ 4 (114b)
+		Via routers 0 ~ 1 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[21] 3 ~ 4 (97b)
+		Via routers 3 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[18] 5 ~ 3 (0b)
+		Via routers 5 ~ 6 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[13] 6 ~ 1 (0b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[20] 6 ~ 4 (0b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[19] 7 ~ 1 (108b)
+		Via routers 7 ~ 8 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 31,33%
+
+Tick 9
+ Sent data
+	Data[19] 7 ~ 1 (45b)
+		Via routers 7 ~ 8
+		Data saved into router 1
+		 Data dorucena.
+	Data[25] 7 ~ 8 (63b)
+		Via routers 7 ~ 8
+		Data saved into router null
+		 Cast dat prijata.
+	Data[22] 0 ~ 4 (5b)
+		Via routers 0 ~ 2 ~ 5 ~ 6
+		Data saved into router 4
+		 Data dorucena.
+	Data[24] 0 ~ 6 (108b)
+		Via routers 0 ~ 2 ~ 5 ~ 6
+		Data saved into router null
+		 Cast dat prijata.
+	Data[23] 2 ~ 6 (0b)
+		Via routers 2 ~ 5 ~ 6
+		Data saved into router null
+		 Cast dat prijata.
+	Data[18] 5 ~ 3 (77b)
+		Via routers 6 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[13] 6 ~ 1 (37b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[20] 6 ~ 4 (0b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[25] 7 ~ 8 (0b)
+		Via routers 7 ~ 8
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 23,63%
+
+Tick 10
+ Sent data
+	Data[24] 0 ~ 6 (69b)
+		Via routers 0 ~ 1
+		Data saved into router 6
+		 Data dorucena.
+	Data[26] 0 ~ 1 (58b)
+		Via routers 0 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[23] 2 ~ 6 (39b)
+		Via routers 2 ~ 5 ~ 6
+		Data saved into router null
+		 Cast dat prijata.
+	Data[13] 6 ~ 1 (3b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router 1
+		 Data dorucena.
+	Data[20] 6 ~ 4 (94b)
+		Via routers 6 ~ 3 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[25] 7 ~ 8 (106b)
+		Via routers 7 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 23,81%
+
+Tick 11
+ Sent data
+	Data[23] 2 ~ 6 (27b)
+		Via routers 2 ~ 5 ~ 6
+		Data saved into router 6
+		 Data dorucena.
+	Data[27] 3 ~ 5 (108b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+	Data[28] 6 ~ 1 (0b)
+		Via routers 6 ~ 3 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 10,22%
+
+Tick 12
+ Sent data
+	Data[27] 3 ~ 5 (6b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+	Data[28] 6 ~ 1 (38b)
+		Via routers 6 ~ 5 ~ 2 ~ 0
+		Data saved into router 1
+		 Data dorucena.
+	Data[31] 6 ~ 0 (70b)
+		Via routers 6 ~ 5 ~ 2 ~ 0
+		Data saved into router 0
+		 Data dorucena.
+	Data[30] 2 ~ 6 (4b)
+		Via routers 2 ~ 1
+		Data saved into router 6
+		 Data dorucena.
+	Data[32] 2 ~ 1 (18b)
+		Via routers 2 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[27] 3 ~ 5 (32b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+	Data[33] 7 ~ 4 (108b)
+		Via routers 7 ~ 8 ~ 1 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[29] 8 ~ 3 (6b)
+		Via routers 8 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 27,96%
+
+Tick 13
+ Sent data
+	Data[27] 3 ~ 5 (37b)
+		Via routers 6 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[34] 6 ~ 5 (71b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[35] 6 ~ 2 (0b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[33] 7 ~ 4 (24b)
+		Via routers 7 ~ 8 ~ 1 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[29] 8 ~ 3 (90b)
+		Via routers 8 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 13,33%
+
+Tick 14
+ Sent data
+	Data[37] 0 ~ 7 (31b)
+		Via routers 0 ~ 1 ~ 8 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[36] 1 ~ 5 (12b)
+		Via routers 1 ~ 2 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[34] 6 ~ 5 (104b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router 5
+		 Data dorucena.
+	Data[35] 6 ~ 2 (4b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[29] 8 ~ 3 (66b)
+		Via routers 8 ~ 1 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 13,37%
+
+Tick 15
+ Sent data
+	Data[38] 4 ~ 8 (114b)
+		Via routers 4 ~ 1 ~ 8
+		Data saved into router null
+		 Cast dat prijata.
+	Data[35] 6 ~ 2 (108b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[39] 7 ~ 1 (8b)
+		Via routers 7 ~ 8 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 17,26%
+
+Tick 16
+ Sent data
+	Data[42] 0 ~ 5 (104b)
+		Via routers 0 ~ 2 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[38] 4 ~ 8 (6b)
+		Via routers 4 ~ 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[40] 3 ~ 4 (17b)
+		Via routers 3 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[38] 4 ~ 8 (68b)
+		Via routers 4 ~ 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[35] 6 ~ 2 (4b)
+		Via routers 6 ~ 5 ~ 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[41] 6 ~ 0 (0b)
+		Via routers 6 ~ 5 ~ 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 17,04%
+
+Tick 17
+ Sent data
+	Data[43] 3 ~ 7 (29b)
+		Via routers 3 ~ 6 ~ 5 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[35] 6 ~ 2 (42b)
+		Via routers 5 ~ 2 ~ 0
+		Data saved into router 2
+		 Data dorucena.
+	Data[41] 6 ~ 0 (43b)
+		Via routers 5 ~ 2 ~ 0
+		Data saved into router 0
+		 Data dorucena.
+	Data[45] 5 ~ 6 (16b)
+		Via routers 5 ~ 6
+		Data saved into router 6
+		 Data dorucena.
+	Data[44] 7 ~ 8 (65b)
+		Via routers 7 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 10,96%
+
+Tick 18
+ Sent data
+	Data[48] 0 ~ 2 (93b)
+		Via routers 0 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+	Data[46] 2 ~ 3 (102b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[47] 3 ~ 6 (114b)
+		Via routers 3 ~ 6
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 15,22%
+
+Tick 19
+ Sent data
+	Data[47] 3 ~ 6 (58b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router 6
+		 Data dorucena.
+	Data[50] 3 ~ 5 (56b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+	Data[51] 1 ~ 8 (89b)
+		Via routers 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[46] 2 ~ 3 (72b)
+		Via routers 2 ~ 1
+		Data saved into router 3
+		 Data dorucena.
+	Data[49] 2 ~ 1 (4b)
+		Via routers 2 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[50] 3 ~ 5 (0b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 15,07%
+
+Tick 20
+ Sent data
+	Data[50] 3 ~ 5 (108b)
+		Via routers 3 ~ 6 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+	Data[52] 7 ~ 0 (108b)
+		Via routers 7 ~ 8 ~ 1 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 20,22%
+
+Tick 21
+ Sent data
+	Data[50] 3 ~ 5 (8b)
+		Via routers 6 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[53] 4 ~ 7 (108b)
+		Via routers 4 ~ 1 ~ 8 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[50] 3 ~ 5 (6b)
+		Via routers 6 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+	Data[52] 7 ~ 0 (69b)
+		Via routers 7 ~ 8 ~ 1 ~ 0
+		Data saved into router 0
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 21,15%
+
+Tick 22
+ Sent data
+	Data[53] 4 ~ 7 (6b)
+		Via routers 8 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[54] 3 ~ 8 (108b)
+		Via routers 3 ~ 1 ~ 8
+		Data saved into router null
+		 Cast dat prijata.
+	Data[53] 4 ~ 7 (0b)
+		Via routers 8 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[55] 5 ~ 7 (120b)
+		Via routers 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[53] 4 ~ 7 (6b)
+		Via routers 8 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 14,70%
+
+Tick 23
+ Sent data
+	Data[54] 3 ~ 8 (12b)
+		Via routers 3 ~ 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[53] 4 ~ 7 (31b)
+		Via routers 1 ~ 8 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[56] 2 ~ 7 (39b)
+		Via routers 2 ~ 5 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[54] 3 ~ 8 (62b)
+		Via routers 3 ~ 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[55] 5 ~ 7 (35b)
+		Via routers 5 ~ 2
+		Data saved into router 7
+		 Data dorucena.
+	Data[57] 5 ~ 2 (69b)
+		Via routers 5 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 14,07%
+
+Tick 24
+ Sent data
+	Data[59] 1 ~ 3 (92b)
+		Via routers 1 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[58] 2 ~ 0 (108b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[62] 4 ~ 1 (1b)
+		Via routers 4 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[57] 5 ~ 2 (21b)
+		Via routers 5 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+	Data[61] 6 ~ 8 (39b)
+		Via routers 6 ~ 5 ~ 7 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[60] 7 ~ 0 (69b)
+		Via routers 7 ~ 8 ~ 1 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 20,22%
+
+Tick 25
+ Sent data
+	Data[66] 0 ~ 1 (35b)
+		Via routers 0 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[64] 1 ~ 8 (30b)
+		Via routers 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[58] 2 ~ 0 (81b)
+		Via routers 2 ~ 0
+		Data saved into router 0
+		 Data dorucena.
+	Data[65] 4 ~ 6 (104b)
+		Via routers 4 ~ 3 ~ 6
+		Data saved into router 6
+		 Data dorucena.
+	Data[63] 5 ~ 7 (38b)
+		Via routers 5 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[60] 7 ~ 0 (79b)
+		Via routers 7 ~ 8 ~ 1 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 25,07%
+
+Tick 26
+ Sent data
+	Data[60] 7 ~ 0 (24b)
+		Via routers 1 ~ 0
+		Data saved into router 0
+		 Data dorucena.
+	Data[67] 6 ~ 2 (66b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+	Data[68] 8 ~ 4 (7b)
+		Via routers 8 ~ 1 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 6,30%
+
+Tick 27
+ Sent data
+	Data[69] 8 ~ 4 (80b)
+		Via routers 8 ~ 1 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[70] 2 ~ 5 (108b)
+		Via routers 2 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+	Data[71] 3 ~ 8 (19b)
+		Via routers 3 ~ 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 11,33%
+
+Tick 28
+ Sent data
+	Data[70] 2 ~ 5 (19b)
+		Via routers 2 ~ 0
+		Data saved into router 5
+		 Data dorucena.
+	Data[73] 2 ~ 4 (102b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[74] 2 ~ 0 (108b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[72] 7 ~ 4 (18b)
+		Via routers 7 ~ 8 ~ 1 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 20,93%
+
+Tick 29
+ Sent data
+	Data[72] 7 ~ 4 (90b)
+		Via routers 7 ~ 8 ~ 1 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+	Data[73] 2 ~ 4 (30b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[74] 2 ~ 0 (68b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router 0
+		 Data dorucena.
+	Data[75] 2 ~ 3 (66b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[76] 2 ~ 3 (0b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[77] 3 ~ 8 (114b)
+		Via routers 3 ~ 1 ~ 8
+		Data saved into router null
+		 Cast dat prijata.
+	Data[72] 7 ~ 4 (0b)
+		Via routers 7 ~ 8 ~ 1 ~ 4
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 23,44%
+
+Tick 30
+ Sent data
+	Data[81] 0 ~ 3 (114b)
+		Via routers 0 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[73] 2 ~ 4 (6b)
+		Via routers 2 ~ 0
+		Data saved into router 4
+		 Data dorucena.
+	Data[77] 3 ~ 8 (1b)
+		Via routers 1 ~ 8
+		Data saved into router 8
+		 Data dorucena.
+	Data[72] 7 ~ 4 (24b)
+		Via routers 1 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[75] 2 ~ 3 (6b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[76] 2 ~ 3 (0b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[78] 2 ~ 7 (108b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[79] 2 ~ 3 (0b)
+		Via routers 2 ~ 0
+		Data saved into router null
+		 Cast dat prijata.
+	Data[80] 2 ~ 0 (95b)
+		Via routers 2 ~ 0
+		Data saved into router 0
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 25,11%
+
+Tick 31
+ Sent data
+	Data[81] 0 ~ 3 (40b)
+		Via routers 0 ~ 1 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[75] 2 ~ 3 (4b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[76] 2 ~ 3 (76b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[76] 2 ~ 3 (0b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[78] 2 ~ 7 (63b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router 7
+		 Data dorucena.
+	Data[79] 2 ~ 3 (0b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[82] 5 ~ 7 (57b)
+		Via routers 5 ~ 7
+		Data saved into router null
+		 Cast dat prijata.
+	Data[83] 7 ~ 3 (35b)
+		Via routers 7 ~ 5 ~ 6 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 20,37%
+
+Tick 32
+ Sent data
+	Data[76] 2 ~ 3 (16b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[76] 2 ~ 3 (15b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[79] 2 ~ 3 (87b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[79] 2 ~ 3 (2b)
+		Via routers 2 ~ 1 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[82] 5 ~ 7 (108b)
+		Via routers 5 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[84] 6 ~ 2 (95b)
+		Via routers 6 ~ 5 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 18,11%
+
+Tick 33
+ Sent data
+	Data[79] 2 ~ 3 (69b)
+		Via routers 2 ~ 5 ~ 6
+		Data saved into router 3
+		 Data dorucena.
+	Data[86] 2 ~ 6 (108b)
+		Via routers 2 ~ 5 ~ 6
+		Data saved into router null
+		 Cast dat prijata.
+	Data[87] 4 ~ 7 (48b)
+		Via routers 4 ~ 3
+		Data saved into router 7
+		 Data dorucena.
+	Data[88] 4 ~ 3 (110b)
+		Via routers 4 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+	Data[85] 8 ~ 5 (32b)
+		Via routers 8 ~ 7 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 22,33%
+
+Tick 34
+ Sent data
+	Data[89] 1 ~ 3 (51b)
+		Via routers 1 ~ 8 ~ 7
+		Data saved into router 3
+		 Data dorucena.
+	Data[90] 1 ~ 7 (106b)
+		Via routers 1 ~ 8 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[86] 2 ~ 6 (40b)
+		Via routers 2 ~ 5 ~ 6
+		Data saved into router 6
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 12,70%
+
+Tick 35
+ Sent data
+	Data[93] 0 ~ 6 (29b)
+		Via routers 0 ~ 2 ~ 5 ~ 6
+		Data saved into router 6
+		 Data dorucena.
+	Data[92] 1 ~ 7 (95b)
+		Via routers 1 ~ 8 ~ 7
+		Data saved into router 7
+		 Data dorucena.
+	Data[91] 5 ~ 1 (79b)
+		Via routers 5 ~ 2 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 16,11%
+
+Tick 36
+ Sent data
+	Data[95] 0 ~ 2 (15b)
+		Via routers 0 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+	Data[96] 1 ~ 4 (84b)
+		Via routers 1 ~ 4
+		Data saved into router 4
+		 Data dorucena.
+	Data[94] 4 ~ 2 (102b)
+		Via routers 4 ~ 1 ~ 2
+		Data saved into router null
+		 Cast dat prijata.
+	Data[91] 5 ~ 1 (0b)
+		Via routers 5 ~ 2 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 15,56%
+
+Tick 37
+ Sent data
+	Data[97] 0 ~ 6 (108b)
+		Via routers 0 ~ 2 ~ 5 ~ 6
+		Data saved into router null
+		 Cast dat prijata.
+	Data[94] 4 ~ 2 (12b)
+		Via routers 1 ~ 2
+		Data saved into router 2
+		 Data dorucena.
+	Data[91] 5 ~ 1 (90b)
+		Via routers 2 ~ 1
+		Data saved into router null
+		 Cast dat prijata.
+	Data[98] 8 ~ 5 (108b)
+		Via routers 8 ~ 7 ~ 5
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 23,78%
+
+Tick 38
+ Sent data
+	Data[97] 0 ~ 6 (78b)
+		Via routers 0 ~ 2 ~ 5 ~ 6
+		Data saved into router 6
+		 Data dorucena.
+	Data[91] 5 ~ 1 (15b)
+		Via routers 5 ~ 6 ~ 3
+		Data saved into router 1
+		 Data dorucena.
+	Data[100] 4 ~ 1 (100b)
+		Via routers 4 ~ 1
+		Data saved into router 1
+		 Data dorucena.
+	Data[99] 5 ~ 3 (30b)
+		Via routers 5 ~ 6 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+	Data[98] 8 ~ 5 (87b)
+		Via routers 8 ~ 7 ~ 5
+		Data saved into router 5
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 21,59%
+
+Tick 39
+ Sent data
+	Data[99] 5 ~ 3 (108b)
+		Via routers 5 ~ 6 ~ 3
+		Data saved into router null
+		 Cast dat prijata.
+ Routers Memory Usage 0,00%
+ Link Traffic 8,00%
+
+Tick 40
+ Sent data
+	Data[99] 5 ~ 3 (3b)
+		Via routers 5 ~ 6 ~ 3
+		Data saved into router 3
+		 Data dorucena.
+ Routers Memory Usage 0,00%
+ Link Traffic 0,22%
+
+Tick 41
+ Sent data
+ Routers Memory Usage 0,00%
+ Link Traffic 0,00%
+
+Simulation ended

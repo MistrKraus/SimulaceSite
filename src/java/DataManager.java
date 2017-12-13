@@ -100,9 +100,9 @@ public class DataManager {
 //                String[] currLine = currentLine.split("-");
                 String[] currLine = processCurrentLine(currentLine);
 
-                int r1 = Integer.parseInt(currLine[0]) - 1;
-                int r2 = Integer.parseInt(currLine[1]) - 1;
-                float maxThroughtput = Float.parseFloat(currLine[2]) - 1;
+                int r1 = Integer.parseInt(currLine[0]);
+                int r2 = Integer.parseInt(currLine[1]);
+                float maxThroughtput = Float.parseFloat(currLine[2]);
                 float reliability = Float.parseFloat(currLine[3]);
 
 //                routers.put(r1, new Router(r1));
